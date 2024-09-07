@@ -1,3 +1,4 @@
+import { Date } from 'mongoose';
 import IUser from './User';
 
 interface IPost {
@@ -5,6 +6,8 @@ interface IPost {
     title: String;
     description: String;
     owner: IUser;
+    createdAt: Date;
+    updatedAt: Date;
 }
 
 export = IPost;
