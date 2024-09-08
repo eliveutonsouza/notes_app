@@ -8,5 +8,5 @@
         "skipLibCheck": true,
         "allowJs": true
     },
-    "include": ["src/**/*.ts", "server.ts"]
+    "include": ["src/**/*.ts", "server.ts", "src/test/userTest.ts"]
 }
