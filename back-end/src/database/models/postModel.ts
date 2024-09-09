@@ -1,3 +1,3 @@
 import postModel from '../schemas/PostSchema';
-
-export default postModel;
+const Post = postModel;
+export default Post;

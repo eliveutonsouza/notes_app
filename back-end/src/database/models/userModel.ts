@@ -1,3 +1,3 @@
 import userModel from '../schemas/UserSchema';
-
-export default userModel;
+const User = userModel;
+export default User;

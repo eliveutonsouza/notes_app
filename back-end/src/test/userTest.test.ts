@@ -24,6 +24,6 @@ describe('create User', () => {
 
         const response = userService.createUser(data);
 
-        expect(response).toBeDefined;
+        expect(response).toBeDefined();
     });
 });
