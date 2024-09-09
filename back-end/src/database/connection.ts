@@ -9,11 +9,14 @@ async function connect(): Promise<void> {
     }
 
     try {
-        await mongoose.connect(connectionUrl);
-        console.log('database Connected');
+        await mongoose.connect(connectionUrl, {
+            serverSelectionTimeoutMS: 50000,
+            bufferCommands: false,
+        });
+
+        console.log('database connected');
     } catch (error) {
-        console.log(error);
-        throw new Error('Failed to connect database');
+        throw new Error('failed to connect a database');
     }
 }
 
