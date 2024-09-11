@@ -1,7 +1,7 @@
 import crypto from 'crypto';
 import IUser from '../contracts/User';
 import UserService from '../services/UserService/UserService';
-const axios = require('axios');
+import axios from 'axios';
 import mongoose from 'mongoose';
 import db from '../database/connection';
 import dotenv from 'dotenv';
@@ -14,12 +14,13 @@ function generate(): String {
 }
 
 async function request(
-    url: String,
-    method: String,
+    url: string,
+    method: string,
     data: Omit<IUser, 'posts'>
 ) {
     return axios({ url, method, data });
 }
+const userService = new UserService();
 
 beforeAll(async () => {
     await db();
@@ -37,8 +38,6 @@ describe('create User', () => {
             password: generate(),
             posts: new Array<IPost>(),
         };
-
-        const userService = new UserService();
 
         const response: IUser = await userService.createUser(data);
 

@@ -1,10 +1,7 @@
-import express, { Request, Response } from 'express';
-import db from './database/connection';
-const app = express();
+import express from 'express';
 
-db();
-app.get('/', (req: Request, res: Response) => {
-    res.send('it works :)');
-});
+const app = express();
+app.use(express.urlencoded({ extended: true }));
+app.use(express.json());
 
 export = app;

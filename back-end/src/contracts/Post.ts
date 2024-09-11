@@ -1,13 +1,10 @@
-import { Date } from 'mongoose';
-import IUser from './User';
-
 interface IPost {
-    id: String;
+    _id: String;
     title: String;
     description: String;
-    owner: IUser;
+    owner: String;
     createdAt: Date;
-    updatedAt: Date;
+    updatedAt: Date | undefined;
 }
 
 export = IPost;

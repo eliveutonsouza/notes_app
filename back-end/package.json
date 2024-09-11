@@ -7,7 +7,7 @@
         "format": "eslint src/**/*.ts --fix",
         "start": "ts-node-dev --transpile-only --respawn --ignore-watch node_modules server.ts",
         "prettier": "prettier --write \"{src,test}/**/*.{js,ts}\"",
-        "test": "jest --watch"
+        "test": "jest"
     },
     "keywords": [
         "Docker",

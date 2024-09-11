@@ -4,7 +4,9 @@ export default class UserService {
     async createUser(data: Omit<IUser, '_id'>): Promise<IUser> {
         try {
             const userInstance = new User(data);
+
             const response = await userInstance.save();
+
             return response;
         } catch (err) {
             console.log(err);

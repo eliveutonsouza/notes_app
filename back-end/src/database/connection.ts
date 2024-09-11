@@ -1,6 +1,7 @@
 import mongoose, { Error } from 'mongoose';
 import dotenv from 'dotenv';
 dotenv.config();
+
 async function connect(): Promise<void> {
     const connectionUrl = process.env.CONNECTION_URL_LOCAL;
 
