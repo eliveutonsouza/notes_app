@@ -1,6 +1,6 @@
 import mongoose from 'mongoose';
 
-import IPost from '../../contracts/Post';
+import IPost from '../../contracts/IPost';
 const { Schema } = mongoose;
 
 const postSchema = new Schema<IPost>({

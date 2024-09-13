@@ -1,5 +1,5 @@
 import mongoose from 'mongoose';
-import IUser from '../../contracts/User';
+import IUser from '../../contracts/IUser';
 const { Schema } = mongoose;
 
 const userSchema = new Schema<IUser>({
