@@ -4,12 +4,12 @@ import axios from 'axios';
 import mongoose from 'mongoose';
 import db from '../database/connection';
 import dotenv from 'dotenv';
-import IPost from '../contracts/Post';
+import IPost from '../contracts/IPost';
 import PostService from '../services/PostService/PostService';
 
 dotenv.config();
 
-function generate(): String {
+function generate(): string {
     return crypto.randomBytes(20).toString('hex');
 }
 

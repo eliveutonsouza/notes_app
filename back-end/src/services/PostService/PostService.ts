@@ -1,11 +1,11 @@
-import IPost from '../../contracts/Post';
+import IPost from '../../contracts/IPost';
 import Post from '../../database/models/postModel';
-import User from '../../database/models/userModel';
+import UserModel from '../../database/models/userModel';
 export default class PostService {
     async createPost(data: Omit<IPost, '_id'>): Promise<IPost> {
         try {
-            const user = await User.findOne({
-                email: '89ee5a4d65d0b5bc1f038bea3b15038d986e2650',
+            const user = await UserModel.findOne({
+                email: 'a2882b7be69010696ee82aa58dc4b3597ff5a08f',
             });
             if (!user) {
                 throw new Error('cannot find a user.');
