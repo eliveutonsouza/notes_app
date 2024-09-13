@@ -1,6 +1,7 @@
+import { Document } from 'mongoose';
 import IUser from '../../contracts/IUser';
 import UserModel from '../../database/models/userModel';
-import { User } from '../../entity/User';
+
 export default class UserService {
     async createUser(data: Omit<IUser, '_id'>): Promise<IUser> {
         try {
@@ -14,7 +15,7 @@ export default class UserService {
             throw new Error('failed to save a user');
         }
     }
-    async findByEmail(email: string): Promise<IUser> {
+    async findByEmail(email: string): Promise<IUser & Document> {
         try {
             const user = await UserModel.findOne({ email });
 
@@ -22,15 +23,7 @@ export default class UserService {
                 throw new Error('user doesnt exist');
             }
 
-            const userFromDB: IUser = new User(
-                user._id,
-                user.name,
-                user.email,
-                user.password,
-                user.posts
-            );
-
-            return userFromDB;
+            return user;
         } catch (e) {
             console.log(e);
             throw new Error('Failed to find');

@@ -1,6 +1,6 @@
-import IUser from '../contracts/IUser';
 import IPost from '../contracts/IPost';
-export class User implements IUser {
+
+export class User {
     _id: string;
     name: string;
     email: string;
