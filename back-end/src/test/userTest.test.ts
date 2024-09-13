@@ -1,15 +1,15 @@
 import crypto from 'crypto';
-import IUser from '../contracts/User';
+import IUser from '../contracts/IUser';
 import UserService from '../services/UserService/UserService';
 import axios from 'axios';
 import mongoose from 'mongoose';
 import db from '../database/connection';
 import dotenv from 'dotenv';
-import IPost from '../contracts/Post';
+import IPost from '../contracts/IPost';
 
 dotenv.config();
 
-function generate(): String {
+function generate(): string {
     return crypto.randomBytes(20).toString('hex');
 }
 
@@ -49,5 +49,15 @@ describe('create User', () => {
         };
 
         expect(responseNecessary).toStrictEqual(data);
+    });
+});
+
+describe('find a User', () => {
+    test.only('should to find a user', async function () {
+        const mockEmail = 'a2882b7be69010696ee82aa58dc4b3597ff5a08f';
+
+        const result = await userService.findByEmail(mockEmail);
+        console.log(result);
+        expect(result.email).toStrictEqual(mockEmail);
     });
 });
