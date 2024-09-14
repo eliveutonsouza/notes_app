@@ -6,6 +6,8 @@ import db from '../database/connection';
 import dotenv from 'dotenv';
 import IPost from '../contracts/IPost';
 import PostService from '../services/PostService/PostService';
+import UserService from '../services/UserService/UserService';
+import IUser from '../contracts/IUser';
 
 dotenv.config();
 
@@ -20,6 +22,7 @@ async function request(
 ) {
     return axios({ url, method, data });
 }
+const userService = new UserService();
 const postService = new PostService();
 
 beforeAll(async () => {
@@ -30,8 +33,8 @@ afterAll(async () => {
     await mongoose.disconnect();
 });
 
-describe('create User', () => {
-    test.only('should to create a user', async function () {
+describe('create a Post', () => {
+    test('should to create a post', async function () {
         const data: Omit<IPost, '_id'> = {
             title: generate(),
             description: generate(),
@@ -53,5 +56,31 @@ describe('create User', () => {
         console.log(responseNecessary, data);
 
         expect(responseNecessary).toStrictEqual(data);
+    });
+
+    describe('update a post', () => {
+        test.only('should to update a post', async function () {
+            const data: Pick<IPost, 'title' | 'description'> = {
+                title: generate(),
+                description: generate(),
+            };
+            const usr = await userService.findByEmail(
+                'a2882b7be69010696ee82aa58dc4b3597ff5a08f'
+            );
+
+            const postResponse = await postService.updatePost(
+                data,
+                usr.posts[0]._id
+            );
+
+            const responseNecessary = {
+                title: postResponse.title,
+                description: postResponse.description,
+            };
+
+            console.log(responseNecessary, data);
+
+            expect(responseNecessary).toStrictEqual(data);
+        });
     });
 });
