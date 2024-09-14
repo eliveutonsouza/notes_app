@@ -2,7 +2,7 @@ import crypto from 'crypto';
 import IUser from '../contracts/IUser';
 import UserService from '../services/UserService/UserService';
 import axios from 'axios';
-import mongoose from 'mongoose';
+import mongoose, { Document } from 'mongoose';
 import db from '../database/connection';
 import dotenv from 'dotenv';
 import IPost from '../contracts/IPost';
@@ -56,7 +56,8 @@ describe('find a User', () => {
     test.only('should to find a user', async function () {
         const mockEmail = 'a2882b7be69010696ee82aa58dc4b3597ff5a08f';
 
-        const result = await userService.findByEmail(mockEmail);
+        const result: IUser & Document =
+            await userService.findByEmail(mockEmail);
         console.log(result);
         expect(result.email).toStrictEqual(mockEmail);
     });
