@@ -1,5 +1,7 @@
+import { ObjectId } from 'mongoose';
+
 interface IPost {
-    _id: string;
+    _id: ObjectId;
     title: string;
     description: string;
     owner: String;
