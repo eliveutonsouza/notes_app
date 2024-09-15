@@ -1,6 +1,7 @@
 import { ObjectId } from 'mongoose';
 import IPost from '../../contracts/IPost';
 import Post from '../../database/models/postModel';
+import User from '../../database/models/userModel';
 
 import UserService from '../UserService/UserService';
 export default class PostService {
@@ -8,7 +9,7 @@ export default class PostService {
     async createPost(data: Omit<IPost, '_id'>): Promise<IPost> {
         try {
             const user = await this.userService.findByEmail(
-                'a2882b7be69010696ee82aa58dc4b3597ff5a08f'
+                '35479f6873837b113c0a58575c8d5569cf24088e'
             );
 
             if (!user) {
@@ -34,17 +35,34 @@ export default class PostService {
         postId: ObjectId
     ): Promise<IPost> {
         try {
-            const usrUpdated = await Post.findByIdAndUpdate(postId, data, {
+            const postUpdated = await Post.findByIdAndUpdate(postId, data, {
                 new: true,
             }).exec();
 
-            if (!usrUpdated) throw new Error('cannot find');
+            if (!postUpdated) throw new Error('cannot find');
 
-            return usrUpdated;
+            return postUpdated;
         } catch (err) {
             console.log(err);
 
             throw new Error('failed to save a Post');
+        }
+    }
+
+    async deletePost(postId: ObjectId): Promise<IPost> {
+        try {
+            const postDeleted = await Post.findByIdAndDelete(postId);
+
+            if (!postDeleted) throw new Error('post doesnt exist');
+
+            await User.updateMany(
+                { posts: postId },
+                { $pull: { posts: postId } }
+            );
+
+            return postDeleted;
+        } catch (err) {
+            throw new Error('failed to delete a post');
         }
     }
 }
