@@ -7,7 +7,6 @@ import dotenv from 'dotenv';
 import IPost from '../contracts/IPost';
 import PostService from '../services/PostService/PostService';
 import UserService from '../services/UserService/UserService';
-import IUser from '../contracts/IUser';
 
 dotenv.config();
 
@@ -38,7 +37,7 @@ describe('create a Post', () => {
         const data: Omit<IPost, '_id'> = {
             title: generate(),
             description: generate(),
-            owner: '66e06a1555b1b153a964dee1',
+            owner: '66e60d2930b2f68d8bd67de9',
             updatedAt: undefined,
             createdAt: new Date(),
         };
@@ -59,7 +58,7 @@ describe('create a Post', () => {
     });
 
     describe('update a post', () => {
-        test.only('should to update a post', async function () {
+        test('should to update a post', async function () {
             const data: Pick<IPost, 'title' | 'description'> = {
                 title: generate(),
                 description: generate(),
@@ -82,5 +81,27 @@ describe('create a Post', () => {
 
             expect(responseNecessary).toStrictEqual(data);
         });
+    });
+});
+
+describe('delete a post', () => {
+    test.only('should to delete a post', async function () {
+        const usr = await userService.findByEmail(
+            '35479f6873837b113c0a58575c8d5569cf24088e'
+        );
+
+        const initialPostCount = usr.posts.length;
+
+        expect(initialPostCount).toBeGreaterThan(0);
+
+        const postId = usr.posts[0]._id;
+
+        await postService.deletePost(postId);
+
+        const updatedUsr = await userService.findByEmail(
+            '35479f6873837b113c0a58575c8d5569cf24088e'
+        );
+
+        expect(updatedUsr.posts.length).toBe(initialPostCount - 1);
     });
 });

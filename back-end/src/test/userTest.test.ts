@@ -31,7 +31,7 @@ afterAll(async () => {
 });
 
 describe('create User', () => {
-    test('should to create a user', async function () {
+    test.only('should to create a user', async function () {
         const data: Omit<IUser, '_id'> = {
             name: generate(),
             email: generate(),
@@ -53,7 +53,7 @@ describe('create User', () => {
 });
 
 describe('find a User', () => {
-    test.only('should to find a user', async function () {
+    test('should to find a user', async function () {
         const mockEmail = 'a2882b7be69010696ee82aa58dc4b3597ff5a08f';
 
         const result: IUser & Document =
