@@ -1,13 +1,14 @@
+import { ObjectId } from 'mongoose';
 import IPost from '../contracts/IPost';
 export class Post implements IPost {
-    _id: string;
+    _id: ObjectId;
     title: string;
     description: string;
     owner: String;
     createdAt: Date;
     updatedAt: Date | undefined;
     constructor(
-        _id: string,
+        _id: ObjectId,
         title: string,
         description: string,
         owner: String,
