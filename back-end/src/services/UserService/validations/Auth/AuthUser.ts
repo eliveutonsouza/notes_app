@@ -1,15 +1,17 @@
 import { compare } from 'bcryptjs';
-import User from '../../../../database/models/userModel';
 import { GenerateTokenProvider } from '../../../../providers/GenerateTokenProvider';
+import UserService from '../../UserService';
 interface IRequest {
     email: string;
     password: string;
 }
 
 class AuthenticateUserUseCase {
+    userService: UserService = new UserService();
     async execute({ email, password }: IRequest) {
         try {
-            const user = await User.findOne({ email });
+            const user = await this.userService.findByEmail(email);
+
             if (!user) {
                 throw new Error('email or password wrong');
             }
