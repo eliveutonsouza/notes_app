@@ -6,9 +6,8 @@ import { hash } from 'bcryptjs';
 export default class UserService {
     async createUser(data: Omit<IUser, '_id'>): Promise<IUser> {
         try {
-            console.log(data.password);
             data.password = await hash(data.password, 8);
-            console.log(data.password);
+
             const userInstance = new UserModel(data);
 
             const response = await userInstance.save();
