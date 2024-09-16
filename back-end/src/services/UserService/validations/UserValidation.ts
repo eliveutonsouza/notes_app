@@ -1,7 +1,7 @@
 import IUser from '../../../contracts/IUser';
 import UserModel from '../../../database/models/userModel';
 
-export default class Validation {
+export default class UserValidation {
     async validationRegister(
         data: Pick<IUser, 'email' | 'name' | 'password'>
     ): Promise<void> {
@@ -10,7 +10,7 @@ export default class Validation {
         this.passwordValidation(data.password);
     }
 
-    async emailValidation(email: string): Promise<void> {
+    private async emailValidation(email: string): Promise<void> {
         const responseUser = await UserModel.findOne({ email });
 
         if (responseUser) throw new Error('user already Exists');
@@ -23,7 +23,7 @@ export default class Validation {
         }
     }
 
-    usernameValidation(username: string): void {
+    private usernameValidation(username: string): void {
         if (!username) throw new Error('cannot be null');
 
         if (username.length < 3)
@@ -33,7 +33,7 @@ export default class Validation {
             throw new Error('username should be less than 20 characters');
     }
 
-    passwordValidation(password: string): void {
+    private passwordValidation(password: string): void {
         if (!password) throw new Error('cannot be null');
 
         if (password.length < 8)
