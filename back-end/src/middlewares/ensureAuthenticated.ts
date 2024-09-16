@@ -1,7 +1,9 @@
-import { Request, Response, NextFunction } from 'express';
+import { Response, NextFunction } from 'express';
 import { verify } from 'jsonwebtoken';
+import AuthReq from '../contracts/AuthReq';
+
 export function ensureAuthenticated(
-    request: Request,
+    request: AuthReq,
     response: Response,
     next: NextFunction
 ) {
@@ -18,7 +20,17 @@ export function ensureAuthenticated(
     const keyToken = process.env.PRIVATE_KEY_JWT;
 
     try {
-        verify(token, keyToken || 'e2ac90fa-2e12-4f99-8dde-7e3a7690ab35');
+        const decoded = verify(
+            token,
+            keyToken || 'e2ac90fa-2e12-4f99-8dde-7e3a7690ab35'
+        );
+
+        const { sub } = decoded as { sub: string };
+
+        request.user = {
+            email: sub,
+        };
+
         return next();
     } catch (e) {
         return response.status(401).json({
