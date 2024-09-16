@@ -18,7 +18,7 @@ router.post('/register', registerController);
 
 router.post('/post', ensureAuthenticated, createPost);
 router.get('/post', ensureAuthenticated, getPosts);
-router.put('/post', ensureAuthenticated, updatePost);
-router.delete('/post', ensureAuthenticated, deletePost);
+router.put('/post/:_id', ensureAuthenticated, updatePost);
+router.delete('/post/:_id', ensureAuthenticated, deletePost);
 
 export default router;
