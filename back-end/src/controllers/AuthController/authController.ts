@@ -10,18 +10,14 @@ export default async function authController(
     try {
         const responseAuth = await auth.execute(request.body);
 
-        response
-            .json({
-                token: responseAuth,
-                msg: 'success',
-            })
-            .status(200);
-    } catch (e) {
-        console.error(e);
-        response
-            .json({
-                msg: 'unauthorized',
-            })
-            .status(401);
+        response.status(200).json({
+            token: responseAuth,
+            msg: 'success',
+        });
+    } catch (e: any) {
+        response.status(401).json({
+            msg: 'unauthorized',
+            err: e.message,
+        });
     }
 }

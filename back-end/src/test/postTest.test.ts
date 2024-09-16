@@ -59,9 +59,10 @@ describe('create a Post', () => {
 
     describe('update a post', () => {
         test('should to update a post', async function () {
-            const data: Pick<IPost, 'title' | 'description'> = {
+            const data: Pick<IPost, 'title' | 'description' | 'updatedAt'> = {
                 title: generate(),
                 description: generate(),
+                updatedAt: new Date(),
             };
             const usr = await userService.findByEmail(
                 'a2882b7be69010696ee82aa58dc4b3597ff5a08f'

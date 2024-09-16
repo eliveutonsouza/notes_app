@@ -13,9 +13,10 @@ async function registerController(request: Request, response: Response) {
             msg: 'success to register a new user.',
             user: responseCreateUser,
         });
-    } catch (e) {
+    } catch (err: any) {
         response.status(406).json({
             msg: 'fail to register a new User',
+            error: err.message,
         });
     }
 }

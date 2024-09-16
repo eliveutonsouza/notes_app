@@ -35,7 +35,7 @@ describe('create User', () => {
         const data: Omit<IUser, '_id'> = {
             name: generate(),
             email: generate(),
-            password: generate(),
+            password: 'eliveuton',
             posts: new Array<IPost>(),
         };
 
