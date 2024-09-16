@@ -1,8 +1,8 @@
-1 - validation Input data User Register
+1 - validation Input data User Register - done
 
-2 - validation Input data Post User
+2 - validation Input data Post User - done
 
-3 - Impl middleware auth EndPoints
+3 - Impl middleware auth EndPoints - done
 
 4 - Pagination back-end
 
