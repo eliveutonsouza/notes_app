@@ -1,7 +1,7 @@
 import { sign } from 'jsonwebtoken';
 
 class GenerateTokenProvider {
-    async execute(userEmail: string) {
+    async execute(userEmail: string): Promise<string> {
         const privateKeyJwt = process.env.PRIVATE_KEY_JWT;
         const token = sign(
             {},
