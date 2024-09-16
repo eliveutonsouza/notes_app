@@ -4,13 +4,19 @@ import Post from '../../database/models/postModel';
 import User from '../../database/models/userModel';
 
 import UserService from '../UserService/UserService';
+import PostValidation from './validations/PostValidation';
+
 export default class PostService {
+    postValidation: PostValidation = new PostValidation();
     userService: UserService = new UserService();
-    async createPost(data: Omit<IPost, '_id'>): Promise<IPost> {
+    async createPost(
+        data: Omit<IPost, '_id'>,
+        userEmail: string
+    ): Promise<IPost> {
         try {
-            const user = await this.userService.findByEmail(
-                '35479f6873837b113c0a58575c8d5569cf24088e'
-            );
+            this.postValidation.validation(data);
+
+            const user = await this.userService.findByEmail(userEmail);
 
             if (!user) {
                 throw new Error('cannot find a user.');
@@ -26,7 +32,7 @@ export default class PostService {
         } catch (err) {
             console.log(err);
 
-            throw new Error('failed to save a Post');
+            throw err;
         }
     }
 
@@ -35,6 +41,7 @@ export default class PostService {
         postId: ObjectId
     ): Promise<IPost> {
         try {
+            this.postValidation.validation(data);
             const postUpdated = await Post.findByIdAndUpdate(postId, data, {
                 new: true,
             }).exec();
@@ -45,7 +52,7 @@ export default class PostService {
         } catch (err) {
             console.log(err);
 
-            throw new Error('failed to save a Post');
+            throw err;
         }
     }
 
