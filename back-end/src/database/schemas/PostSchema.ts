@@ -6,7 +6,7 @@ const { Schema } = mongoose;
 const postSchema = new Schema<IPost>({
     description: { type: String, required: true },
     title: { type: String, required: true },
-    createdAt: { type: Date, required: true, default: Date.now },
+    createdAt: { type: Date, default: Date.now },
     updatedAt: { type: Date },
     owner: {
         type: Schema.Types.ObjectId,
