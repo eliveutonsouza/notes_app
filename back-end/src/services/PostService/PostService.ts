@@ -1,6 +1,6 @@
-import { ObjectId } from 'mongoose';
 import IPost from '../../contracts/IPost';
 import Post from '../../database/models/postModel';
+import { Types } from 'mongoose';
 import User from '../../database/models/userModel';
 
 import UserService from '../UserService/UserService';
@@ -37,11 +37,12 @@ export default class PostService {
     }
 
     async updatePost(
-        data: Pick<IPost, 'title' | 'description'>,
-        postId: ObjectId
+        data: Pick<IPost, 'title' | 'description' | 'updatedAt'>,
+        postId: Types.ObjectId
     ): Promise<IPost> {
         try {
             this.postValidation.validation(data);
+            data.updatedAt = new Date();
             const postUpdated = await Post.findByIdAndUpdate(postId, data, {
                 new: true,
             }).exec();
@@ -56,7 +57,7 @@ export default class PostService {
         }
     }
 
-    async deletePost(postId: ObjectId): Promise<IPost> {
+    async deletePost(postId: Types.ObjectId): Promise<IPost> {
         try {
             const postDeleted = await Post.findByIdAndDelete(postId);
 
