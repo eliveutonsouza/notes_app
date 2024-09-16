@@ -1,13 +1,20 @@
 import IUser from '../../../contracts/IUser';
+import UserModel from '../../../database/models/userModel';
 
 export default class Validation {
-    validationRegister(data: Pick<IUser, 'email' | 'name' | 'password'>): void {
-        this.emailValidation(data.email);
+    async validationRegister(
+        data: Pick<IUser, 'email' | 'name' | 'password'>
+    ): Promise<void> {
+        await this.emailValidation(data.email);
         this.usernameValidation(data.name);
         this.passwordValidation(data.password);
     }
 
-    emailValidation(email: string): void {
+    async emailValidation(email: string): Promise<void> {
+        const responseUser = await UserModel.findOne({ email });
+
+        if (responseUser) throw new Error('user already Exists');
+
         if (!email) throw new Error('cannot be Null');
         const rgxEmail = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
 
@@ -18,6 +25,7 @@ export default class Validation {
 
     usernameValidation(username: string): void {
         if (!username) throw new Error('cannot be null');
+
         if (username.length < 3)
             throw new Error('username should be more than 3 characters');
 

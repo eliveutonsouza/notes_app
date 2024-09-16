@@ -8,7 +8,7 @@ export default class UserService {
     validation: Validation = new Validation();
     async createUser(data: Omit<IUser, '_id'>): Promise<IUser> {
         try {
-            this.validation.validationRegister(data);
+            await this.validation.validationRegister(data);
 
             data.password = await hash(data.password, 8);
 
