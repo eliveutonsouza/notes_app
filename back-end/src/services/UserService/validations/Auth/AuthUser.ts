@@ -16,7 +16,7 @@ class AuthenticateUserUseCase {
                 throw new Error('email or password wrong');
             }
             const passwordMatch = await compare(password, user.password);
-            console.log(password, user.password);
+
             if (!passwordMatch) {
                 throw new Error('email or password wrong');
             }
