@@ -6,7 +6,7 @@ import { ensureAuthenticated } from '../middlewares/ensureAuthenticated';
 import {
     createPost,
     deletePost,
-    getPosts,
+    getAllPosts,
     updatePost,
 } from '../controllers/PostController/postController';
 
@@ -17,7 +17,7 @@ router.post('/login', authController);
 router.post('/register', registerController);
 
 router.post('/post', ensureAuthenticated, createPost);
-router.get('/post', ensureAuthenticated, getPosts);
+router.get('/post', ensureAuthenticated, getAllPosts);
 router.put('/post/:_id', ensureAuthenticated, updatePost);
 router.delete('/post/:_id', ensureAuthenticated, deletePost);
 

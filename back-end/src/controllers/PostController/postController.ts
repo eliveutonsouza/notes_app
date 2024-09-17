@@ -8,7 +8,7 @@ const postService: PostService = new PostService();
 
 async function createPost(req: AuthReq, res: Response): Promise<void> {
     try {
-        if (!req.user?.email) throw new Error('userEmail fail On request');
+        if (!req.user?.email) throw new Error('userEmail fail on request');
         const response = await postService.createPost(
             req.body,
             req.user?.email
@@ -25,7 +25,23 @@ async function createPost(req: AuthReq, res: Response): Promise<void> {
         });
     }
 }
-async function getPosts(req: AuthReq, res: Response): Promise<void> {}
+async function getAllPosts(req: AuthReq, res: Response): Promise<void> {
+    try {
+        if (!req.user?.email) throw new Error('userEmail fail on request');
+
+        const posts: IPost[] = await postService.getAllPosts(req.user.email);
+
+        res.status(200).json({
+            msg: 'Success to get all posts',
+            body: posts,
+        });
+    } catch (err: any) {
+        res.status(400).json({
+            msg: 'fail to get all posts',
+            err: err.message,
+        });
+    }
+}
 async function updatePost(req: AuthReq, res: Response): Promise<void> {
     try {
         const _id: Types.ObjectId = new Types.ObjectId(req.params._id);
@@ -62,4 +78,4 @@ async function deletePost(req: AuthReq, res: Response): Promise<void> {
     }
 }
 
-export { createPost, getPosts, updatePost, deletePost };
+export { createPost, getAllPosts, updatePost, deletePost };
