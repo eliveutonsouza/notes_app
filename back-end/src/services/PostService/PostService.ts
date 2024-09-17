@@ -9,6 +9,19 @@ import PostValidation from './validations/PostValidation';
 export default class PostService {
     postValidation: PostValidation = new PostValidation();
     userService: UserService = new UserService();
+
+    async getAllPosts(userEmail: string): Promise<IPost[]> {
+        try {
+            const user = (
+                await this.userService.findByEmail(userEmail)
+            ).populate('posts');
+
+            return (await user).posts;
+        } catch (err) {
+            throw err;
+        }
+    }
+
     async createPost(
         data: Omit<IPost, '_id'>,
         userEmail: string
