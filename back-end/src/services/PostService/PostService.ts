@@ -10,11 +10,14 @@ export default class PostService {
     postValidation: PostValidation = new PostValidation();
     userService: UserService = new UserService();
 
-    async getAllPosts(userEmail: string): Promise<IPost[]> {
+    async getAllPosts(userEmail: string, page: number): Promise<IPost[]> {
         try {
+            const limit = 10;
             const user = await this.userService.findByEmail(userEmail);
             const userId = user._id;
-            const posts = Post.find({ owner: userId });
+            const posts = Post.find({ owner: userId })
+                .limit(limit)
+                .skip((page - 1) * limit);
 
             return posts;
         } catch (err) {

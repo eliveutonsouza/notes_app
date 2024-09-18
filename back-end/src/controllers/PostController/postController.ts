@@ -28,9 +28,14 @@ async function createPost(req: AuthReq, res: Response): Promise<void> {
 }
 async function getAllPosts(req: AuthReq, res: Response): Promise<void> {
     try {
+        if (!req.query.page) throw new Error('you should to send a page');
         if (!req.user?.email) throw new Error('userEmail fail on request');
 
-        const posts: IPost[] = await postService.getAllPosts(req.user.email);
+        const page = parseInt(req.query.page);
+        const posts: IPost[] = await postService.getAllPosts(
+            req.user.email,
+            page
+        );
 
         res.status(200).json({
             msg: 'Success to get all posts',
