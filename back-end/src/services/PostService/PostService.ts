@@ -34,6 +34,7 @@ export default class PostService {
             if (!user) {
                 throw new Error('cannot find a user.');
             }
+            data.owner = user._id;
 
             const postInstance = new Post(data);
             const response = await postInstance.save();
