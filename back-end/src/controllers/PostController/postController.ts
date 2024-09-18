@@ -9,6 +9,7 @@ const postService: PostService = new PostService();
 async function createPost(req: AuthReq, res: Response): Promise<void> {
     try {
         if (!req.user?.email) throw new Error('userEmail fail on request');
+
         const response = await postService.createPost(
             req.body,
             req.user?.email

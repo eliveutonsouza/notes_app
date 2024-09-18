@@ -14,9 +14,9 @@ export default class PostService {
         try {
             const user = await this.userService.findByEmail(userEmail);
             const userId = user._id;
-            const post = Post.find({ owner: userId });
+            const posts = Post.find({ owner: userId });
 
-            return post;
+            return posts;
         } catch (err) {
             throw err;
         }

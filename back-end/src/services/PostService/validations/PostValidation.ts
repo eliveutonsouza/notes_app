@@ -1,5 +1,4 @@
 import IPost from '../../../contracts/IPost';
-import PostModel from '../../../database/models/postModel';
 
 export default class PostValidation {
     validation(data: Pick<IPost, 'title' | 'description'>): void {
