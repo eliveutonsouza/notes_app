@@ -12,11 +12,11 @@ export default class PostService {
 
     async getAllPosts(userEmail: string): Promise<IPost[]> {
         try {
-            const user = (
-                await this.userService.findByEmail(userEmail)
-            ).populate('posts');
+            const user = await this.userService.findByEmail(userEmail);
+            const userId = user._id;
+            const post = Post.find({ owner: userId });
 
-            return (await user).posts;
+            return post;
         } catch (err) {
             throw err;
         }
