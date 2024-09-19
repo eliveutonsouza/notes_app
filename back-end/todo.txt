@@ -4,9 +4,9 @@
 
 3 - Impl middleware auth EndPoints - done
 
-4 - Pagination back - doing
+4 - Pagination back - done
 
-5 - find Post Input
+5 - find Post Input - done
 
 6 - delete User
 
