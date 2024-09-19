@@ -92,11 +92,18 @@ export default class PostService {
         }
     }
 
-    async deletePost(postId: Types.ObjectId): Promise<IPost> {
+    async deletePost(postId: Types.ObjectId, email: string): Promise<IPost> {
         try {
-            const postDeleted = await Post.findByIdAndDelete(postId);
+            const user = await this.userService.findByEmail(email);
 
-            if (!postDeleted) throw new Error('post doesnt exist');
+            const postExist = user.posts.find((post) => {
+                return post._id.toString() === postId.toString();
+            });
+            if (!postExist) throw new Error('post doesnt exist');
+
+            const postDeleted = await Post.findByIdAndDelete(postExist._id);
+
+            if (!postDeleted) throw new Error('error Trying to get a post');
 
             await User.updateMany(
                 { posts: postId },
@@ -105,7 +112,7 @@ export default class PostService {
 
             return postDeleted;
         } catch (err) {
-            throw new Error('failed to delete a post');
+            throw err;
         }
     }
 }
