@@ -7,6 +7,7 @@ import {
     createPost,
     deletePost,
     getAllPosts,
+    getPostByTitle,
     updatePost,
 } from '../controllers/PostController/postController';
 
@@ -20,5 +21,6 @@ router.post('/post', ensureAuthenticated, createPost);
 router.get('/post', ensureAuthenticated, getAllPosts);
 router.put('/post/:_id', ensureAuthenticated, updatePost);
 router.delete('/post/:_id', ensureAuthenticated, deletePost);
+router.get('/post/title', ensureAuthenticated, getPostByTitle);
 
 export default router;

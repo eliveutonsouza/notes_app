@@ -26,6 +26,28 @@ async function createPost(req: AuthReq, res: Response): Promise<void> {
         });
     }
 }
+
+async function getPostByTitle(req: AuthReq, res: Response): Promise<void> {
+    try {
+        if (!req.query.title) throw new Error('you should to send a title');
+        if (!req.user?.email) throw new Error('userEmail fail on request');
+
+        const posts = await postService.getPostByTitle(
+            req.user.email,
+            req.query.title
+        );
+
+        res.status(200).json({
+            msg: 'Success to get posts By Title',
+            body: posts,
+        });
+    } catch (err: any) {
+        res.status(400).json({
+            msg: 'fail to get Post by Title',
+            err: err.message,
+        });
+    }
+}
 async function getAllPosts(req: AuthReq, res: Response): Promise<void> {
     try {
         if (!req.query.page) throw new Error('you should to send a page');
@@ -84,4 +106,4 @@ async function deletePost(req: AuthReq, res: Response): Promise<void> {
     }
 }
 
-export { createPost, getAllPosts, updatePost, deletePost };
+export { createPost, getAllPosts, updatePost, deletePost, getPostByTitle };

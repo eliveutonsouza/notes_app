@@ -6,6 +6,7 @@ interface AuthReq extends Request {
     };
     query: {
         page: string;
+        title: string;
     };
 }
 
