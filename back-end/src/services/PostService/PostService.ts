@@ -73,21 +73,32 @@ export default class PostService {
 
     async updatePost(
         data: Pick<IPost, 'title' | 'description' | 'updatedAt'>,
-        postId: Types.ObjectId
+        postId: Types.ObjectId,
+        userEmail: string
     ): Promise<IPost> {
         try {
+            const user = await this.userService.findByEmail(userEmail);
+
+            const postExist = user.posts.find((post) => {
+                return post._id.toString() === postId.toString();
+            });
+
+            if (!postExist) throw new Error('post doesnt exist');
+
             this.postValidation.validation(data);
             data.updatedAt = new Date();
-            const postUpdated = await Post.findByIdAndUpdate(postId, data, {
-                new: true,
-            }).exec();
+            const postUpdated = await Post.findByIdAndUpdate(
+                postExist._id,
+                data,
+                {
+                    new: true,
+                }
+            ).exec();
 
-            if (!postUpdated) throw new Error('cannot find');
+            if (!postUpdated) throw new Error('error trying to get a post');
 
             return postUpdated;
         } catch (err) {
-            console.log(err);
-
             throw err;
         }
     }
