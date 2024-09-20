@@ -11,12 +11,15 @@ import {
     updatePost,
 } from '../controllers/PostController/postController';
 
+import { deleteUser } from '../controllers/UserController/userController';
+
 const router = Router();
 
 router.post('/login', authController);
 
 router.post('/register', registerController);
 
+router.delete('/user', ensureAuthenticated, deleteUser);
 router.post('/post', ensureAuthenticated, createPost);
 router.get('/post', ensureAuthenticated, getAllPosts);
 router.put('/post/:_id', ensureAuthenticated, updatePost);
