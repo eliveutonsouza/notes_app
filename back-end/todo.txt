@@ -8,7 +8,9 @@
 
 5 - find Post Input - done
 
-6 - delete User - doing
+6 - delete User - done
+
+7 - update User - doing
 
 6 - start frontEnd
 
