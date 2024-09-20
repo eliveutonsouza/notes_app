@@ -2,7 +2,6 @@ import IPost from '../../contracts/IPost';
 import Post from '../../database/models/postModel';
 import { Types } from 'mongoose';
 import User from '../../database/models/userModel';
-
 import UserService from '../UserService/UserService';
 import PostValidation from './validations/PostValidation';
 
@@ -13,7 +12,7 @@ export default class PostService {
     async getAllPosts(userEmail: string, page: number): Promise<IPost[]> {
         try {
             const limit = 10;
-            const user = await this.userService.findByEmail(userEmail);
+            const user = await this.userService.findUserByEmail(userEmail);
             const userId = user._id;
             const posts = Post.find({ owner: userId })
                 .limit(limit)
@@ -28,7 +27,7 @@ export default class PostService {
     async getPostByTitle(userEmail: string, title: string): Promise<IPost[]> {
         try {
             const user = (
-                await this.userService.findByEmail(userEmail)
+                await this.userService.findUserByEmail(userEmail)
             ).populate('posts');
 
             const posts = (await user).posts.filter((post) =>
@@ -50,7 +49,7 @@ export default class PostService {
         try {
             this.postValidation.validation(data);
 
-            const user = await this.userService.findByEmail(userEmail);
+            const user = await this.userService.findUserByEmail(userEmail);
 
             if (!user) {
                 throw new Error('cannot find a user.');
@@ -77,7 +76,7 @@ export default class PostService {
         userEmail: string
     ): Promise<IPost> {
         try {
-            const user = await this.userService.findByEmail(userEmail);
+            const user = await this.userService.findUserByEmail(userEmail);
 
             const postExist = user.posts.find((post) => {
                 return post._id.toString() === postId.toString();
@@ -105,7 +104,7 @@ export default class PostService {
 
     async deletePost(postId: Types.ObjectId, email: string): Promise<IPost> {
         try {
-            const user = await this.userService.findByEmail(email);
+            const user = await this.userService.findUserByEmail(email);
 
             const postExist = user.posts.find((post) => {
                 return post._id.toString() === postId.toString();

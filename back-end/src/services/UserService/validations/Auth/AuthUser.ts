@@ -10,7 +10,7 @@ class AuthenticateUserUseCase {
     userService: UserService = new UserService();
     async execute({ email, password }: IRequest) {
         try {
-            const user = await this.userService.findByEmail(email);
+            const user = await this.userService.findUserByEmail(email);
 
             if (!user) {
                 throw new Error('email or password wrong');
