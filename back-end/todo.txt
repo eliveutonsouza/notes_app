@@ -14,8 +14,10 @@
 
 8 - start frontEnd - doing
 
-9 - Documentation Back-end - open
+9 - refactor tests with jest - open
 
-10 - Documentation Front-end - open
+10 - Documentation Back-end - open
+
+11 - Documentation Front-end - open
 
 
