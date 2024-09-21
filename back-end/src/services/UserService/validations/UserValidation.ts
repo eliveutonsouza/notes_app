@@ -23,7 +23,7 @@ export default class UserValidation {
         }
     }
 
-    private usernameValidation(username: string): void {
+    public usernameValidation(username: string): void {
         if (!username) throw new Error('cannot be null');
 
         if (username.length < 3)
@@ -33,7 +33,7 @@ export default class UserValidation {
             throw new Error('username should be less than 20 characters');
     }
 
-    private passwordValidation(password: string): void {
+    public passwordValidation(password: string): void {
         if (!password) throw new Error('cannot be null');
 
         if (password.length < 8)
