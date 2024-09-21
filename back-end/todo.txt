@@ -12,5 +12,10 @@
 
 7 - update User - done
 
-6 - start frontEnd - doing
+8 - start frontEnd - doing
+
+9 - Documentation Back-end - open
+
+10 - Documentation Front-end - open
+
 
