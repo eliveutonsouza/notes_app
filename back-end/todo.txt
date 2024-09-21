@@ -10,7 +10,7 @@
 
 6 - delete User - done
 
-7 - update User - doing
+7 - update User - done
 
 6 - start frontEnd
 
