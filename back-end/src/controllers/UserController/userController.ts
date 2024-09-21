@@ -23,4 +23,22 @@ async function deleteUser(req: AuthReq, res: Response): Promise<void> {
     }
 }
 
-export { deleteUser };
+async function updateUser(req: AuthReq, res: Response): Promise<void> {
+    try {
+        if (!req.user?.email) throw new Error('userEmail fail on request');
+        console.log(req.body);
+        const response = await userService.updateUser(req.user.email, req.body);
+
+        res.status(201).json({
+            msg: 'success to update a user',
+            body: response,
+        });
+    } catch (err: any) {
+        res.status(406).json({
+            msg: 'fail to update a user',
+            error: err.message,
+        });
+    }
+}
+
+export { deleteUser, updateUser };
