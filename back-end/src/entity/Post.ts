@@ -4,14 +4,14 @@ export class Post implements IPost {
     _id: ObjectId;
     title: string;
     description: string;
-    owner: String;
+    owner: ObjectId;
     createdAt: Date;
     updatedAt: Date | undefined;
     constructor(
         _id: ObjectId,
         title: string,
         description: string,
-        owner: String,
+        owner: ObjectId,
         createdAt: Date,
         updatedAt: Date | undefined
     ) {
