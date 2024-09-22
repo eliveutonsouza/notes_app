@@ -4,21 +4,31 @@ import { Types } from 'mongoose';
 import User from '../../database/models/userModel';
 import UserService from '../UserService/UserService';
 import PostValidation from './validations/PostValidation';
+import PaginationIPost from '../../contracts/PaginationIPost';
 
 export default class PostService {
     postValidation: PostValidation = new PostValidation();
     userService: UserService = new UserService();
 
-    async getAllPosts(userEmail: string, page: number): Promise<IPost[]> {
+    async getAllPosts(
+        userEmail: string,
+        page: number
+    ): Promise<PaginationIPost> {
         try {
             const limit = 10;
             const user = await this.userService.findUserByEmail(userEmail);
             const userId = user._id;
-            const posts = Post.find({ owner: userId })
+            const posts = await Post.find({ owner: userId })
                 .limit(limit)
                 .skip((page - 1) * limit);
 
-            return posts;
+            const postsCount = await Post.countDocuments({ owner: userId });
+
+            return {
+                posts,
+                documentCount: postsCount,
+                limit,
+            };
         } catch (err) {
             throw err;
         }
