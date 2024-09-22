@@ -67,6 +67,7 @@ async function getAllPosts(req: AuthReq, res: Response): Promise<void> {
             page: page,
             limit: response.limit,
             documentCount: response.documentCount,
+            maxPages: Math.ceil(response.documentCount / response.limit),
         });
     } catch (err: any) {
         res.status(400).json({
