@@ -24,10 +24,15 @@ export default class PostService {
 
             const postsCount = await Post.countDocuments({ owner: userId });
 
+            const maxPage = Math.ceil(postsCount / limit);
+
+            if (page > maxPage) throw new Error('this page doesnt exist');
+
             return {
                 posts,
                 documentCount: postsCount,
                 limit,
+                maxPage,
             };
         } catch (err) {
             throw err;
