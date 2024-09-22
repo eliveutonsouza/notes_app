@@ -3,6 +3,7 @@ import { Types } from 'mongoose';
 import AuthReq = require('../../contracts/AuthReq');
 import IPost = require('../../contracts/IPost');
 import PostService from '../../services/PostService/PostService';
+import PaginationIPost = require('../../contracts/PaginationIPost');
 
 const postService: PostService = new PostService();
 
@@ -54,14 +55,18 @@ async function getAllPosts(req: AuthReq, res: Response): Promise<void> {
         if (!req.user?.email) throw new Error('userEmail fail on request');
 
         const page = parseInt(req.query.page);
-        const posts: IPost[] = await postService.getAllPosts(
+        const response: PaginationIPost = await postService.getAllPosts(
             req.user.email,
             page
         );
 
         res.status(200).json({
             msg: 'Success to get all posts',
-            body: posts,
+            body: response.posts,
+            length: response.posts.length,
+            page: page,
+            limit: response.limit,
+            documentCount: response.documentCount,
         });
     } catch (err: any) {
         res.status(400).json({
