@@ -8,7 +8,7 @@ import IUpdateUserPassword from '../../contracts/IUpdateUserPassword';
 import IUpdateUser from '../../contracts/IUpdateUser';
 
 export default class UserService {
-    validation: Validation = new Validation();
+    private readonly validation: Validation = new Validation();
     async createUser(data: Omit<IUser, '_id'>): Promise<IUser> {
         try {
             await this.validation.validationRegister(data);
@@ -103,7 +103,10 @@ export default class UserService {
         }
     }
 
-    async updateUserUserName(email: string, newName: string): Promise<IUser> {
+    private async updateUserUserName(
+        email: string,
+        newName: string
+    ): Promise<IUser> {
         try {
             const user = await this.findUserByEmail(email);
 
@@ -119,7 +122,7 @@ export default class UserService {
         }
     }
 
-    async updateUserPassword(
+    private async updateUserPassword(
         email: string,
         data: IUpdateUserPassword
     ): Promise<IUser> {
