@@ -1,14 +1,15 @@
 import IPost from '../../contracts/IPost';
 import Post from '../../database/models/postModel';
-import { Types } from 'mongoose';
+
+import { ObjectId } from 'mongoose';
 import User from '../../database/models/userModel';
 import UserService from '../UserService/UserService';
 import PostValidation from './validations/PostValidation';
 import PaginationIPost from '../../contracts/PaginationIPost';
 
 export default class PostService {
-    postValidation: PostValidation = new PostValidation();
-    userService: UserService = new UserService();
+    private readonly postValidation: PostValidation = new PostValidation();
+    private readonly userService: UserService = new UserService();
 
     async getAllPosts(
         userEmail: string,
@@ -87,7 +88,7 @@ export default class PostService {
 
     async updatePost(
         data: Pick<IPost, 'title' | 'description' | 'updatedAt'>,
-        postId: Types.ObjectId,
+        postId: ObjectId,
         userEmail: string
     ): Promise<IPost> {
         try {
@@ -117,7 +118,7 @@ export default class PostService {
         }
     }
 
-    async deletePost(postId: Types.ObjectId, email: string): Promise<IPost> {
+    async deletePost(postId: ObjectId, email: string): Promise<IPost> {
         try {
             const user = await this.userService.findUserByEmail(email);
 
