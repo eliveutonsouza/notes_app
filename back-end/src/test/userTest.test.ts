@@ -1,7 +1,7 @@
-import crypto from 'crypto';
+// import crypto from 'crypto';
 import IUser from '../contracts/IUser';
 import UserService from '../services/UserService/UserService';
-import axios from 'axios';
+// import axios from 'axios';
 import mongoose, { Document } from 'mongoose';
 import db from '../database/connection';
 import dotenv from 'dotenv';
@@ -10,17 +10,17 @@ import IUpdateUser from '../contracts/IUpdateUser';
 
 dotenv.config();
 
-function generate(): string {
-    return crypto.randomBytes(20).toString('hex');
-}
+// function generate(): string {
+//     return crypto.randomBytes(20).toString('hex');
+// }
 
-async function request(
-    url: string,
-    method: string,
-    data: Omit<IUser, 'posts'>
-) {
-    return axios({ url, method, data });
-}
+// async function request(
+//     url: string,
+//     method: string,
+//     data: Omit<IUser, 'posts'>
+// ) {
+//     return axios({ url, method, data });
+// }
 const userService = new UserService();
 
 beforeAll(async () => {
