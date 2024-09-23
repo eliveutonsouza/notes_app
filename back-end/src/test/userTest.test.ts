@@ -6,6 +6,7 @@ import mongoose, { Document } from 'mongoose';
 import db from '../database/connection';
 import dotenv from 'dotenv';
 import IPost from '../contracts/IPost';
+import IUpdateUser from '../contracts/IUpdateUser';
 
 dotenv.config();
 
@@ -29,16 +30,15 @@ beforeAll(async () => {
 afterAll(async () => {
     await mongoose.disconnect();
 });
+const data: Omit<IUser, '_id'> = {
+    name: 'testusername',
+    email: 'test@hotmail.com',
+    password: 'password',
+    posts: new Array<IPost>(),
+};
 
 describe('create User', () => {
-    test.only('should to create a user', async function () {
-        const data: Omit<IUser, '_id'> = {
-            name: generate(),
-            email: generate(),
-            password: 'eliveuton',
-            posts: new Array<IPost>(),
-        };
-
+    test('should to create a user', async function () {
         const response: IUser = await userService.createUser(data);
 
         const responseNecessary = {
@@ -49,16 +49,79 @@ describe('create User', () => {
         };
 
         expect(responseNecessary).toStrictEqual(data);
+        await userService.deleteUser(response.email);
     });
 });
 
 describe('find a User', () => {
     test('should to find a user', async function () {
-        const mockEmail = 'a2882b7be69010696ee82aa58dc4b3597ff5a08f';
+        const user: IUser = await userService.createUser(data);
 
-        const result: IUser & Document =
-            await userService.findByEmail(mockEmail);
-        console.log(result);
-        expect(result.email).toStrictEqual(mockEmail);
+        const result: IUser & Document = await userService.findUserByEmail(
+            user.email
+        );
+        expect(result.email).toStrictEqual(user.email);
+
+        await userService.deleteUser(user.email);
+    });
+});
+
+describe('delete a User', () => {
+    test('should to delete a user', async function () {
+        let error;
+        try {
+            const user: IUser = await userService.createUser(data);
+
+            const result: IUser = await userService.deleteUser(user.email);
+
+            await userService.findUserByEmail(result.email);
+        } catch (err: any) {
+            error = err.message;
+        }
+
+        expect(error).toBe('user doesnt exist');
+    });
+});
+
+describe('update userName User', () => {
+    test('should to update a user', async function () {
+        const ObjectUserUpdate: IUpdateUser = {
+            body: {
+                name: 'newName',
+            },
+        };
+
+        const user = await userService.createUser(data);
+
+        const userUpdated = await userService.updateUser(
+            user.email,
+            ObjectUserUpdate
+        );
+
+        expect(user.name).not.toEqual(userUpdated.name);
+
+        await userService.deleteUser(user.email);
+    });
+});
+
+describe('update password User', () => {
+    test('should to update a user', async function () {
+        const ObjectUserUpdate: IUpdateUser = {
+            body: {
+                password: data.password,
+                newPassword: 'newPassword',
+            },
+        };
+
+        const user = await userService.createUser(data);
+
+        const userUpdated = await userService.updateUser(
+            user.email,
+            ObjectUserUpdate
+        );
+
+        expect(user.password).not.toEqual(userUpdated.password);
+
+        await userService.deleteUser(user.email);
     });
 });
