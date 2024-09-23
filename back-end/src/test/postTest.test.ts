@@ -17,8 +17,8 @@ function generate(): string {
 }
 
 const userData: Omit<IUser, '_id'> = {
-    name: 'testusername',
-    email: 'test@hotmail.com',
+    name: 'postTest',
+    email: 'postTest@hotmail.com',
     password: 'password',
     posts: new Array<IPost>(),
 };

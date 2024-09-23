@@ -31,8 +31,8 @@ afterAll(async () => {
     await mongoose.disconnect();
 });
 const data: Omit<IUser, '_id'> = {
-    name: 'testusername',
-    email: 'test@hotmail.com',
+    name: 'userTest',
+    email: 'userTest@hotmail.com',
     password: 'password',
     posts: new Array<IPost>(),
 };
