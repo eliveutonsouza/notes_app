@@ -16,7 +16,7 @@
 
 9 - refactor tests with jest - done
 
-10 - Documentation Back-end - open
+10 - Documentation Back-end - done
 
 11 - Documentation Front-end - open
 
