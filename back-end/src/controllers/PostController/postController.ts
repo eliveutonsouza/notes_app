@@ -79,7 +79,7 @@ async function getAllPosts(req: AuthReq, res: Response): Promise<void> {
 
 async function updatePost(req: AuthReq, res: Response): Promise<void> {
     try {
-        const _id: Types.ObjectId = new Types.ObjectId(req.params._id);
+        const _id = new Types.ObjectId(req.params._id);
         if (!req.user?.email) throw new Error('userEmail fail on request');
         const post: IPost = await postService.updatePost(
             req.body,
@@ -101,7 +101,7 @@ async function updatePost(req: AuthReq, res: Response): Promise<void> {
 
 async function deletePost(req: AuthReq, res: Response): Promise<void> {
     try {
-        const _id: Types.ObjectId = new Types.ObjectId(req.params._id);
+        const _id = new Types.ObjectId(req.params._id);
         if (!req.user?.email) throw new Error('userEmail fail on request');
 
         const post: IPost = await postService.deletePost(_id, req?.user.email);

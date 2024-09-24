@@ -1,7 +1,7 @@
 import IPost from '../../contracts/IPost';
 import Post from '../../database/models/postModel';
 
-import { ObjectId } from 'mongoose';
+import { ObjectId, Types } from 'mongoose';
 import User from '../../database/models/userModel';
 import UserService from '../UserService/UserService';
 import PostValidation from './validations/PostValidation';
@@ -88,7 +88,7 @@ export default class PostService {
 
     async updatePost(
         data: Pick<IPost, 'title' | 'description' | 'updatedAt'>,
-        postId: ObjectId,
+        postId: Types.ObjectId | ObjectId,
         userEmail: string
     ): Promise<IPost> {
         try {
@@ -118,7 +118,10 @@ export default class PostService {
         }
     }
 
-    async deletePost(postId: ObjectId, email: string): Promise<IPost> {
+    async deletePost(
+        postId: ObjectId | Types.ObjectId,
+        email: string
+    ): Promise<IPost> {
         try {
             const user = await this.userService.findUserByEmail(email);
 
