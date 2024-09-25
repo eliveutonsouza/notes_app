@@ -9,6 +9,7 @@ import IUser from '../contracts/IUser';
 import PostService from '../services/PostService/PostService';
 import UserService from '../services/UserService/UserService';
 import PaginationIPost from '../contracts/PaginationIPost';
+import { Types } from 'mongoose';
 
 dotenv.config();
 
@@ -40,6 +41,8 @@ const postData: Omit<IPost, '_id'> = {
     updatedAt: undefined,
     createdAt: new Date(),
 };
+
+const postFailData = { ...postData };
 
 beforeAll(async () => {
     await db();
@@ -74,6 +77,33 @@ describe('create a Post', () => {
     });
 });
 
+describe('fail Title create a Post', () => {
+    test('should to throw a error create a post', async function () {
+        let err;
+        try {
+            postFailData.title = '';
+            await postService.createPost(postFailData, userData.email);
+        } catch (e: any) {
+            err = e;
+        }
+        postFailData.title = postData.title;
+        expect(err.message).toStrictEqual('title cannot be null');
+    });
+});
+describe('fail description create a Post', () => {
+    test('should to throw a error create a post', async function () {
+        let err;
+        try {
+            postFailData.description = '';
+            await postService.createPost(postFailData, userData.email);
+        } catch (e: any) {
+            err = e;
+        }
+        postFailData.description = postData.description;
+        expect(err.message).toStrictEqual('desc cannot be null');
+    });
+});
+
 describe('get Posts by Title', () => {
     test('should to get post by Title', async function () {
         const post1 = await postService.createPost(postData, userData.email);
@@ -86,6 +116,27 @@ describe('get Posts by Title', () => {
 
         expect(response[0].title).toStrictEqual(postData.title);
         expect(response[1].title).toStrictEqual(postData.title);
+
+        await postService.deletePost(post1._id, userData.email);
+        await postService.deletePost(post2._id, userData.email);
+    });
+});
+
+describe('Error get Posts by Title', () => {
+    test('should to throw error get post by Title', async function () {
+        postFailData.title = 'AnotherOneTitlethatdoesntexist';
+        let err;
+        const post1 = await postService.createPost(postData, userData.email);
+        const post2 = await postService.createPost(postData, userData.email);
+        try {
+            await postService.getPostByTitle(
+                userData.email,
+                postFailData.title
+            );
+        } catch (e: any) {
+            err = e;
+        }
+        expect(err.message).toStrictEqual('cannot find your post');
 
         await postService.deletePost(post1._id, userData.email);
         await postService.deletePost(post2._id, userData.email);
@@ -112,6 +163,28 @@ describe('get Posts', () => {
     });
 });
 
+describe('error get Posts', () => {
+    test('should to throw error get all posts', async function () {
+        let err;
+        const post1 = await postService.createPost(postData, userData.email);
+
+        const post2 = await postService.createPost(postData, userData.email);
+
+        await postService.createPost(postData, userData.email);
+
+        try {
+            await postService.getAllPosts(userData.email, 2);
+        } catch (e: any) {
+            err = e;
+        }
+
+        expect(err.message).toStrictEqual('this page doesnt exist');
+
+        await postService.deletePost(post1._id, userData.email);
+        await postService.deletePost(post2._id, userData.email);
+    });
+});
+
 describe('delete a post', () => {
     test('should to delete a post', async function () {
         const responseCreate = await postService.createPost(
@@ -126,6 +199,21 @@ describe('delete a post', () => {
 
         expect(respDel).toBeDefined();
         expect(respDel._id).toStrictEqual(responseCreate._id);
+    });
+});
+
+describe('Error delete a post', () => {
+    test('should to throw error delete a post', async function () {
+        let err;
+        const id = new Types.ObjectId('66ed6b81112c180eec72ef00');
+
+        try {
+            await postService.deletePost(id, userData.email);
+        } catch (e: any) {
+            err = e;
+        }
+
+        expect(err.message).toStrictEqual('post doesnt exist');
     });
 });
 
@@ -149,6 +237,61 @@ describe('update a post', () => {
         expect(postUpdated).toBeDefined();
         expect(postUpdated.title).toStrictEqual(newPost.title);
         expect(postUpdated.description).toStrictEqual(newPost.description);
+
+        await postService.deletePost(responseCreate._id, userData.email);
+    });
+});
+describe('Error title update a post', () => {
+    test('should to throw error update a post', async function () {
+        let err;
+        const responseCreate = await postService.createPost(
+            postData,
+            userData.email
+        );
+        const newPost: Pick<IPost, 'title' | 'updatedAt' | 'description'> = {
+            title: '',
+            updatedAt: undefined,
+            description: 'new Description',
+        };
+        try {
+            await postService.updatePost(
+                newPost,
+                responseCreate._id,
+                userData.email
+            );
+        } catch (e: any) {
+            err = e;
+        }
+
+        expect(err.message).toStrictEqual('title cannot be null');
+
+        await postService.deletePost(responseCreate._id, userData.email);
+    });
+});
+
+describe('Error description update a post', () => {
+    test('should to throw error update a post', async function () {
+        let err;
+        const responseCreate = await postService.createPost(
+            postData,
+            userData.email
+        );
+        const newPost: Pick<IPost, 'title' | 'updatedAt' | 'description'> = {
+            title: 'title',
+            updatedAt: undefined,
+            description: '',
+        };
+        try {
+            await postService.updatePost(
+                newPost,
+                responseCreate._id,
+                userData.email
+            );
+        } catch (e: any) {
+            err = e;
+        }
+
+        expect(err.message).toStrictEqual('desc cannot be null');
 
         await postService.deletePost(responseCreate._id, userData.email);
     });
