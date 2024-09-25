@@ -80,8 +80,6 @@ export default class PostService {
 
             return response;
         } catch (err) {
-            console.log(err);
-
             throw err;
         }
     }
