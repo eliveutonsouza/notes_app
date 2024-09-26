@@ -2,8 +2,6 @@ name: backend-CI
 on:
   push:
     branches:
-      - development
-      - master
       - main
 
   pull_request:
