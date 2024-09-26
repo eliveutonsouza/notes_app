@@ -85,7 +85,7 @@ export default class PostService {
     }
 
     async updatePost(
-        data: Pick<IPost, 'title' | 'description' | 'updatedAt'>,
+        data: Pick<IPost, 'title' | 'description' | 'updatedAt' | 'colorHex'>,
         postId: Types.ObjectId | ObjectId,
         userEmail: string
     ): Promise<IPost> {
