@@ -31,6 +31,7 @@ const userData: Omit<IUser, '_id'> = {
 // ) {
 //     return axios({ url, method, data });
 // }
+
 const userService = new UserService();
 const postService = new PostService();
 
@@ -40,6 +41,7 @@ const postData: Omit<IPost, '_id'> = {
     owner: new Schema.ObjectId(''),
     updatedAt: undefined,
     createdAt: new Date(),
+    colorHex: '#ffffff',
 };
 
 const postFailData = { ...postData };
@@ -223,10 +225,14 @@ describe('update a post', () => {
             postData,
             userData.email
         );
-        const newPost: Pick<IPost, 'title' | 'updatedAt' | 'description'> = {
+        const newPost: Pick<
+            IPost,
+            'title' | 'updatedAt' | 'description' | 'colorHex'
+        > = {
             title: 'newTitle',
             updatedAt: undefined,
             description: 'new Description',
+            colorHex: '#39ff33',
         };
         const postUpdated = await postService.updatePost(
             newPost,
@@ -237,6 +243,7 @@ describe('update a post', () => {
         expect(postUpdated).toBeDefined();
         expect(postUpdated.title).toStrictEqual(newPost.title);
         expect(postUpdated.description).toStrictEqual(newPost.description);
+        expect(postUpdated.colorHex).toStrictEqual(newPost.colorHex);
 
         await postService.deletePost(responseCreate._id, userData.email);
     });
@@ -248,10 +255,14 @@ describe('Error title update a post', () => {
             postData,
             userData.email
         );
-        const newPost: Pick<IPost, 'title' | 'updatedAt' | 'description'> = {
+        const newPost: Pick<
+            IPost,
+            'title' | 'updatedAt' | 'description' | 'colorHex'
+        > = {
             title: '',
             updatedAt: undefined,
             description: 'new Description',
+            colorHex: '#ffffff',
         };
         try {
             await postService.updatePost(
@@ -276,10 +287,14 @@ describe('Error description update a post', () => {
             postData,
             userData.email
         );
-        const newPost: Pick<IPost, 'title' | 'updatedAt' | 'description'> = {
+        const newPost: Pick<
+            IPost,
+            'title' | 'updatedAt' | 'description' | 'colorHex'
+        > = {
             title: 'title',
             updatedAt: undefined,
             description: '',
+            colorHex: '#ffffff',
         };
         try {
             await postService.updatePost(
@@ -292,6 +307,70 @@ describe('Error description update a post', () => {
         }
 
         expect(err.message).toStrictEqual('desc cannot be null');
+
+        await postService.deletePost(responseCreate._id, userData.email);
+    });
+});
+
+describe('Error colorHex cannot be null update a post', () => {
+    test('should to throw error update a post', async function () {
+        let err;
+        const responseCreate = await postService.createPost(
+            postData,
+            userData.email
+        );
+        const newPost: Pick<
+            IPost,
+            'title' | 'updatedAt' | 'description' | 'colorHex'
+        > = {
+            title: 'title',
+            updatedAt: undefined,
+            description: 'asdasdasdasdas',
+            colorHex: '',
+        };
+        try {
+            await postService.updatePost(
+                newPost,
+                responseCreate._id,
+                userData.email
+            );
+        } catch (e: any) {
+            err = e;
+        }
+
+        expect(err.message).toStrictEqual('ColorHex cannot be null');
+
+        await postService.deletePost(responseCreate._id, userData.email);
+    });
+});
+
+describe('Error colorHex invalid color update a post', () => {
+    test('should to throw error update a post', async function () {
+        let err;
+        const responseCreate = await postService.createPost(
+            postData,
+            userData.email
+        );
+        const newPost: Pick<
+            IPost,
+            'title' | 'updatedAt' | 'description' | 'colorHex'
+        > = {
+            title: 'title',
+            updatedAt: undefined,
+            description: 'asdasdasdasdas',
+            colorHex: '465',
+        };
+        try {
+            await postService.updatePost(
+                newPost,
+                responseCreate._id,
+                userData.email
+            );
+        } catch (e: any) {
+            err = e;
+        }
+
+        expect(err.message).toStrictEqual('color invalid');
 
         await postService.deletePost(responseCreate._id, userData.email);
     });
