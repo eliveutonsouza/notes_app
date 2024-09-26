@@ -7,6 +7,7 @@ interface IPost {
     owner: ObjectId;
     createdAt: Date;
     updatedAt: Date | undefined;
+    colorHex: string;
 }
 
 export = IPost;

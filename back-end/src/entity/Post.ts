@@ -7,13 +7,15 @@ export class Post implements IPost {
     owner: ObjectId;
     createdAt: Date;
     updatedAt: Date | undefined;
+    colorHex: string;
     constructor(
         _id: ObjectId,
         title: string,
         description: string,
         owner: ObjectId,
         createdAt: Date,
-        updatedAt: Date | undefined
+        updatedAt: Date | undefined,
+        colorHex: string
     ) {
         this._id = _id;
         this.title = title;
@@ -21,5 +23,6 @@ export class Post implements IPost {
         this.owner = owner;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
+        this.colorHex = colorHex;
     }
 }
