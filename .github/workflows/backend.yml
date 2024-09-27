@@ -22,13 +22,14 @@ jobs:
       - name: Cache npm dependencies
         uses: actions/cache@v3
         with:
-          path: ~/.npm
-          key: ${{ runner.os }}-npm-${{ hashFiles('**/package-lock.json') }}
+          path: back-end/.npm
+          key: ${{ runner.os }}-npm-${{ hashFiles('back-end/**/package-lock.json') }}
           restore-keys: |
             ${{ runner.os }}-npm-
-      - run: npm ci
-      - run: npm test
-      - run: npm start
+
+      - run: npm ci --prefix back-end
+      - run: npm test --prefix back-end
+      - run: npm start --prefix back-end
 
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v3
@@ -47,4 +48,6 @@ jobs:
         uses: docker/build-push-action@v5
         with:
           push: true
+          context: back-end # Ajuste aqui para o diretório correto
+          file: back-end/Dockerfile # Ajuste se o Dockerfile estiver neste caminho
           tags: JoseLucasdevv/notes_app:latest
