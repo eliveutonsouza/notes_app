@@ -48,7 +48,6 @@ jobs:
           file: back-end/Dockerfile
           tags: JoseLucasdevv/notes_app:latest
 
-      - run: sudo docker compose up  --prefix back-end
       - run: npm ci --prefix back-end
       - run: npm test --prefix back-end
       - run: npm start --prefix back-end
