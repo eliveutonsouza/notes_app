@@ -27,10 +27,6 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-npm-
 
-      - run: npm ci --prefix back-end
-      - run: npm test --prefix back-end
-      - run: npm start --prefix back-end
-
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v3
 
@@ -48,6 +44,11 @@ jobs:
         uses: docker/build-push-action@v5
         with:
           push: true
-          context: back-end # Ajuste aqui para o diretório correto
-          file: back-end/Dockerfile # Ajuste se o Dockerfile estiver neste caminho
+          context: back-end
+          file: back-end/Dockerfile
           tags: JoseLucasdevv/notes_app:latest
+
+      - run: sudo docker compose up  --prefix back-end
+      - run: npm ci --prefix back-end
+      - run: npm test --prefix back-end
+      - run: npm start --prefix back-end
