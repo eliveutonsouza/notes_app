@@ -46,7 +46,7 @@ jobs:
           push: true
           context: back-end
           file: back-end/Dockerfile
-          tags: JoseLucasdevv/notes_app:latest
+          tags: joselucass/notes_app:latest
 
       - run: npm ci --prefix back-end
       - run: npm test --prefix back-end
