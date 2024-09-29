@@ -50,7 +50,7 @@ jobs:
 
       - run: npm ci --prefix back-end
 
-      - run: echo "Running tests with environment variables:"
+      - run: npm start --prefix back-end
         env:
           CONNECTION_URL: ${{ secrets.CONNECTION_URL }}
           DB_NAME: ${{ secrets.DB_NAME }}
@@ -58,11 +58,3 @@ jobs:
           PRIVATE_KEY_JWT: ${{ secrets.PRIVATE_KEY_JWT }}
 
       - run: npm test --prefix back-end
-        env:
-          CONNECTION_URL: ${{ secrets.CONNECTION_URL }}
-      - run: npm start --prefix back-end
-        env:
-          CONNECTION_URL: ${{ secrets.CONNECTION_URL }}
-          DB_NAME: ${{ secrets.DB_NAME }}
-          DB_USERNAME: ${{ secrets.DB_USERNAME }}
-          PRIVATE_KEY_JWT: ${{ secrets.PRIVATE_KEY_JWT }}
