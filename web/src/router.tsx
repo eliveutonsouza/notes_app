@@ -1,9 +1,9 @@
 import { Route, Routes } from "react-router-dom";
 import { Home } from "./pages/Home";
-import { Login } from "./pages/Login";
-import { Register } from "./pages/Register";
+import { Register } from "./pages/register/Register";
 import { DashboardLayouts } from "./layouts/DashboardLayouts";
 import { Dashboard } from "./pages/Dashboard";
+import { Login } from "./pages/login/Login";
 
 export function Router() {
   return (
