@@ -4,9 +4,10 @@ interface IPost {
     _id: ObjectId;
     title: string;
     description: string;
-    owner: String;
+    owner: ObjectId;
     createdAt: Date;
     updatedAt: Date | undefined;
+    colorHex: string;
 }
 
 export = IPost;

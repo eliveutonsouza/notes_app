@@ -3,12 +3,14 @@ import { Types } from 'mongoose';
 import AuthReq = require('../../contracts/AuthReq');
 import IPost = require('../../contracts/IPost');
 import PostService from '../../services/PostService/PostService';
+import PaginationIPost = require('../../contracts/PaginationIPost');
 
 const postService: PostService = new PostService();
 
 async function createPost(req: AuthReq, res: Response): Promise<void> {
     try {
         if (!req.user?.email) throw new Error('userEmail fail on request');
+
         const response = await postService.createPost(
             req.body,
             req.user?.email
@@ -25,15 +27,47 @@ async function createPost(req: AuthReq, res: Response): Promise<void> {
         });
     }
 }
-async function getAllPosts(req: AuthReq, res: Response): Promise<void> {
+
+async function getPostByTitle(req: AuthReq, res: Response): Promise<void> {
     try {
+        if (!req.query.title) throw new Error('you should to send a title');
         if (!req.user?.email) throw new Error('userEmail fail on request');
 
-        const posts: IPost[] = await postService.getAllPosts(req.user.email);
+        const posts = await postService.getPostByTitle(
+            req.user.email,
+            req.query.title
+        );
+
+        res.status(200).json({
+            msg: 'Success to get posts By Title',
+            body: posts,
+        });
+    } catch (err: any) {
+        res.status(400).json({
+            msg: 'fail to get Post by Title',
+            err: err.message,
+        });
+    }
+}
+async function getAllPosts(req: AuthReq, res: Response): Promise<void> {
+    try {
+        if (!req.query.page) throw new Error('you should to send a page');
+        if (!req.user?.email) throw new Error('userEmail fail on request');
+
+        const page = parseInt(req.query.page);
+        const response: PaginationIPost = await postService.getAllPosts(
+            req.user.email,
+            page
+        );
 
         res.status(200).json({
             msg: 'Success to get all posts',
-            body: posts,
+            body: response.posts,
+            length: response.posts.length,
+            page: page,
+            limit: response.limit,
+            documentCount: response.documentCount,
+            maxPage: response.maxPage,
         });
     } catch (err: any) {
         res.status(400).json({
@@ -42,11 +76,16 @@ async function getAllPosts(req: AuthReq, res: Response): Promise<void> {
         });
     }
 }
+
 async function updatePost(req: AuthReq, res: Response): Promise<void> {
     try {
-        const _id: Types.ObjectId = new Types.ObjectId(req.params._id);
-
-        const post: IPost = await postService.updatePost(req.body, _id);
+        const _id = new Types.ObjectId(req.params._id);
+        if (!req.user?.email) throw new Error('userEmail fail on request');
+        const post: IPost = await postService.updatePost(
+            req.body,
+            _id,
+            req.user.email
+        );
 
         res.status(201).json({
             msg: 'post Updated',
@@ -62,9 +101,10 @@ async function updatePost(req: AuthReq, res: Response): Promise<void> {
 
 async function deletePost(req: AuthReq, res: Response): Promise<void> {
     try {
-        const _id: Types.ObjectId = new Types.ObjectId(req.params._id);
+        const _id = new Types.ObjectId(req.params._id);
+        if (!req.user?.email) throw new Error('userEmail fail on request');
 
-        const post: IPost = await postService.deletePost(_id);
+        const post: IPost = await postService.deletePost(_id, req?.user.email);
 
         res.status(200).json({
             msg: 'post deleted',
@@ -78,4 +118,4 @@ async function deletePost(req: AuthReq, res: Response): Promise<void> {
     }
 }
 
-export { createPost, getAllPosts, updatePost, deletePost };
+export { createPost, getAllPosts, updatePost, deletePost, getPostByTitle };

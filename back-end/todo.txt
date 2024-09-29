@@ -4,9 +4,24 @@
 
 3 - Impl middleware auth EndPoints - done
 
-4 - Pagination back - doing
+4 - Pagination back - done
 
-5 - find Post Input
+5 - find Post Input - done
 
-6 - start frontEnd
+6 - delete User - done
+
+7 - update User - done
+
+8 - start frontEnd - doing
+
+9 - refactor tests with jest - done
+
+10 - Documentation Back-end - done
+
+11 - Documentation Front-end - open
+
+12 - impl colors back-end - done
+
+
+
 

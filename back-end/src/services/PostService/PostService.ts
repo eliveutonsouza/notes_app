@@ -1,22 +1,58 @@
 import IPost from '../../contracts/IPost';
 import Post from '../../database/models/postModel';
-import { Types } from 'mongoose';
-import User from '../../database/models/userModel';
 
+import { ObjectId, Types } from 'mongoose';
+import User from '../../database/models/userModel';
 import UserService from '../UserService/UserService';
 import PostValidation from './validations/PostValidation';
+import PaginationIPost from '../../contracts/PaginationIPost';
 
 export default class PostService {
-    postValidation: PostValidation = new PostValidation();
-    userService: UserService = new UserService();
+    private readonly postValidation: PostValidation = new PostValidation();
+    private readonly userService: UserService = new UserService();
 
-    async getAllPosts(userEmail: string): Promise<IPost[]> {
+    async getAllPosts(
+        userEmail: string,
+        page: number
+    ): Promise<PaginationIPost> {
+        try {
+            const limit = 10;
+            const user = await this.userService.findUserByEmail(userEmail);
+            const userId = user._id;
+            const posts = await Post.find({ owner: userId })
+                .limit(limit)
+                .skip((page - 1) * limit);
+
+            const postsCount = await Post.countDocuments({ owner: userId });
+
+            const maxPage = Math.ceil(postsCount / limit);
+
+            if (page > maxPage) throw new Error('this page doesnt exist');
+
+            return {
+                posts,
+                documentCount: postsCount,
+                limit,
+                maxPage,
+            };
+        } catch (err) {
+            throw err;
+        }
+    }
+
+    async getPostByTitle(userEmail: string, title: string): Promise<IPost[]> {
         try {
             const user = (
-                await this.userService.findByEmail(userEmail)
+                await this.userService.findUserByEmail(userEmail)
             ).populate('posts');
 
-            return (await user).posts;
+            const posts = (await user).posts.filter((post) =>
+                post.title.includes(title)
+            );
+            if (posts.length < 1) {
+                throw new Error('cannot find your post');
+            }
+            return posts;
         } catch (err) {
             throw err;
         }
@@ -29,11 +65,12 @@ export default class PostService {
         try {
             this.postValidation.validation(data);
 
-            const user = await this.userService.findByEmail(userEmail);
+            const user = await this.userService.findUserByEmail(userEmail);
 
             if (!user) {
                 throw new Error('cannot find a user.');
             }
+            data.owner = user._id;
 
             const postInstance = new Post(data);
             const response = await postInstance.save();
@@ -43,38 +80,57 @@ export default class PostService {
 
             return response;
         } catch (err) {
-            console.log(err);
-
             throw err;
         }
     }
 
     async updatePost(
-        data: Pick<IPost, 'title' | 'description' | 'updatedAt'>,
-        postId: Types.ObjectId
+        data: Pick<IPost, 'title' | 'description' | 'updatedAt' | 'colorHex'>,
+        postId: Types.ObjectId | ObjectId,
+        userEmail: string
     ): Promise<IPost> {
         try {
+            const user = await this.userService.findUserByEmail(userEmail);
+
+            const postExist = user.posts.find((post) => {
+                return post._id.toString() === postId.toString();
+            });
+
+            if (!postExist) throw new Error('post doesnt exist');
+
             this.postValidation.validation(data);
             data.updatedAt = new Date();
-            const postUpdated = await Post.findByIdAndUpdate(postId, data, {
-                new: true,
-            }).exec();
+            const postUpdated = await Post.findByIdAndUpdate(
+                postExist._id,
+                data,
+                {
+                    new: true,
+                }
+            ).exec();
 
-            if (!postUpdated) throw new Error('cannot find');
+            if (!postUpdated) throw new Error('error trying to get a post');
 
             return postUpdated;
         } catch (err) {
-            console.log(err);
-
             throw err;
         }
     }
 
-    async deletePost(postId: Types.ObjectId): Promise<IPost> {
+    async deletePost(
+        postId: ObjectId | Types.ObjectId,
+        email: string
+    ): Promise<IPost> {
         try {
-            const postDeleted = await Post.findByIdAndDelete(postId);
+            const user = await this.userService.findUserByEmail(email);
 
-            if (!postDeleted) throw new Error('post doesnt exist');
+            const postExist = user.posts.find((post) => {
+                return post._id.toString() === postId.toString();
+            });
+            if (!postExist) throw new Error('post doesnt exist');
+
+            const postDeleted = await Post.findByIdAndDelete(postExist._id);
+
+            if (!postDeleted) throw new Error('error Trying to get a post');
 
             await User.updateMany(
                 { posts: postId },
@@ -83,7 +139,7 @@ export default class PostService {
 
             return postDeleted;
         } catch (err) {
-            throw new Error('failed to delete a post');
+            throw err;
         }
     }
 }

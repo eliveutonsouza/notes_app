@@ -2,11 +2,19 @@
     "compilerOptions": {
         "target": "es2017",
         "module": "commonjs",
+        "outDir": "dist",
+        "rootDir": ".",
         "esModuleInterop": true,
         "forceConsistentCasingInFileNames": true,
         "strict": true,
         "skipLibCheck": true,
-        "allowJs": true
+        "allowJs": true,
+        "sourceMap": true
     },
-    "include": ["src/**/*.ts", "server.ts", "src/test/userTest.test.ts"]
+    "include": [
+        "src/**/*.ts",
+        "server.ts",
+        "src/test/userTest.test.ts",
+        "src/test/postTest.test.ts"
+    ]
 }
