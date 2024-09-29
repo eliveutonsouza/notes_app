@@ -3,7 +3,7 @@ import { FormLogin } from "./components/formLogin";
 
 export function Login() {
   return (
-    <main className="h-screen w-screen flex justify-center items-center bg-[url(../assets/background.png)] bg-no-repeat bg-cover">
+    <main className="h-screen w-screen flex justify-center items-center bg-[url(../assets/background.png)] bg-no-repeat bg-cover border-t-8 border-t-primary">
       <div className="p-12 bg-primary rounded w-[28.56rem] space-y-5">
         <div className="space-y-5">
           <img
@@ -17,6 +17,13 @@ export function Login() {
         </div>
 
         <FormLogin />
+
+        <p className="text-white text-center ">
+          Não possui uma conta?{" "}
+          <a href="/register" className="text-orange-50 underline">
+            Crie uma conta
+          </a>
+        </p>
       </div>
     </main>
   );
