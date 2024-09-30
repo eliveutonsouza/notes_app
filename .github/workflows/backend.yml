@@ -47,9 +47,9 @@ jobs:
           context: back-end
           file: back-end/Dockerfile
           tags: joselucass/notes_app:latest
-
+      - run: sudo docker compose up -d --prefix back-end
       - run: npm ci --prefix back-end
-
+      - run: sudo docker stop notes_app
       - run: npm start --prefix back-end
         env:
           CONNECTION_URL: ${{ secrets.CONNECTION_URL }}
