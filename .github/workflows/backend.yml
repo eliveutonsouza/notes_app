@@ -54,7 +54,7 @@ jobs:
           tags: joselucass/notes_app:latest
 
       - run: |
-          docker-compose -f "./docker-compose.yml" up -d --build
+          docker-compose -f "docker-compose.yml" up -d --build
 
       - run: npm ci --prefix back-end
       - run: sudo docker stop notes_app
