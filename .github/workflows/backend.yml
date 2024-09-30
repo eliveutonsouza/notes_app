@@ -47,7 +47,8 @@ jobs:
           context: back-end
           file: back-end/Dockerfile
           tags: joselucass/notes_app:latest
-      - run: sudo docker compose up -d --prefix back-end
+
+      - run: docker-compose -f "docker-compose.yml" up -d --build
       - run: npm ci --prefix back-end
       - run: sudo docker stop notes_app
       - run: npm start --prefix back-end
