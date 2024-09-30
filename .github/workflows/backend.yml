@@ -55,6 +55,12 @@ jobs:
 
       - run: |
           docker-compose -f "back-end/docker-compose.yml" up -d --build
+        env:
+          PORT_APP: ${{ secrets.PORT_APP }}
+          DB_NAME: ${{ secrets.DB_NAME }}
+          DB_USERNAME: ${{ secrets.DB_USERNAME }}
+          DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
+          CONNECTION_URL_LOCAL: ${{ secrets.CONNECTION_URL_LOCAL }}
 
       - run: npm ci --prefix back-end
       - run: sudo docker stop notes_app
