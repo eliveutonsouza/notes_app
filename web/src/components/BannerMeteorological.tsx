@@ -37,8 +37,8 @@ export function BannerMeteorological() {
   // const imageUrl = images?.[0];
 
   return (
-    <section className="">
-      <div className="bg-primary absolute w-full h-28 flex items-center">
+    <section>
+      <div className="bg-primary w-full h-28 flex items-center">
         {/* <img
           className="w-full h-28 object-cover "
           src={imageUrl?.urls.regular ?? ""}
