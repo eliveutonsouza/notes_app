@@ -3,7 +3,11 @@ import { BannerMeteorological } from "../../components/BannerMeteorological";
 import { Input } from "../../components/input";
 import { format } from "date-fns";
 import { Pagination } from "../../components/pagination";
-import { CreateNewNoteModal } from "./components/CreateNewNoteModal";
+import { useContext } from "react";
+import { ModalContext } from "../../context/ModalContextProvider";
+import { EditeModalForm } from "./components/EditeModalForm";
+import { Modal } from "../../components/Modal";
+import { CreateFormModal } from "./components/CreateFormModal";
 
 // Crie um json com um titulo e descrição de uma anotação do dia. Crie 12 anotações diferentes.
 const notes = [
@@ -105,6 +109,16 @@ const notes = [
 ];
 
 export function Dashboard() {
+  const { open } = useContext(ModalContext);
+
+  function openModalNewNote() {
+    open("createNote");
+  }
+
+  function openModalEditeNote() {
+    open("editeModal");
+  }
+
   return (
     <div className="flex flex-col gap-6 pb-2">
       <BannerMeteorological />
@@ -116,7 +130,11 @@ export function Dashboard() {
         </div>
 
         <div>
-          <button className="bg-black text-white p-3 rounded-full">
+          <button
+            className="bg-black text-white p-3 rounded-full"
+            type="button"
+            onClick={openModalNewNote}
+          >
             <Plus size={24} weight="bold" />
           </button>
         </div>
@@ -139,7 +157,11 @@ export function Dashboard() {
                   {format(new Date(note.createdAt), "dd 'de' MMMM yyyy")}
                 </time>
 
-                <button className="rounded-full bg-black p-2">
+                <button
+                  className="rounded-full bg-black p-2"
+                  type="button"
+                  onClick={openModalEditeNote}
+                >
                   <PencilSimple
                     size={24}
                     weight="fill"
@@ -156,7 +178,13 @@ export function Dashboard() {
         <Pagination />
       </div>
 
-      <CreateNewNoteModal />
+      <Modal id="createNote">
+        <CreateFormModal />
+      </Modal>
+
+      <Modal id="editeModal">
+        <EditeModalForm />
+      </Modal>
     </div>
   );
 }
