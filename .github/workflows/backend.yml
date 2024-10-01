@@ -66,7 +66,7 @@ jobs:
       - run: sudo docker stop notes_app
       - run: npm test --prefix back-end
         env:
-          CONNECTION_URL: ${{ secrets.CONNECTION_URL }}
+          CONNECTION_URL_LOCAL: ${{ secrets.CONNECTION_URL_LOCAL }}
           DB_NAME: ${{ secrets.DB_NAME }}
           DB_USERNAME: ${{ secrets.DB_USERNAME }}
           PRIVATE_KEY_JWT: ${{ secrets.PRIVATE_KEY_JWT }}
