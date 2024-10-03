@@ -2,6 +2,8 @@ import { z } from "zod";
 
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useNavigate } from "react-router-dom";
+import axios from "axios";
 
 const formLoginSchema = z.object({
   email: z.string().email({ message: "E-mail inválido, tente novamente!" }),
@@ -11,6 +13,8 @@ const formLoginSchema = z.object({
 });
 
 export function FormLogin() {
+  const navigate = useNavigate();
+
   const {
     register,
     handleSubmit,
@@ -20,7 +24,27 @@ export function FormLogin() {
   });
 
   async function onSubmitForm(data: z.infer<typeof formLoginSchema>) {
-    console.log(data);
+    try {
+      const response = await axios.post("http://localhost:3000/login", data, {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+
+      const token = response.data.token;
+      document.cookie = `token=${token}; path=/; SameSite=Strict; Secure`;
+
+      if (response.status === 201 || response.status === 200) {
+        console.log("Usuário logado com sucesso!");
+        navigate("/dashboard");
+      }
+    } catch (error) {
+      if (axios.isAxiosError(error)) {
+        console.log(error.response?.data);
+      } else {
+        console.log("An unexpected error occurred");
+      }
+    }
   }
 
   return (
