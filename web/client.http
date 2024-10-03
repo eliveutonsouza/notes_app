@@ -1,0 +1,8 @@
+### API Unsplash Image
+GET https://api.unsplash.com/photos/random?query=nature&count=1
+Authorization: Client-ID e-V4D598_yiTA8fqLUM4C08HIZ4EmwzCnCdyOh-LhD8
+
+
+### API Unsplash Image
+GET https://api.unsplash.com/photos/random?client_id=e-V4D598_yiTA8fqLUM4C08HIZ4EmwzCnCdyOh-LhD8&query=nature&count=1
+# Authorization: Client-ID e-V4D598_yiTA8fqLUM4C08HIZ4EmwzCnCdyOh-LhD8
