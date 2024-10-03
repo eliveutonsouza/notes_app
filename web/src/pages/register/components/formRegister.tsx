@@ -1,7 +1,8 @@
 import { z } from "zod";
-
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 const formRegisterSchema = z
   .object({
@@ -24,26 +25,63 @@ const formRegisterSchema = z
 type FormRegisterTypes = z.infer<typeof formRegisterSchema>;
 
 export function FormRegister() {
+  const navigate = useNavigate();
+
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm<FormRegisterTypes>({
     resolver: zodResolver(formRegisterSchema),
+    values: {
+      name: "",
+      email: "",
+      password: "",
+      passwordConfirm: "",
+    },
   });
 
-  async function onSubmitForm(data: FormRegisterTypes) {
-    console.log(data);
+  async function onSubmitForm(dataForm: FormRegisterTypes) {
+    const { name, email, passwordConfirm: password } = dataForm;
+
+    const dataFormValues = {
+      name,
+      email,
+      password,
+    };
+
+    console.log(dataFormValues);
+
+    try {
+      const response = await axios.post(
+        "http://localhost:3000/register",
+        dataFormValues,
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+
+      if (response.status === 201 || response.status === 200) {
+        console.log("Usuário cadastrado com sucesso!");
+        navigate("/login");
+      }
+    } catch (error) {
+      if (axios.isAxiosError(error)) {
+        console.log(error.response?.data);
+      } else {
+        console.log("An unexpected error occurred");
+      }
+    }
   }
 
   return (
     <form onSubmit={handleSubmit(onSubmitForm)} className="flex flex-col gap-5">
       <div>
-        {/* rs-only: visible only to screen readers */}
         <label htmlFor="name" className="sr-only">
           Digite seu nome completo
         </label>
-
         <input
           {...register("name")}
           className="w-full py-2 px-5 rounded ::placeholder:text-gray-400"
@@ -51,18 +89,15 @@ export function FormRegister() {
           type="text"
           placeholder="Seu nome completo"
         />
-
         {errors.name && (
-          <span className="text-red-500 text-sm">{errors.email?.message}</span>
+          <span className="text-red-500 text-sm">{errors.name?.message}</span>
         )}
       </div>
 
       <div>
-        {/* rs-only: visible only to screen readers */}
         <label htmlFor="email" className="sr-only">
           Digite seu e-mail
         </label>
-
         <input
           {...register("email")}
           className="w-full py-2 px-5 rounded ::placeholder:text-gray-400"
@@ -70,18 +105,15 @@ export function FormRegister() {
           type="text"
           placeholder="Seu e-mail"
         />
-
         {errors.email && (
           <span className="text-red-500 text-sm">{errors.email?.message}</span>
         )}
       </div>
 
       <div className="block">
-        {/* rs-only: visible only to screen readers */}
         <label htmlFor="password" className="sr-only">
           Digite sua senha
         </label>
-
         <input
           {...register("password")}
           className="w-full py-2 px-5 rounded ::placeholder:text-gray-400"
@@ -97,11 +129,9 @@ export function FormRegister() {
       </div>
 
       <div className="block">
-        {/* rs-only: visible only to screen readers */}
         <label htmlFor="passwordConfirm" className="sr-only">
           Digite sua senha
         </label>
-
         <input
           {...register("passwordConfirm")}
           className="w-full py-2 px-5 rounded ::placeholder:text-gray-400"

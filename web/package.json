@@ -12,7 +12,9 @@
   "dependencies": {
     "@hookform/resolvers": "^3.9.0",
     "@phosphor-icons/react": "^2.1.7",
+    "axios": "^1.7.7",
     "date-fns": "^4.1.0",
+    "jsonwebtoken": "^9.0.2",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "react-hook-form": "^7.53.0",
@@ -21,6 +23,7 @@
   },
   "devDependencies": {
     "@eslint/js": "^9.9.0",
+    "@types/jsonwebtoken": "^9.0.7",
     "@types/node": "^22.7.4",
     "@types/react": "^18.3.3",
     "@types/react-dom": "^18.3.0",
