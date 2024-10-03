@@ -3,6 +3,7 @@ import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { ModalContext } from "../../../context/ModalContextProvider";
 import { zodResolver } from "@hookform/resolvers/zod";
+import axios from "axios";
 
 const NewNoteModalForm = z.object({
   title: z
@@ -13,6 +14,10 @@ const NewNoteModalForm = z.object({
     .string()
     .min(10, { message: "Sua descrição está pequena demais!" })
     .max(255, { message: "Sua descrição está grande demais!" }),
+  colorHex: z
+    .string()
+    .min(7, { message: "Cor inválida" })
+    .max(7, { message: "Cor inválida" }),
 });
 
 type NewNoteModalForm = z.infer<typeof NewNoteModalForm>;
@@ -26,11 +31,41 @@ export function CreateFormModal() {
     formState: { errors },
   } = useForm<NewNoteModalForm>({
     resolver: zodResolver(NewNoteModalForm),
+    defaultValues: {
+      title: "",
+      description: "",
+      colorHex: "#E5F693",
+    },
   });
 
-  function onSubmitForm(data: NewNoteModalForm) {
+  async function onSubmitForm(data: NewNoteModalForm) {
     console.log(data);
-    close("createNote");
+
+    const token = document.cookie
+      .split("; ")
+      .find((row) => row.startsWith("token="))
+      ?.split("=")[1];
+
+    console.log(token);
+
+    try {
+      const response = await axios.post("http://localhost:3000/post", data, {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: "Bearer " + token,
+        },
+      });
+
+      console.log(response.data);
+
+      if (response.status === 201 || response.status === 200) {
+        close("createNote");
+      }
+    } catch (error) {
+      if (axios.isAxiosError(error)) {
+        console.log(error.response?.data);
+      }
+    }
   }
 
   function onCancel() {
