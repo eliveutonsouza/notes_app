@@ -6,6 +6,7 @@ services:
         ports:
             - '${PORT_APP}:3000'
         environment:
+            CONNECTION_URL_LOCAL: ${CONNECTION_URL_DOCKER}
             DATABASE_NAME: ${DB_NAME}
             USERNAME_DB: ${DB_USERNAME}
             PASSWORD_DB: ${DB_PASSWORD}
@@ -36,7 +37,7 @@ services:
             ME_CONFIG_MONGODB_ADMINUSERNAME: ${DB_USERNAME}
             ME_CONFIG_MONGODB_ADMINPASSWORD: ${DB_PASSWORD}
             ME_CONFIG_MONGODB_URL: ${CONNECTION_URL_LOCAL}
-            ME_CONFIG_BASICAUTH: false
+            ME_CONFIG_BASICAUTH: 'false'
 
 volumes:
     mongo-data:

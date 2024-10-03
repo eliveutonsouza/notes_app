@@ -39,6 +39,11 @@ jobs:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
+      - name: Install Docker Compose
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y docker-compose
+
       - name: Build and push
         id: docker_build
         uses: docker/build-push-action@v5
@@ -48,6 +53,27 @@ jobs:
           file: back-end/Dockerfile
           tags: joselucass/notes_app:latest
 
+      - run: |
+          docker-compose -f "back-end/docker-compose.yml" up -d --build
+        env:
+          PORT_APP: ${{ secrets.PORT_APP }}
+          DB_NAME: ${{ secrets.DB_NAME }}
+          DB_USERNAME: ${{ secrets.DB_USERNAME }}
+          DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
+          CONNECTION_URL_LOCAL: ${{ secrets.CONNECTION_URL_LOCAL }}
+
       - run: npm ci --prefix back-end
+      - run: sudo docker stop notes_app
       - run: npm test --prefix back-end
-      - run: npm start --prefix back-end
+        env:
+          CONNECTION_URL_LOCAL: ${{ secrets.CONNECTION_URL_LOCAL }}
+          DB_NAME: ${{ secrets.DB_NAME }}
+          DB_USERNAME: ${{ secrets.DB_USERNAME }}
+          PRIVATE_KEY_JWT: ${{ secrets.PRIVATE_KEY_JWT }}
+
+      - run: npm start --prefix back-end &
+        env:
+          CONNECTION_URL_LOCAL: ${{ secrets.CONNECTION_URL_LOCAL }}
+          DB_NAME: ${{ secrets.DB_NAME }}
+          DB_USERNAME: ${{ secrets.DB_USERNAME }}
+          PRIVATE_KEY_JWT: ${{ secrets.PRIVATE_KEY_JWT }}
