@@ -4,6 +4,7 @@ import { z } from "zod";
 import { ModalContext } from "../../../context/ModalContextProvider";
 import { zodResolver } from "@hookform/resolvers/zod";
 import axios from "axios";
+import { useCookies } from "react-cookie";
 
 const NewNoteModalForm = z.object({
   title: z
@@ -24,6 +25,7 @@ type NewNoteModalForm = z.infer<typeof NewNoteModalForm>;
 
 export function CreateFormModal() {
   const { close } = useContext(ModalContext);
+  const [token] = useCookies(["token"]);
 
   const {
     register,
@@ -39,13 +41,6 @@ export function CreateFormModal() {
   });
 
   async function onSubmitForm(data: NewNoteModalForm) {
-    console.log(data);
-
-    const token = document.cookie
-      .split("; ")
-      .find((row) => row.startsWith("token="))
-      ?.split("=")[1];
-
     console.log(token);
 
     try {
@@ -69,7 +64,6 @@ export function CreateFormModal() {
   }
 
   function onCancel() {
-    console.log("Anotação cancelado");
     close("createNote");
   }
 
