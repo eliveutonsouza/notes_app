@@ -23,7 +23,7 @@ class AuthenticateUserUseCase {
 
             const generateTokenProvider = new GenerateTokenProvider();
 
-            const token = generateTokenProvider.execute(user.email);
+            const token = await generateTokenProvider.execute(user.email);
 
             return token;
         } catch (error) {
