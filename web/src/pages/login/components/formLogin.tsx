@@ -4,6 +4,7 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import { useCookies } from "react-cookie";
 
 const formLoginSchema = z.object({
   email: z.string().email({ message: "E-mail inválido, tente novamente!" }),
@@ -14,6 +15,7 @@ const formLoginSchema = z.object({
 
 export function FormLogin() {
   const navigate = useNavigate();
+  const [, setCookie] = useCookies(["token"]);
 
   const {
     register,
@@ -22,7 +24,6 @@ export function FormLogin() {
   } = useForm<z.infer<typeof formLoginSchema>>({
     resolver: zodResolver(formLoginSchema),
   });
-
   async function onSubmitForm(data: z.infer<typeof formLoginSchema>) {
     try {
       const response = await axios.post("http://localhost:3000/login", data, {
@@ -31,13 +32,17 @@ export function FormLogin() {
         },
       });
 
-      const token = response.data.token;
-      document.cookie = `token=${token}; path=/; SameSite=Strict; Secure`;
-
-      if (response.status === 201 || response.status === 200) {
-        console.log("Usuário logado com sucesso!");
-        navigate("/dashboard");
+      if (response.status !== 200) {
+        console.log("An unexpected error occurred");
       }
+
+      setCookie("token", response.data.token, {
+        path: "/",
+        sameSite: "strict",
+        secure: true,
+      });
+
+      navigate("/dashboard");
     } catch (error) {
       if (axios.isAxiosError(error)) {
         console.log(error.response?.data);
