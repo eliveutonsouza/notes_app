@@ -80,7 +80,7 @@ export default class UserService {
             // i should to take care about this beucase it's my validatiooooon daaaamn :((:
 
             // body 1,0,0 - first - allowed
-            // body = 0,1,0 - two - denied
+            // body 0,1,0 - two - denied
             // body 0,1,1 - three - allowed
             // body 0,0,1 - four - denied
             // body 0,0,0 - five - denied
