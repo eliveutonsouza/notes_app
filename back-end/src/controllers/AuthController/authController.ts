@@ -11,7 +11,7 @@ export default async function authController(
         const responseAuth = await auth.execute(request.body);
 
         response.status(200).json({
-            token: responseAuth,
+            auth: responseAuth,
             msg: 'success',
         });
     } catch (e: any) {
