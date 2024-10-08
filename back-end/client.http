@@ -1,4 +1,6 @@
 
+-- User Layer Resources --
+
 ### Create new user:
 POST http://localhost:3000/register
 
@@ -9,10 +11,82 @@ POST http://localhost:3000/register
 }
 
 
-### Create new user:
+### Auth User:
 POST http://localhost:3000/login
 
 {
 "email":"joselucas@gmail.com",
 "password":"123456789",
 }
+
+
+
+
+### Update User username:
+PUT localhost:3000/user
+
+{
+"body":{
+	"name":"Lucas"
+}
+}
+
+
+
+### Update User password:
+PUT localhost:3000/user
+
+{
+"body":{
+		"password":"123456789",
+    "newPassword":"12345678"
+}
+}
+
+### Update Complete User:
+PUT localhost:3000/user
+{
+"body":{
+    "name":"joséLucasDev",
+	"password":"12345678",
+    "newPassword":"123456789"
+}
+}
+
+
+### Delete User:
+DELETE localhost:3000/user
+{}
+
+
+
+
+-- Post Layer Resources --
+
+### Create new Post:
+POST http://localhost:3000/post
+{
+    "title":"Title",
+    "description":"description",
+    "colorHex":"#ffffff"
+}
+
+### Update Post
+PUT  http://localhost:3000/post/{IDPOST}
+
+{"title":"newTitle","description":"newDescrip","colorHex":"#cccccc"}
+
+
+
+### DeletePost
+DELETE  http://localhost:3000/post/{IDPOST}
+{}
+
+### GetPost
+
+GET  http://localhost:3000/post/page=1
+{}
+
+### Get all posts by title
+GET http://localhost:3000/post/title?title=Title
+{}
