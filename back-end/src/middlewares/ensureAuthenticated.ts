@@ -1,6 +1,9 @@
 import { Response, NextFunction } from 'express';
 import { verify } from 'jsonwebtoken';
 import AuthReq from '../contracts/AuthReq';
+import dotenv from 'dotenv';
+
+dotenv.config();
 
 export function ensureAuthenticated(
     request: AuthReq,
