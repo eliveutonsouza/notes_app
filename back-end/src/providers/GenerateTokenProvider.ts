@@ -8,7 +8,7 @@ class GenerateTokenProvider {
             privateKeyJwt || 'e2ac90fa-2e12-4f99-8dde-7e3a7690ab35',
             {
                 subject: userEmail,
-                expiresIn: 300,
+                expiresIn: 86400,
             }
         );
 
