@@ -36,12 +36,12 @@
 
 ### EndPoints
 
-- http:localhost:3000/register
-- http:localhost:3000/login
-- http:localhost:3000/user
-- http:localhost:3000/post/{id}
-- http:localhost:3000/post?page=1
-- http:localhost:3000/post/title?title=Title
+- http:localhost:{PORT_APP}/register
+- http:localhost:{PORT_APP}/login
+- http:localhost:{PORT_APP}/user
+- http:localhost:{PORT_APP}/post/{id}
+- http:localhost:{PORT_APP}/post?page=1
+- http:localhost:{PORT_APP}/post/title?title=Title
 
 ### Installation
 
@@ -61,3 +61,25 @@
    ```bash
    git clone https://github.com/JoseLucasdevv/notes_app
    ```
+2. Enter the notes_app folder, and then go into the back-end folder.:
+
+   ```bash
+   cd notes_app
+   cd back-end
+   ```
+
+3. Install dependencies project with npm:
+
+   ```bash
+   npm install
+   ```
+
+4. now you must create your .env File and set your enviroment variables.
+   ```bash
+   touch .env
+   ```
+5. now you can get up your container using Docker
+   ```bash
+   sudo docker compose up
+   ```
+6. after those steps you can access localhost on your machine localhost:{PORT_APP}/welcome and localhost:8081
