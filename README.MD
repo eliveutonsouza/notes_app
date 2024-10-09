@@ -36,6 +36,7 @@
 
 ### EndPoints
 
+- http:localhost:{PORT_APP}/welcome
 - http:localhost:{PORT_APP}/register
 - http:localhost:{PORT_APP}/login
 - http:localhost:{PORT_APP}/user
