@@ -32,11 +32,13 @@ export function FormLogin() {
         },
       });
 
+      console.log(response);
+
       if (response.status !== 200) {
         console.log("An unexpected error occurred");
       }
 
-      setCookie("token", response.data.token, {
+      setCookie("token", response.data.auth.token, {
         path: "/",
         sameSite: "strict",
         secure: true,
@@ -62,14 +64,14 @@ export function FormLogin() {
 
         <input
           {...register("email")}
-          className="w-full py-2 px-5 rounded ::placeholder:text-gray-400"
+          className="::placeholder:text-gray-400 w-full rounded px-5 py-2"
           id="email"
           type="text"
           placeholder="Seu e-mail"
         />
 
         {errors.email && (
-          <span className="text-red-500 text-sm">{errors.email?.message}</span>
+          <span className="text-sm text-red-500">{errors.email?.message}</span>
         )}
       </div>
 
@@ -81,13 +83,13 @@ export function FormLogin() {
 
         <input
           {...register("password")}
-          className="w-full py-2 px-5 rounded ::placeholder:text-gray-400"
+          className="::placeholder:text-gray-400 w-full rounded px-5 py-2"
           id="password"
           type="password"
           placeholder="Sua senha"
         />
         {errors.password && (
-          <span className="text-red-500 text-sm">
+          <span className="text-sm text-red-500">
             {errors.password?.message}
           </span>
         )}
@@ -95,7 +97,7 @@ export function FormLogin() {
 
       <button
         type="submit"
-        className="w-full p-2 rounded text-primary bg-white"
+        className="w-full rounded bg-white p-2 text-primary"
       >
         Entrar
       </button>

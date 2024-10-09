@@ -1,11 +1,12 @@
 import {
+  ArrowLeft,
+  ArrowRight,
   MagnifyingGlass,
   PencilSimple,
   Plus,
   Spinner,
 } from "@phosphor-icons/react";
 import { Input } from "../../components/input";
-import { Pagination } from "../../components/pagination";
 import { useCallback, useContext, useEffect, useState } from "react";
 import { ModalContext } from "../../context/ModalContextProvider";
 import { EditeModalForm } from "./components/EditeModalForm";
@@ -31,30 +32,32 @@ export function Dashboard() {
   const [isLoading, setIsLoading] = useState(true);
   const [editingNote, setEditingNote] = useState<Note | null>(null);
   const [viewNote, setViewNote] = useState<Note | null>(null);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
+  const [showColorButtons, setShowColorButtons] = useState(false); // Controle de exibição dos botões de cor
 
-  const openModalNewNote = () => open("createNote");
+  const openModalNewNote = () => {
+    open("createNote"); // Passa a cor como propriedade para o modal
+  };
 
-  // Abre o modal de edição e define a nota a ser editada
   const openModalEditeNote = (note: Note) => {
     setEditingNote(note);
     open("editeModal");
-    close("viewNote"); // Fechar o modal de visualização ao abrir o de edição
+    close("viewNote");
   };
 
-  // Abre o modal de visualização e define a nota a ser visualizada
   const openModalViewNote = (note: Note) => {
     setViewNote(note);
     open("viewNote");
   };
 
   const refreshNotes = async () => {
-    // Função para atualizar as notas após o submit do modal de edição
-    await getNotes();
-    // close("editeModal"); // Fecha o modal após a atualização
+    await getNotes(currentPage);
   };
 
   const getNotes = useCallback(
     async (page = 1) => {
+      setIsLoading(true);
       try {
         const response = await axios.get(
           `http://localhost:3000/post?page=${page}`,
@@ -66,6 +69,7 @@ export function Dashboard() {
         );
 
         setNotes(response.data.body);
+        setTotalPages(response.data.maxPage);
       } catch (error) {
         if (axios.isAxiosError(error)) {
           console.error(error.response?.data);
@@ -82,8 +86,20 @@ export function Dashboard() {
   );
 
   useEffect(() => {
-    getNotes();
-  }, [getNotes]);
+    getNotes(currentPage);
+  }, [getNotes, currentPage]);
+
+  const handlePreviousPage = () => {
+    if (currentPage > 1) {
+      setCurrentPage(currentPage - 1);
+    }
+  };
+
+  const handleNextPage = () => {
+    if (currentPage < totalPages) {
+      setCurrentPage(currentPage + 1);
+    }
+  };
 
   return (
     <div className="container m-auto flex flex-col justify-between gap-6">
@@ -94,11 +110,29 @@ export function Dashboard() {
             <Input placeholder="Procurar..." />
           </div>
 
-          <div>
+          <div className="flex items-center gap-6">
+            {/* Botões coloridos, inicialmente ocultos */}
+            <div
+              className={`flex gap-6 ${showColorButtons ? "block" : "hidden"}`}
+            >
+              {["#F6C974", "#F19674", "#E4F592", "#43E6FB"].map((color) => (
+                <button
+                  key={color}
+                  className="h-6 w-6 rounded-full"
+                  style={{ backgroundColor: color }}
+                  onClick={() => {
+                    openModalNewNote(); // Abre o modal com a cor escolhida
+                    setShowColorButtons(false); // Esconde os botões de cor após a escolha
+                  }}
+                />
+              ))}
+            </div>
+
+            {/* Botão de adicionar que exibe os botões de cor */}
             <button
               className="rounded-full bg-black p-3 text-white"
               type="button"
-              onClick={openModalNewNote}
+              onClick={() => setShowColorButtons(!showColorButtons)} // Alterna entre mostrar e ocultar os botões de cor
             >
               <Plus size={24} weight="bold" />
             </button>
@@ -170,10 +204,37 @@ export function Dashboard() {
           </div>
 
           <div className="my-6">
-            <Pagination />
+            <div className="flex items-center gap-8">
+              <button
+                className="rounded bg-black p-3"
+                onClick={handlePreviousPage}
+                disabled={currentPage === 1}
+              >
+                <ArrowLeft size={17} weight="bold" className="text-white" />
+              </button>
+
+              {[...Array(totalPages)].map((_, index) => (
+                <button
+                  key={index}
+                  className={`${
+                    currentPage === index + 1 ? "font-bold underline" : ""
+                  }`}
+                  onClick={() => setCurrentPage(index + 1)}
+                >
+                  {index + 1}
+                </button>
+              ))}
+
+              <button
+                className="rounded bg-black p-3"
+                onClick={handleNextPage}
+                disabled={currentPage === totalPages}
+              >
+                <ArrowRight size={17} weight="bold" className="text-white" />
+              </button>
+            </div>
           </div>
 
-          {/* Modal de edição */}
           <Modal id="editeModal">
             {editingNote && (
               <EditeModalForm data={editingNote} onRefresh={refreshNotes} />
