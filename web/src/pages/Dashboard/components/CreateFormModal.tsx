@@ -23,9 +23,13 @@ const NewNoteModalForm = z.object({
 
 type NewNoteModalForm = z.infer<typeof NewNoteModalForm>;
 
-export function CreateFormModal() {
+interface CreateModalProps {
+  onRefresh: () => void; // Adiciona a prop para recarregar os dados
+}
+
+export function CreateFormModal({ onRefresh }: CreateModalProps) {
   const { close } = useContext(ModalContext);
-  const [token] = useCookies(["token"]);
+  const [cookie] = useCookies(["token"]);
 
   const {
     register,
@@ -41,17 +45,15 @@ export function CreateFormModal() {
   });
 
   async function onSubmitForm(data: NewNoteModalForm) {
-    console.log(token);
-
     try {
       const response = await axios.post("http://localhost:3000/post", data, {
         headers: {
           "Content-Type": "application/json",
-          Authorization: "Bearer " + token,
+          Authorization: "Bearer " + cookie.token,
         },
       });
 
-      console.log(response.data);
+      onRefresh();
 
       if (response.status === 201 || response.status === 200) {
         close("createNote");
