@@ -16,15 +16,15 @@
 4. Jest
 5. Docker
 6. Github Actions
-   7.MongoDB
-7. React
-8. Axios
+7. MongoDB
+8. React
+9. Axios
 
 ## Documentation Back End
 
 ### Postman:
 
-    [Link Postman](link here)
+[Link Postman Documentation ](https://documenter.getpostman.com/view/29716630/2sAXqv6MKz)
 
 ### Enviorement Variables
 
@@ -36,9 +36,12 @@
 
 ### EndPoints
 
-- http:localhost:3000/
-- http:localhost:3000/
-- http:localhost:3000/
+- http:localhost:3000/register
+- http:localhost:3000/login
+- http:localhost:3000/user
+- http:localhost:3000/post/{id}
+- http:localhost:3000/post?page=1
+- http:localhost:3000/post/title?title=Title
 
 ### Installation
 
