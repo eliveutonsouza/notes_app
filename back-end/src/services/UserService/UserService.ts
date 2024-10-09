@@ -63,31 +63,21 @@ export default class UserService {
                 !data.body.newPassword &&
                 !data.body.password
             )
-                throw new Error('nothing to update'); //five
+                throw new Error('nothing to update');
 
             if (
                 (data.body.newPassword && !data.body.password) ||
                 (!data.body.newPassword && data.body.password)
             )
-                throw new Error('missing new password or act password'); // four and two
+                throw new Error('missing new password or act password');
 
             let user;
 
             if (data.body.name) {
-                user = await this.updateUserUserName(email, data.body.name); //first
+                user = await this.updateUserUserName(email, data.body.name);
             }
 
-            // i should to take care about this beucase it's my validatiooooon daaaamn :((:
-
-            // body 1,0,0 - first - allowed
-            // body = 0,1,0 - two - denied
-            // body 0,1,1 - three - allowed
-            // body 0,0,1 - four - denied
-            // body 0,0,0 - five - denied
-            // body 1,1,1 - six -  allowed
-
             if (data.body.newPassword && data.body.password) {
-                //three
                 const dataPassword: IUpdateUserPassword = {
                     userPassword: data.body.password,
                     newPassword: data.body.newPassword,
