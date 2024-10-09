@@ -28,11 +28,11 @@
 
 ### Enviorement Variables
 
-- DB_NAME=yourDbName
-- DB_USERNAME=yourDbUsername
-- CONNECTION_URL_LOCAL=yourUrlLocal
-- PORT_APP= your Port
-- PRIVATE_KEY_JWT= Your PrivateKey
+- DB_NAME=Your DB_NAME
+- DB_USERNAME=Your DB_USERNAME
+- CONNECTION_URL_LOCAL=Your URL_LOCAL
+- PORT_APP= Your PORT_APP
+- PRIVATE_KEY_JWT= Your PRIVATE_KEY_JWT
 
 ### EndPoints
 
