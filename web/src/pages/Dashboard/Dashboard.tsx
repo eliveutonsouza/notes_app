@@ -10,7 +10,7 @@ import { Input } from "../../components/input";
 import { useCallback, useContext, useEffect, useState } from "react";
 import { ModalContext } from "../../context/ModalContextProvider";
 import { EditeModalForm } from "./components/EditeModalForm";
-import { Modal } from "../../components/Modal";
+import Modal from "../../components/Modal";
 import axios from "axios";
 import { format } from "date-fns";
 import { useCookies } from "react-cookie";
@@ -25,9 +25,11 @@ interface Note {
   _id: string;
 }
 
+const buttonColors = ["#F6C974", "#F19674", "#E4F592", "#43E6FB"];
+
 export function Dashboard() {
   const [notes, setNotes] = useState<Note[]>([]);
-  const { open, close } = useContext(ModalContext);
+  const { open, close, setModalColor } = useContext(ModalContext);
   const [cookie] = useCookies(["token"]);
   const [isLoading, setIsLoading] = useState(true);
   const [editingNote, setEditingNote] = useState<Note | null>(null);
@@ -36,7 +38,8 @@ export function Dashboard() {
   const [totalPages, setTotalPages] = useState(1);
   const [showColorButtons, setShowColorButtons] = useState(false); // Controle de exibição dos botões de cor
 
-  const openModalNewNote = () => {
+  const openModalNewNote = (color: string) => {
+    setModalColor("createNote", color); // Passa a cor como propriedade para o modal
     open("createNote"); // Passa a cor como propriedade para o modal
   };
 
@@ -115,13 +118,13 @@ export function Dashboard() {
             <div
               className={`flex gap-6 ${showColorButtons ? "block" : "hidden"}`}
             >
-              {["#F6C974", "#F19674", "#E4F592", "#43E6FB"].map((color) => (
+              {buttonColors.map((color) => (
                 <button
                   key={color}
                   className="h-6 w-6 rounded-full"
                   style={{ backgroundColor: color }}
                   onClick={() => {
-                    openModalNewNote(); // Abre o modal com a cor escolhida
+                    openModalNewNote(color); // Abre o modal com a cor escolhida
                     setShowColorButtons(false); // Esconde os botões de cor após a escolha
                   }}
                 />
