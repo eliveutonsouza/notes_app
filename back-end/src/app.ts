@@ -3,7 +3,7 @@ import route from './routes/routes';
 import cors from 'cors';
 import mongoSanitize from 'express-mongo-sanitize';
 import helmet from 'helmet';
-// import rateLimit from 'express-rate-limit';
+import rateLimit from 'express-rate-limit';
 const allowedOrigins: string[] = ['http://127.0.0.1', 'http://localhost:5173'];
 
 const corsOptions: cors.CorsOptions = {
@@ -22,13 +22,13 @@ const corsOptions: cors.CorsOptions = {
     optionsSuccessStatus: 200,
 };
 
-// const limiter = rateLimit({
-//     windowMs: 15 * 60 * 1000,
-//     limit: 100,
-//     message: 'Too many requests from this IP, please try again later.',
-//     standardHeaders: true,
-//     legacyHeaders: false,
-// });
+const limiter = rateLimit({
+    windowMs: 15 * 60 * 1000,
+    limit: 100,
+    message: 'Too many requests from this IP, please try again later.',
+    standardHeaders: true,
+    legacyHeaders: false,
+});
 const app = express();
 app.use(cors(corsOptions));
 app.use(helmet());
@@ -39,7 +39,7 @@ app.use(
     })
 );
 app.use(express.urlencoded({ extended: true }));
-// app.use(limiter);
+app.use(limiter);
 app.use(express.json());
 app.use(route);
 

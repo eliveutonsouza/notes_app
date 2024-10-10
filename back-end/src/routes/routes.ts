@@ -18,6 +18,42 @@ import {
 
 const router = Router();
 
+router.get('/welcome', (req, res) => {
+    res.send(`<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Welcome to API notes_app</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            margin-top: 100px;
+        }
+        h1 {
+            color: #333;
+        }
+        p {
+            color: #666;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Welcome to API notes_app</h1>
+        <p>Your API is up and running!</p>
+    </div>
+</body>
+</html>
+`);
+});
+
 router.post('/login', authController);
 
 router.post('/register', registerController);
