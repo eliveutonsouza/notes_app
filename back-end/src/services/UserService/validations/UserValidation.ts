@@ -29,8 +29,8 @@ export default class UserValidation {
         if (username.length < 3)
             throw new Error('username should be more than 3 characters');
 
-        if (username.length > 20)
-            throw new Error('username should be less than 20 characters');
+        if (username.length > 50)
+            throw new Error('username should be less than 50 characters');
     }
 
     public passwordValidation(password: string): void {

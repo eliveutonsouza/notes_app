@@ -1,7 +1,7 @@
 import { sign } from 'jsonwebtoken';
 
 class GenerateTokenProvider {
-    async execute(userEmail: string): Promise<ResponseToken> {
+    async execute(userEmail: string, userName: string): Promise<ResponseToken> {
         const expiresIn = 86400;
         const privateKeyJwt = process.env.PRIVATE_KEY_JWT;
         const token = sign(
@@ -13,7 +13,7 @@ class GenerateTokenProvider {
             }
         );
 
-        return { token, userEmail, expiresIn };
+        return { token, userEmail, expiresIn, userName };
     }
 }
 
