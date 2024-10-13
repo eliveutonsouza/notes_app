@@ -6,7 +6,10 @@ import { ProfileContext } from "../../../context/ProfileContextProvider";
 import axios from "axios";
 
 const ChangeNameFormSchema = z.object({
-  name: z.string().min(3, { message: "Nome deve ter no mínimo 3 caracteres!" }),
+  name: z
+    .string()
+    .min(3, { message: "Nome deve ter no mínimo 3 caracteres!" })
+    .max(20, { message: "Nome deve ter no máximo 20 caracteres!" }),
 });
 
 type ChangeNameFormType = z.infer<typeof ChangeNameFormSchema>;
