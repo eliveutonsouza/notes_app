@@ -4,6 +4,7 @@ import { Register } from "./pages/register/Register";
 import { DashboardLayouts } from "./layouts/DashboardLayouts";
 import { Dashboard } from "./pages/Dashboard/Dashboard";
 import { Login } from "./pages/login/Login";
+import { Settings } from "./pages/Dashboard/Settings";
 
 export function Router() {
   return (
@@ -14,6 +15,7 @@ export function Router() {
 
       <Route path="/" element={<DashboardLayouts />}>
         <Route path="/dashboard" element={<Dashboard />} />
+        <Route path="/dashboard/settings" element={<Settings />} />
       </Route>
     </Routes>
   );

@@ -19,7 +19,7 @@ export function Middleware({ children }: MiddlewareProps) {
   const isLoginPage = location.pathname === "/login";
   const isRegisterPage = location.pathname === "/register";
   const isHomePage = location.pathname === "/";
-  const isDashboardPage = location.pathname === "/dashboard";
+  const isDashboardPage = location.pathname.startsWith("/dashboard"); // Check if the path starts with /dashboard
 
   useEffect(() => {
     // If the token is expired or not authenticated and tries to access the dashboard, redirect to login
@@ -35,7 +35,7 @@ export function Middleware({ children }: MiddlewareProps) {
     }
 
     // If authenticated and not on home or dashboard, redirect to the dashboard
-    if (isAuthenticated && !isTokenExpired && !isHomePage) {
+    if (isAuthenticated && !isTokenExpired && !isHomePage && !isDashboardPage) {
       navigate("/dashboard");
     }
   }, [
