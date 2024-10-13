@@ -6,7 +6,7 @@ import {
   DropdownMenuContent,
   DropdownMenuItem,
 } from "./dropdown-menu";
-import { GearSix, SignOut } from "@phosphor-icons/react";
+import { Cards, GearSix, SignOut } from "@phosphor-icons/react";
 import { useNavigate } from "react-router-dom";
 import { useCookies } from "react-cookie";
 
@@ -19,7 +19,8 @@ export function Header() {
     navigate("/login");
   };
 
-  const routerSetting = () => navigate("/dashboard/settings");
+  const routerSettings = () => navigate("/dashboard/settings");
+  const routerDashboard = () => navigate("/dashboard");
 
   return (
     <header className="container m-auto flex items-center justify-between py-4">
@@ -40,7 +41,15 @@ export function Header() {
           </DropdownMenuTrigger>
           <DropdownMenuContent>
             <DropdownMenuItem
-              onClick={routerSetting}
+              onClick={routerDashboard}
+              className="flex items-center gap-2 border-b text-sm"
+            >
+              <Cards size={16} />
+              Dashboard
+            </DropdownMenuItem>
+
+            <DropdownMenuItem
+              onClick={routerSettings}
               className="flex items-center gap-2 border-b text-sm"
             >
               <GearSix size={16} />

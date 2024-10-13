@@ -4,7 +4,8 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
-import { useCookies } from "react-cookie";
+import { useContext } from "react";
+import { ProfileContext } from "../../../context/ProfileContextProvider";
 
 const formLoginSchema = z.object({
   email: z.string().email({ message: "E-mail inválido, tente novamente!" }),
@@ -14,8 +15,8 @@ const formLoginSchema = z.object({
 });
 
 export function FormLogin() {
+  const { setCookie } = useContext(ProfileContext);
   const navigate = useNavigate();
-  const [, setCookie] = useCookies(["token"]);
 
   const {
     register,
