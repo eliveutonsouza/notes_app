@@ -1,24 +1,30 @@
 interface ProfileProps {
   name: string;
   imageUrl?: string;
+  props?: React.HTMLProps<HTMLDivElement>;
+  actionClick?: () => void;
 }
 
-export function Profile({ name, imageUrl }: ProfileProps) {
+export function Profile({ name, imageUrl, props }: ProfileProps) {
   const nameParts = name.split(" ");
   const firstLetter = nameParts[0].split("")[0];
   const lastLetter = nameParts[nameParts.length - 1].split("")[0];
 
   return (
-    <div className="rounded-full w-9">
-      {!imageUrl && (
-        <div className="rounded-full bg-black w-9 h-9 flex items-center justify-center">
-          <span className="text-white text-xs">{firstLetter + lastLetter}</span>
-        </div>
-      )}
+    <>
+      <div className="w-12 rounded-full" {...props}>
+        {!imageUrl && (
+          <div className="flex h-12 w-12 items-center justify-center rounded-full bg-black">
+            <span className="text-xs text-white">
+              {firstLetter + lastLetter}
+            </span>
+          </div>
+        )}
 
-      {imageUrl && (
-        <img className="rounded-full w-9 h-9" src={imageUrl} alt={name} />
-      )}
-    </div>
+        {imageUrl && (
+          <img className="h-12 w-12 rounded-full" src={imageUrl} alt={name} />
+        )}
+      </div>
+    </>
   );
 }
