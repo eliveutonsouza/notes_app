@@ -7,12 +7,13 @@ import {
   DropdownMenuItem,
 } from "./dropdown-menu";
 import { Cards, GearSix, SignOut } from "@phosphor-icons/react";
-import { useNavigate } from "react-router-dom";
-import { useCookies } from "react-cookie";
+import { Link, useNavigate } from "react-router-dom";
+import { useContext } from "react";
+import { ProfileContext } from "../context/ProfileContextProvider";
 
 export function Header() {
+  const { removeCookie, profileData } = useContext(ProfileContext);
   const navigate = useNavigate();
-  const [, , removeCookie] = useCookies(["token"]);
 
   const signOut = () => {
     removeCookie("token");
@@ -24,20 +25,19 @@ export function Header() {
 
   return (
     <header className="container m-auto flex items-center justify-between py-4">
-      <img src={logoFull} alt="Logo do aplicativo Notes" />
+      <Link to="/login">
+        <img src={logoFull} alt="Logo do aplicativo Notes" />
+      </Link>
 
       <div className="flex items-center justify-center gap-4">
         <div className="text-end">
-          <h2 className="font-medium">Eliveuton de Souza Melo</h2>
-          <p className="text-sm font-light">eliveuton@gmail.com</p>
+          <h2 className="font-medium"></h2>
+          <p className="text-sm font-light">{profileData.sub}</p>
         </div>
 
         <DropdownMenu>
           <DropdownMenuTrigger>
-            <Profile
-              name="Eliveuton de Souza Melo"
-              imageUrl="https://github.com/eliveutonsouza.png"
-            />
+            <Profile name="Notes App" />
           </DropdownMenuTrigger>
           <DropdownMenuContent>
             <DropdownMenuItem

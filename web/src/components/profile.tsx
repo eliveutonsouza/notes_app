@@ -14,8 +14,8 @@ export function Profile({ name, imageUrl, props }: ProfileProps) {
     <>
       <div className="w-12 rounded-full" {...props}>
         {!imageUrl && (
-          <div className="flex h-12 w-12 items-center justify-center rounded-full bg-black">
-            <span className="text-xs text-white">
+          <div className="flex h-12 w-12 items-center justify-center rounded-full bg-primary">
+            <span className="text-sm text-white">
               {firstLetter + lastLetter}
             </span>
           </div>
