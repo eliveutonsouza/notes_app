@@ -172,7 +172,7 @@ export function Dashboard() {
                   onClick={() => openModalViewNote(note)}
                 >
                   <h2 className="font-bold first-letter:uppercase">
-                    {note.title}
+                    {note.title.slice(0, 30)}...
                   </h2>
                   <p className="tracking-wider">
                     {note.description.slice(0, 80)}...

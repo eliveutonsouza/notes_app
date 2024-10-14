@@ -121,9 +121,11 @@ export function ProfileContextProvider({ children }: ProfileContextProps) {
   }, []);
 
   const getCodeCity = useCallback(async () => {
+    if (!location) return;
+
     try {
       const responseCode = await axios.get<WeatherResponseTypes>(
-        `https://api.openweathermap.org/data/2.5/weather?lat=${location?.latitude.toFixed(2)}&lon=${location?.longitude.toFixed(2)}&appid=${import.meta.env.VITE_API_OPENWATHER_KEY}          `,
+        `https://api.openweathermap.org/data/2.5/weather?lat=${location.latitude.toFixed(2)}&lon=${location.longitude.toFixed(2)}&appid=${import.meta.env.VITE_API_OPENWATHER_KEY}`,
         {
           headers: {
             "Content-Type": "application/json",
@@ -142,14 +144,13 @@ export function ProfileContextProvider({ children }: ProfileContextProps) {
         console.log("An unexpected error occurred");
       }
     }
-  }, [location?.latitude, location?.longitude]);
+  }, [location]);
 
-  // Effect to get the location when the component mounts
+  // Effect to get the location and weather data when the component mounts
   useEffect(() => {
     getLocation();
   }, [getLocation]);
 
-  // Effect to get city code and weather when address is updated
   useEffect(() => {
     getCodeCity();
   }, [getCodeCity]);
