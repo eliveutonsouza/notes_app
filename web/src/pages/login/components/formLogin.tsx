@@ -33,7 +33,7 @@ export function FormLogin() {
         },
       });
 
-      console.log(response);
+      localStorage.setItem("authToken", response.data.auth);
 
       if (response.status !== 200) {
         console.log("An unexpected error occurred");

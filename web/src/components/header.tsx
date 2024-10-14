@@ -31,13 +31,13 @@ export function Header() {
 
       <div className="flex items-center justify-center gap-4">
         <div className="text-end">
-          <h2 className="font-medium"></h2>
+          <h2 className="font-medium">{profileData.userName}</h2>
           <p className="text-sm font-light">{profileData.sub}</p>
         </div>
 
         <DropdownMenu>
           <DropdownMenuTrigger>
-            <Profile name="Notes App" />
+            <Profile name={profileData.userName} />
           </DropdownMenuTrigger>
           <DropdownMenuContent>
             <DropdownMenuItem

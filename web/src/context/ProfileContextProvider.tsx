@@ -9,7 +9,7 @@ import {
 } from "react";
 import { useCookies } from "react-cookie";
 import { useJwt } from "react-jwt";
-import { WeatherResponseTypes } from "../@types/WeatherResponseTypes";
+import { WeatherResponseTypes } from "../@types/weatherResponseTypes";
 
 // Typings for the context props and decoded token data
 interface ProfileContextProps {
@@ -20,6 +20,7 @@ type DecodedTokenType = {
   sub: string;
   iat: number;
   exp: number;
+  userName: string;
 };
 
 interface LocationType {
@@ -36,6 +37,7 @@ interface ProfileDataType {
   location?: LocationType | null;
   geoError?: string | null;
   weatherData: WeatherResponseTypes | null;
+  userName: string;
 }
 
 interface ProfileContextType {
@@ -61,6 +63,7 @@ const ProfileDefaultValues: ProfileContextType = {
     location: null,
     geoError: null,
     weatherData: null,
+    userName: "",
   },
   reEvaluateToken: () => {},
   setCookie: () => {},
@@ -155,6 +158,7 @@ export function ProfileContextProvider({ children }: ProfileContextProps) {
       sub: decodedToken?.sub ?? "",
       iat: decodedToken?.iat ?? 0,
       exp: decodedToken?.exp ?? 0,
+      userName: decodedToken?.userName ?? "",
       isExpired: !!isExpired,
       token: cookies.token,
       location,
