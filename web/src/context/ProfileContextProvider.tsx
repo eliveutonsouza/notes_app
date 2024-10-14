@@ -130,7 +130,9 @@ export function ProfileContextProvider({ children }: ProfileContextProps) {
           },
         },
       );
+
       const dataCode = responseCode.data;
+      console.log(dataCode);
 
       setWeatherData(dataCode);
     } catch (error) {
