@@ -4,6 +4,7 @@ import {
   MagnifyingGlass,
   PencilSimple,
   Plus,
+  SmileySad,
   Spinner,
 } from "@phosphor-icons/react";
 import { Input } from "../../components/input";
@@ -151,6 +152,11 @@ export function Dashboard() {
         <div className="flex h-full flex-col items-center justify-center gap-4">
           <Spinner className="animate-spin" size={24} />
           <p>Carregando Notas</p>
+        </div>
+      ) : notes.length === 0 ? (
+        <div className="flex h-full flex-col items-center justify-center gap-4">
+          <SmileySad size={64} className="text-primary" />
+          <p className="text-xl">Sem notas para exibir...</p>
         </div>
       ) : (
         <div className="flex h-full flex-col items-center justify-between">
