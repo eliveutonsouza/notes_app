@@ -6,7 +6,7 @@ import { Footer } from "../components/footer";
 export function DashboardLayouts() {
   return (
     // Outro componente pode ser renderizado aqui
-    <div className="h-screen bg-white flex flex-col justify-between item">
+    <div className="flex h-screen flex-col justify-between bg-white">
       <div>
         <Header />
         <Hero />
