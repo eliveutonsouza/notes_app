@@ -20,13 +20,12 @@ export function ensureAuthenticated(
 
     const [, token] = authToken.split(' ');
 
-    const keyToken = process.env.PRIVATE_KEY_JWT;
+    const privateKeyToken = process.env.PRIVATE_KEY_JWT;
+
+    if (!privateKeyToken) throw new Error('missing keyToken');
 
     try {
-        const decoded = verify(
-            token,
-            keyToken || 'e2ac90fa-2e12-4f99-8dde-7e3a7690ab35'
-        );
+        const decoded = verify(token, privateKeyToken);
 
         const { sub } = decoded as { sub: string };
 
