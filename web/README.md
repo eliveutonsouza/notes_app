@@ -154,6 +154,16 @@ npm run dev
 http://localhost:3000
 ```
 
+## Configuração das Variáveis de Ambiente
+
+Crie um arquivo `.env` na raiz do projeto e adicione as seguintes variáveis de ambiente:
+
+```env
+VITE_UNSPLASH_ACCESS_KEY=""
+VITE_API_OPENWATHER_KEY=""
+VITE_API_SERVER_BACKEND='http://localhost:3000'
+```
+
 ## Tecnologias Utilizadas
 
 - React
