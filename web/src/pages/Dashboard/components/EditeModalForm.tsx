@@ -75,11 +75,14 @@ export function EditeModalForm({ data, onRefresh }: EditeModalProps) {
 
   async function onDeleteNote(dataForm: EditeModalForm) {
     try {
-      await axios.delete(`http://localhost:3000/post/${dataForm.id}`, {
-        headers: {
-          Authorization: `Bearer ${cookie.token}`,
+      await axios.delete(
+        `${import.meta.env.VITE_API_SERVER_BACKEND}/post/${dataForm.id}`,
+        {
+          headers: {
+            Authorization: `Bearer ${cookie.token}`,
+          },
         },
-      });
+      );
 
       onRefresh();
       close("editeModal");
@@ -107,10 +110,10 @@ export function EditeModalForm({ data, onRefresh }: EditeModalProps) {
             name="title"
             id="title"
             placeholder="Ex: Apresentei um relatório para meu chefe..."
-            className="p-2 border border-primary rounded-lg outline-primary"
+            className="rounded-lg border border-primary p-2 outline-primary"
           />
           {errors.title && (
-            <span className="text-red-500 text-sm">
+            <span className="text-sm text-red-500">
               {errors.title?.message}
             </span>
           )}
@@ -125,19 +128,19 @@ export function EditeModalForm({ data, onRefresh }: EditeModalProps) {
             name="description"
             id="description"
             placeholder="Ex: Apresentei um relatório para meu chefe com os principais resultados do projeto, incluindo métricas e sugestões de melhoria. O foco foi otimizar processos e aumentar a eficiência nas próximas etapas."
-            className="p-2 border border-primary rounded-lg h-52 outline-primary"
+            className="h-52 rounded-lg border border-primary p-2 outline-primary"
           ></textarea>
           {errors.description && (
-            <span className="text-red-500 text-sm">
+            <span className="text-sm text-red-500">
               {errors.description?.message}
             </span>
           )}
         </div>
 
-        <div className="flex flex-col w-full justify-between items-center gap-4">
+        <div className="flex w-full flex-col items-center justify-between gap-4">
           <div className="flex w-full gap-4">
             <button
-              className="w-full border border-primary p-2 rounded-md text-primary"
+              className="w-full rounded-md border border-primary p-2 text-primary"
               type="button"
               onClick={() => close("editeModal")}
             >
@@ -145,7 +148,7 @@ export function EditeModalForm({ data, onRefresh }: EditeModalProps) {
             </button>
 
             <button
-              className="w-full bg-primary text-white p-2 rounded-md"
+              className="w-full rounded-md bg-primary p-2 text-white"
               type="submit"
             >
               Alterar
@@ -153,7 +156,7 @@ export function EditeModalForm({ data, onRefresh }: EditeModalProps) {
           </div>
 
           <button
-            className="text-red-400 w-20 rounded-md underline"
+            className="w-20 rounded-md text-red-400 underline"
             onClick={() =>
               onDeleteNote({
                 title: data.title,

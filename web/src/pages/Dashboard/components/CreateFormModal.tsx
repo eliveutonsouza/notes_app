@@ -55,7 +55,7 @@ export function CreateFormModal({ onRefresh }: CreateModalProps) {
     console.log("Nota criada com sucesso!");
 
     try {
-      const response = await axios.post("http://localhost:3000/post", data, {
+      const response = await axios.post(`${import.meta.env.VITE_API_SERVER_BACKEND}/post`, data, {
         headers: {
           "Content-Type": "application/json",
           Authorization: "Bearer " + cookie.token,

@@ -27,11 +27,15 @@ export function FormLogin() {
   });
   async function onSubmitForm(data: z.infer<typeof formLoginSchema>) {
     try {
-      const response = await axios.post("http://localhost:3000/login", data, {
-        headers: {
-          "Content-Type": "application/json",
+      const response = await axios.post(
+        `${import.meta.env.VITE_API_SERVER_BACKEND}/login`,
+        data,
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
         },
-      });
+      );
 
       localStorage.setItem("authToken", response.data.auth);
 
