@@ -1,4 +1,4 @@
-import { useContext } from "react";
+import { useCallback, useContext } from "react";
 import { ChangeNameForm } from "./components/ChangeNameForm";
 import { ProfileContext } from "../../context/ProfileContextProvider";
 import { ChangePasswordForm } from "./components/ChangePasswordForm";
@@ -19,7 +19,7 @@ export function Settings() {
     close("deleteAccount");
   };
 
-  const deleteProfile = async () => {
+  const deleteProfile = useCallback(async () => {
     try {
       const response = await axios.delete(
         `${import.meta.env.VITE_API_SERVER_BACKEND}/user`,
@@ -39,7 +39,7 @@ export function Settings() {
         console.error(error.response?.data);
       }
     }
-  };
+  }, [profileData.token, removeCookie]);
 
   return (
     <main className="container m-auto">
