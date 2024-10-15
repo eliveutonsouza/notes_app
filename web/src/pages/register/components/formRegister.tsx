@@ -50,8 +50,6 @@ export function FormRegister() {
       password,
     };
 
-    console.log(dataFormValues);
-
     try {
       const response = await axios.post(
         "http://localhost:3000/register",
@@ -60,11 +58,11 @@ export function FormRegister() {
           headers: {
             "Content-Type": "application/json",
           },
-        }
+        },
       );
 
       if (response.status === 201 || response.status === 200) {
-        console.log("Usuário cadastrado com sucesso!");
+        alert("Usuário cadastrado com sucesso!");
         navigate("/login");
       }
     } catch (error) {
@@ -84,13 +82,13 @@ export function FormRegister() {
         </label>
         <input
           {...register("name")}
-          className="w-full py-2 px-5 rounded ::placeholder:text-gray-400"
+          className="::placeholder:text-gray-400 w-full rounded px-5 py-2"
           id="name"
           type="text"
           placeholder="Seu nome completo"
         />
         {errors.name && (
-          <span className="text-red-500 text-sm">{errors.name?.message}</span>
+          <span className="text-sm text-red-500">{errors.name?.message}</span>
         )}
       </div>
 
@@ -100,13 +98,13 @@ export function FormRegister() {
         </label>
         <input
           {...register("email")}
-          className="w-full py-2 px-5 rounded ::placeholder:text-gray-400"
+          className="::placeholder:text-gray-400 w-full rounded px-5 py-2"
           id="email"
           type="text"
           placeholder="Seu e-mail"
         />
         {errors.email && (
-          <span className="text-red-500 text-sm">{errors.email?.message}</span>
+          <span className="text-sm text-red-500">{errors.email?.message}</span>
         )}
       </div>
 
@@ -116,13 +114,13 @@ export function FormRegister() {
         </label>
         <input
           {...register("password")}
-          className="w-full py-2 px-5 rounded ::placeholder:text-gray-400"
+          className="::placeholder:text-gray-400 w-full rounded px-5 py-2"
           id="password"
           type="password"
           placeholder="Sua senha"
         />
         {errors.password && (
-          <span className="text-red-500 text-sm">
+          <span className="text-sm text-red-500">
             {errors.password?.message}
           </span>
         )}
@@ -134,13 +132,13 @@ export function FormRegister() {
         </label>
         <input
           {...register("passwordConfirm")}
-          className="w-full py-2 px-5 rounded ::placeholder:text-gray-400"
+          className="::placeholder:text-gray-400 w-full rounded px-5 py-2"
           id="passwordConfirm"
           type="password"
           placeholder="Confirme sua senha"
         />
         {errors.passwordConfirm && (
-          <span className="text-red-500 text-sm">
+          <span className="text-sm text-red-500">
             {errors.passwordConfirm?.message}
           </span>
         )}
@@ -148,7 +146,7 @@ export function FormRegister() {
 
       <button
         type="submit"
-        className="w-full p-2 rounded text-primary bg-white"
+        className="w-full rounded bg-white p-2 text-primary"
       >
         Entrar
       </button>

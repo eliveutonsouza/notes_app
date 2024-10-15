@@ -10,10 +10,10 @@ interface MiddlewareProps {
 export function Middleware({ children }: MiddlewareProps) {
   const navigate = useNavigate();
   const location = useLocation();
-  const [token] = useCookies(["token"]);
-  const { isExpired } = useJwt(token.token);
+  const [cookie] = useCookies(["token"]);
+  const { isExpired } = useJwt(cookie.token);
 
-  const isAuthenticated = !!token; // Check if the token exists
+  const isAuthenticated = !!cookie.token; // Check if the token exists
   const isTokenExpired = isExpired; // Check if the token is expired
 
   const isLoginPage = location.pathname === "/login";
