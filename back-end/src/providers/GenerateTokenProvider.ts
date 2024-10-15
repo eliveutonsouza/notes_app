@@ -1,17 +1,16 @@
 import { sign } from 'jsonwebtoken';
+import dotenv from 'dotenv';
+dotenv.config();
 
 class GenerateTokenProvider {
     async execute(userEmail: string, userName: string): Promise<ResponseToken> {
         const expiresIn = 86400;
-        const privateKeyJwt = process.env.PRIVATE_KEY_JWT;
-        const token = sign(
-            { userName: userName },
-            privateKeyJwt || 'e2ac90fa-2e12-4f99-8dde-7e3a7690ab35',
-            {
-                subject: userEmail,
-                expiresIn,
-            }
-        );
+        const privateKeyToken = process.env.PRIVATE_KEY_JWT;
+        if (!privateKeyToken) throw new Error('missing keyJwT');
+        const token = sign({ userName: userName }, privateKeyToken, {
+            subject: userEmail,
+            expiresIn,
+        });
 
         return { token, userEmail, expiresIn, userName };
     }
