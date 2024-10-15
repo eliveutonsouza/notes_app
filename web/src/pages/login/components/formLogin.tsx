@@ -4,6 +4,8 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import { useContext } from "react";
+import { ProfileContext } from "../../../context/ProfileContextProvider";
 
 const formLoginSchema = z.object({
   email: z.string().email({ message: "E-mail inválido, tente novamente!" }),
@@ -13,6 +15,7 @@ const formLoginSchema = z.object({
 });
 
 export function FormLogin() {
+  const { setCookie } = useContext(ProfileContext);
   const navigate = useNavigate();
 
   const {
@@ -22,22 +25,31 @@ export function FormLogin() {
   } = useForm<z.infer<typeof formLoginSchema>>({
     resolver: zodResolver(formLoginSchema),
   });
-
   async function onSubmitForm(data: z.infer<typeof formLoginSchema>) {
     try {
-      const response = await axios.post("http://localhost:3000/login", data, {
-        headers: {
-          "Content-Type": "application/json",
+      const response = await axios.post(
+        `${import.meta.env.VITE_API_SERVER_BACKEND}/login`,
+        data,
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
         },
+      );
+
+      localStorage.setItem("authToken", response.data.auth);
+
+      if (response.status !== 200) {
+        console.log("An unexpected error occurred");
+      }
+
+      setCookie("token", response.data.auth.token, {
+        path: "/",
+        sameSite: "strict",
+        secure: true,
       });
 
-      const token = response.data.token;
-      document.cookie = `token=${token}; path=/; SameSite=Strict; Secure`;
-
-      if (response.status === 201 || response.status === 200) {
-        console.log("Usuário logado com sucesso!");
-        navigate("/dashboard");
-      }
+      navigate("/dashboard");
     } catch (error) {
       if (axios.isAxiosError(error)) {
         console.log(error.response?.data);
@@ -57,14 +69,14 @@ export function FormLogin() {
 
         <input
           {...register("email")}
-          className="w-full py-2 px-5 rounded ::placeholder:text-gray-400"
+          className="::placeholder:text-gray-400 w-full rounded px-5 py-2"
           id="email"
           type="text"
           placeholder="Seu e-mail"
         />
 
         {errors.email && (
-          <span className="text-red-500 text-sm">{errors.email?.message}</span>
+          <span className="text-sm text-red-500">{errors.email?.message}</span>
         )}
       </div>
 
@@ -76,13 +88,13 @@ export function FormLogin() {
 
         <input
           {...register("password")}
-          className="w-full py-2 px-5 rounded ::placeholder:text-gray-400"
+          className="::placeholder:text-gray-400 w-full rounded px-5 py-2"
           id="password"
           type="password"
           placeholder="Sua senha"
         />
         {errors.password && (
-          <span className="text-red-500 text-sm">
+          <span className="text-sm text-red-500">
             {errors.password?.message}
           </span>
         )}
@@ -90,7 +102,7 @@ export function FormLogin() {
 
       <button
         type="submit"
-        className="w-full p-2 rounded text-primary bg-white"
+        className="w-full rounded bg-white p-2 text-primary"
       >
         Entrar
       </button>

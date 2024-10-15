@@ -1,10 +1,13 @@
 import { BrowserRouter } from "react-router-dom";
 import { Router } from "./router";
+import { Middleware } from "./middleware";
 
 export default function App() {
   return (
     <BrowserRouter>
-      <Router />
+      <Middleware>
+        <Router />
+      </Middleware>
     </BrowserRouter>
   );
 }

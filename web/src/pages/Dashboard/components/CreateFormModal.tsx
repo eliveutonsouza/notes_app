@@ -1,9 +1,10 @@
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { ModalContext } from "../../../context/ModalContextProvider";
 import { zodResolver } from "@hookform/resolvers/zod";
 import axios from "axios";
+import { useCookies } from "react-cookie";
 
 const NewNoteModalForm = z.object({
   title: z
@@ -22,43 +23,50 @@ const NewNoteModalForm = z.object({
 
 type NewNoteModalForm = z.infer<typeof NewNoteModalForm>;
 
-export function CreateFormModal() {
-  const { close } = useContext(ModalContext);
+interface CreateModalProps {
+  onRefresh: () => void; // Adiciona a prop para recarregar os dados
+}
+
+export function CreateFormModal({ onRefresh }: CreateModalProps) {
+  const { close, getModalColor } = useContext(ModalContext);
+  const [cookie] = useCookies(["token"]);
 
   const {
     register,
     handleSubmit,
     formState: { errors },
+    setValue,
+    reset,
   } = useForm<NewNoteModalForm>({
     resolver: zodResolver(NewNoteModalForm),
     defaultValues: {
       title: "",
       description: "",
-      colorHex: "#E5F693",
+      colorHex: "",
     },
   });
 
+  useEffect(() => {
+    const colorModal = getModalColor("createNote");
+    setValue("colorHex", colorModal); // Atualiza o valor do campo colorHex
+  }, [getModalColor, setValue, reset]);
+
   async function onSubmitForm(data: NewNoteModalForm) {
-    console.log(data);
-
-    const token = document.cookie
-      .split("; ")
-      .find((row) => row.startsWith("token="))
-      ?.split("=")[1];
-
-    console.log(token);
+    console.log("Nota criada com sucesso!");
 
     try {
-      const response = await axios.post("http://localhost:3000/post", data, {
+      const response = await axios.post(`${import.meta.env.VITE_API_SERVER_BACKEND}/post`, data, {
         headers: {
           "Content-Type": "application/json",
-          Authorization: "Bearer " + token,
+          Authorization: "Bearer " + cookie.token,
         },
       });
 
       console.log(response.data);
 
+      onRefresh();
       if (response.status === 201 || response.status === 200) {
+        reset(); // Reseta os valores do formulário para os valores padrão
         close("createNote");
       }
     } catch (error) {
@@ -69,7 +77,6 @@ export function CreateFormModal() {
   }
 
   function onCancel() {
-    console.log("Anotação cancelado");
     close("createNote");
   }
 
@@ -86,10 +93,10 @@ export function CreateFormModal() {
             name="title"
             id="title"
             placeholder="Ex: Apresentei um relatório para meu chefe..."
-            className="p-2 border border-primary rounded-lg outline-primary"
+            className="rounded-lg border border-primary p-2 outline-primary"
           />
           {errors.title && (
-            <span className="text-red-500 text-sm">
+            <span className="text-sm text-red-500">
               {errors.title?.message}
             </span>
           )}
@@ -104,10 +111,10 @@ export function CreateFormModal() {
             name="description"
             id="description"
             placeholder="Ex: Apresentei um relatório para meu chefe com os principais resultados do projeto, incluindo métricas e sugestões de melhoria. O foco foi otimizar processos e aumentar a eficiência nas próximas etapas."
-            className="p-2 border border-primary rounded-lg h-52 outline-primary"
+            className="h-52 rounded-lg border border-primary p-2 outline-primary"
           ></textarea>
           {errors.description && (
-            <span className="text-red-500 text-sm">
+            <span className="text-sm text-red-500">
               {errors.description?.message}
             </span>
           )}
@@ -115,13 +122,17 @@ export function CreateFormModal() {
 
         <div className="flex w-full justify-between gap-4">
           <button
-            className="w-full border border-primary p-2 rounded-md text-primary"
+            className="w-full rounded-md border border-primary p-2 text-primary"
+            type="button"
             onClick={onCancel}
           >
             Cancelar
           </button>
 
-          <button className="w-full bg-primary text-white p-2 rounded-md">
+          <button
+            type="submit"
+            className="w-full rounded-md bg-primary p-2 text-white"
+          >
             Salvar
           </button>
         </div>
