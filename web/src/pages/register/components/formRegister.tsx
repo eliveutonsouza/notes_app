@@ -3,6 +3,7 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 
 const formRegisterSchema = z
   .object({
@@ -62,14 +63,33 @@ export function FormRegister() {
       );
 
       if (response.status === 201 || response.status === 200) {
-        alert("Usuário cadastrado com sucesso!");
+        toast.success("Account created successfully!", {
+          position: "top-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+        });
+
         navigate("/login");
       }
     } catch (error) {
       if (axios.isAxiosError(error)) {
-        console.log(error.response?.data);
-      } else {
-        console.log("An unexpected error occurred");
+        if (error.response?.status === 400) {
+          toast.error("Error creating account!", {
+            position: "top-right",
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+          });
+        } else {
+          console.log("An unexpected error occurred");
+        }
       }
     }
   }

@@ -5,6 +5,7 @@ import { ModalContext } from "../../../context/ModalContextProvider";
 import { zodResolver } from "@hookform/resolvers/zod";
 import axios from "axios";
 import { useCookies } from "react-cookie";
+import { toast } from "react-toastify";
 
 const EditeModalFormSchema = z.object({
   title: z
@@ -83,6 +84,16 @@ export function EditeModalForm({ data, onRefresh }: EditeModalProps) {
           },
         },
       );
+
+      toast.success("Anotação deletada!", {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+      });
 
       onRefresh();
       close("editeModal");

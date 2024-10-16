@@ -5,6 +5,7 @@ import axios from "axios";
 import { useContext, useState } from "react";
 import { ProfileContext } from "../../../context/ProfileContextProvider";
 import { Spinner } from "@phosphor-icons/react";
+import { toast } from "react-toastify";
 
 const formLoginSchema = z.object({
   email: z.string().email({ message: "Invalid email, please try again!" }),
@@ -54,10 +55,22 @@ export function FormLogin() {
       }
     } catch (error) {
       if (axios.isAxiosError(error)) {
-        console.log(error.response?.data);
+        if (error.response?.status === 401) {
+          toast.error("Email or password wrong!", {
+            position: "top-right",
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+          });
+        }
       } else {
         console.log("An unexpected error occurred");
       }
+    } finally {
+      setLoading(false); // End loading
     }
   }
 
