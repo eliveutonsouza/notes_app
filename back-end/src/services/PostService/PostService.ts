@@ -27,8 +27,6 @@ export default class PostService {
 
             const maxPage = Math.ceil(postsCount / limit);
 
-            if (page > maxPage) throw new Error('this page doesnt exist');
-
             return {
                 posts,
                 documentCount: postsCount,

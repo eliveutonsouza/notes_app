@@ -51,10 +51,10 @@ async function getPostByTitle(req: AuthReq, res: Response): Promise<void> {
 }
 async function getAllPosts(req: AuthReq, res: Response): Promise<void> {
     try {
-        if (!req.query.page) throw new Error('you should to send a page');
         if (!req.user?.email) throw new Error('userEmail fail on request');
-
-        const page = parseInt(req.query.page);
+        let page = parseInt(req.query.page);
+        if (typeof page !== 'number') page = 1;
+        if (!page) page = 1;
         const response: PaginationIPost = await postService.getAllPosts(
             req.user.email,
             page
