@@ -75,19 +75,22 @@ export function Dashboard() {
         const url = search
           ? `${import.meta.env.VITE_API_SERVER_BACKEND}/post/title?title=${search}`
           : `${import.meta.env.VITE_API_SERVER_BACKEND}/post?page=${page}`;
-        const response = await axios.get(url, {
-          headers: {
-            Authorization: `Bearer ${cookie.token}`,
-          },
-        });
+
+        const response = await axios
+          .get(url, {
+            headers: {
+              Authorization: `Bearer ${cookie.token}`,
+            },
+          })
+          .finally(() => {
+            setIsLoading(false);
+          });
 
         setNotes(response.data.body);
         setTotalPages(response.data.maxPage);
       } catch (error) {
         if (axios.isAxiosError(error)) {
-          console.error(error.response?.data);
-        } else {
-          console.error("An unexpected error occurred");
+          setNotes([]);
         }
       } finally {
         setTimeout(() => {
@@ -285,6 +288,7 @@ export function Dashboard() {
           </button>
         </div>
       </div>
+
       <Modal id="editeModal">
         {editingNote && (
           <EditeModalForm data={editingNote} onRefresh={refreshNotes} />

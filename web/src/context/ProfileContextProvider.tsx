@@ -11,7 +11,7 @@ import { useCookies } from "react-cookie";
 import { useJwt } from "react-jwt";
 import { WeatherResponseTypes } from "../@types/weatherResponseTypes";
 
-// Typings for the context props and decoded token data
+// Tipos para as props do contexto e dados do token decodificado
 interface ProfileContextProps {
   children: ReactNode;
 }
@@ -40,19 +40,24 @@ interface ProfileDataType {
   userName: string;
 }
 
+interface CookieSetOptions {
+  path?: string;
+  expires?: Date;
+  maxAge?: number;
+  domain?: string;
+  secure?: boolean;
+  httpOnly?: boolean;
+  sameSite?: "strict" | "lax" | "none";
+}
+
 interface ProfileContextType {
   profileData: ProfileDataType;
   reEvaluateToken: (token: string) => void;
-  setCookie: (
-    sub: string,
-    value: unknown,
-    options?: Record<string, unknown>,
-  ) => void;
-  removeCookie: (name: string, options?: Record<string, unknown>) => void;
-  setToken: (value: string) => void;
+  setCookie: (name: "token", value: string, options?: CookieSetOptions) => void;
+  removeCookie: (name: "token", options?: CookieSetOptions) => void;
 }
 
-// Default values for the context
+// Valores padrão para o contexto
 const ProfileDefaultValues: ProfileContextType = {
   profileData: {
     sub: "",
@@ -68,16 +73,14 @@ const ProfileDefaultValues: ProfileContextType = {
   reEvaluateToken: () => {},
   setCookie: () => {},
   removeCookie: () => {},
-  setToken: () => {},
 };
 
-// Context creation
+// Criação do contexto
 export const ProfileContext =
   createContext<ProfileContextType>(ProfileDefaultValues);
 
 export function ProfileContextProvider({ children }: ProfileContextProps) {
-  const [token, setToken] = useState<string>("");
-  const [cookies, setCookie, removeCookie] = useCookies([token]);
+  const [cookies, setCookie, removeCookie] = useCookies(["token"]);
 
   const [location, setLocation] = useState<LocationType | null>(null);
   const [geoError, setGeoError] = useState<string | null>(null);
@@ -90,7 +93,7 @@ export function ProfileContextProvider({ children }: ProfileContextProps) {
     cookies.token,
   );
 
-  // Function to get the user's location
+  // Função para obter a localização do usuário
   const getLocation = useCallback(() => {
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(
@@ -145,7 +148,7 @@ export function ProfileContextProvider({ children }: ProfileContextProps) {
     }
   }, [location]);
 
-  // Effect to get the location and weather data when the component mounts
+  // Efeito para obter a localização e os dados meteorológicos quando o componente é montado
   useEffect(() => {
     getLocation();
   }, [getLocation]);
@@ -154,7 +157,7 @@ export function ProfileContextProvider({ children }: ProfileContextProps) {
     getCodeCity();
   }, [getCodeCity]);
 
-  // Generate profile data with default values in case the token is undefined
+  // Gera os dados do perfil com valores padrão caso o token seja indefinido
   const profileData: ProfileDataType = useMemo(
     () => ({
       sub: decodedToken?.sub ?? "",
@@ -170,16 +173,15 @@ export function ProfileContextProvider({ children }: ProfileContextProps) {
     [decodedToken, isExpired, cookies.token, location, geoError, weatherData],
   );
 
-  // Context value that will be provided to components
+  // Valor do contexto que será fornecido aos componentes
   const valueContext = useMemo(
     () => ({
       profileData,
       reEvaluateToken,
       setCookie,
       removeCookie,
-      setToken,
     }),
-    [profileData, reEvaluateToken, setCookie, removeCookie, setToken],
+    [profileData, reEvaluateToken, setCookie, removeCookie],
   );
 
   return (
