@@ -40,6 +40,10 @@ export function FormLogin() {
       );
 
       if (response.status === 200) {
+        setTimeout(() => {
+          setLoading(false); // End loading
+        }, 2000);
+
         setCookie("token", response.data.auth.token, {
           path: "/",
           sameSite: "strict",
@@ -54,8 +58,6 @@ export function FormLogin() {
       } else {
         console.log("An unexpected error occurred");
       }
-    } finally {
-      setLoading(false); // End loading
     }
   }
 
@@ -102,7 +104,7 @@ export function FormLogin() {
 
       {loading ? (
         <button
-          className="flex w-full items-center justify-center rounded bg-white p-2 text-primary"
+          className="disable:bg-orange-200 flex w-full items-center justify-center rounded bg-white p-2 text-primary"
           disabled
         >
           <Spinner className="animate-spin" size={24} />
