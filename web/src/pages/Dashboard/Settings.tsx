@@ -5,6 +5,7 @@ import { ChangePasswordForm } from "./components/ChangePasswordForm";
 import Modal from "../../components/Modal";
 import { ModalContext } from "../../context/ModalContextProvider";
 import axios from "axios";
+import { toast } from "react-toastify";
 
 export function Settings() {
   const { profileData, removeCookie } = useContext(ProfileContext);
@@ -21,22 +22,36 @@ export function Settings() {
 
   const deleteProfile = useCallback(async () => {
     try {
-      const response = await axios.delete(
-        `${import.meta.env.VITE_API_SERVER_BACKEND}/user`,
-        {
-          headers: {
-            Authorization: `Bearer ${profileData.token}`,
-          },
+      await axios.delete(`${import.meta.env.VITE_API_SERVER_BACKEND}/user`, {
+        headers: {
+          Authorization: `Bearer ${profileData.token}`,
         },
-      );
+      });
 
       removeCookie("token");
-      alert("Conta deletada com sucesso!");
 
-      console.log(response.data);
+      toast.success("Account delete successfully!", {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+      });
     } catch (error) {
       if (axios.isAxiosError(error)) {
-        console.error(error.response?.data);
+        if (error.response?.status === 400) {
+          toast.error("Error account delete!", {
+            position: "top-right",
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+          });
+        }
       }
     }
   }, [profileData.token, removeCookie]);
@@ -95,35 +110,35 @@ export function Settings() {
                 Deletar conta
               </button>
 
-              <Modal id="deleteAccount">
-                <div className="rounded-md bg-white p-6">
-                  <h2 className="text-xl font-medium">Deletar conta</h2>
-                  <p className="text-gray-600">
-                    Tem certeza que deseja deletar sua conta? Essa ação não pode
-                    ser desfeita.
-                  </p>
-                  <div className="mt-8 flex gap-4">
-                    <button
-                      onClick={deleteProfile}
-                      className="rounded bg-red-500 px-4 py-2 text-white"
-                    >
-                      Deletar conta
-                    </button>
-                    <button
-                      onClick={closeModalDeleteAccount}
-                      className="rounded bg-gray-200 px-4 py-2 text-gray-600"
-                    >
-                      Cancelar
-                    </button>
-                  </div>
-                </div>
-              </Modal>
-
               <p className="text-gray-600">
                 Ao deletar sua conta, você perderá todos os seus dados e não
                 poderá mais acessar o sistema.
               </p>
             </div>
+
+            <Modal id="deleteAccount">
+              <div className="rounded-md bg-white p-6">
+                <h2 className="mb-2 text-xl font-medium">Deletar conta</h2>
+                <p className="text-gray-600">
+                  Tem certeza que deseja deletar sua conta? Essa ação não pode
+                  ser desfeita.
+                </p>
+                <div className="mt-8 flex gap-4">
+                  <button
+                    onClick={deleteProfile}
+                    className="rounded bg-red-500 px-4 py-2 text-white"
+                  >
+                    Deletar conta
+                  </button>
+                  <button
+                    onClick={closeModalDeleteAccount}
+                    className="rounded bg-gray-200 px-4 py-2 text-gray-600"
+                  >
+                    Cancelar
+                  </button>
+                </div>
+              </div>
+            </Modal>
           </div>
         </section>
       </div>

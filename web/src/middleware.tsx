@@ -13,29 +13,29 @@ export function Middleware({ children }: MiddlewareProps) {
   const [cookie] = useCookies(["token"]);
   const { isExpired } = useJwt(cookie.token);
 
-  const isAuthenticated = !!cookie.token; // Check if the token exists
-  const isTokenExpired = isExpired; // Check if the token is expired
+  const isAuthenticated = !!cookie.token; // Checks if the token exists
+  const isTokenExpired = isExpired; // Checks if the token is expired
 
   const isLoginPage = location.pathname === "/login";
   const isRegisterPage = location.pathname === "/register";
   const isHomePage = location.pathname === "/";
-  const isDashboardPage = location.pathname.startsWith("/dashboard"); // Check if the path starts with /dashboard
+  const isDashboardPage = location.pathname.startsWith("/dashboard");
 
   useEffect(() => {
-    // If the token is expired or not authenticated and tries to access the dashboard, redirect to login
-    if ((!isAuthenticated || isTokenExpired) && isDashboardPage) {
+    // If the token is expired and trying to access the dashboard, redirect to login
+    if (isTokenExpired && isDashboardPage) {
       navigate("/login");
       return;
     }
 
-    // If authenticated and tries to access login/register, redirect to the dashboard
-    if (isAuthenticated && !isTokenExpired && (isLoginPage || isRegisterPage)) {
+    // If authenticated and trying to access login or register, redirect to the dashboard
+    if (isAuthenticated && (isLoginPage || isRegisterPage)) {
       navigate("/dashboard");
       return;
     }
 
-    // If authenticated and not on home or dashboard, redirect to the dashboard
-    if (isAuthenticated && !isTokenExpired && !isHomePage && !isDashboardPage) {
+    // If authenticated and not on the home page or dashboard, redirect to the dashboard
+    if (isAuthenticated && !isHomePage && !isDashboardPage) {
       navigate("/dashboard");
     }
   }, [
@@ -46,8 +46,7 @@ export function Middleware({ children }: MiddlewareProps) {
     isHomePage,
     isDashboardPage,
     navigate,
-    location.pathname, // Add location.pathname to the dependency array
   ]);
 
-  return children;
+  return children; // Returns the children if none of the redirection conditions are met
 }

@@ -16,8 +16,10 @@ export function Header() {
   const navigate = useNavigate();
 
   const signOut = () => {
-    removeCookie("token");
-    navigate("/login");
+    if (profileData.token) {
+      removeCookie("token");
+      navigate("/login");
+    }
   };
 
   const routerSettings = () => navigate("/dashboard/settings");
@@ -44,7 +46,7 @@ export function Header() {
               onClick={routerDashboard}
               className="flex items-center gap-2 border-b text-sm"
             >
-              <Cards size={16} />
+              <Cards size={16} aria-hidden="true" />
               Dashboard
             </DropdownMenuItem>
 
@@ -52,7 +54,7 @@ export function Header() {
               onClick={routerSettings}
               className="flex items-center gap-2 border-b text-sm"
             >
-              <GearSix size={16} />
+              <GearSix size={16} aria-hidden="true" />
               Configurações
             </DropdownMenuItem>
 
@@ -60,7 +62,8 @@ export function Header() {
               onClick={signOut}
               className="flex items-center gap-2 text-sm"
             >
-              <SignOut size={16} /> Sair
+              <SignOut size={16} aria-hidden="true" />
+              Sair
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>

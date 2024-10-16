@@ -159,9 +159,17 @@ http://localhost:3000
 Crie um arquivo `.env` na raiz do projeto e adicione as seguintes variáveis de ambiente:
 
 ```env
+## Image display API for climate banner:
+## https://unsplash.com/oauth/applications
 VITE_UNSPLASH_ACCESS_KEY=""
+
+## Weather monitoring API:
+## https://home.openweathermap.org/
 VITE_API_OPENWATHER_KEY=""
+
+## Add your production server URL here
 VITE_API_SERVER_BACKEND='http://localhost:3000'
+
 ```
 
 ## Tecnologias Utilizadas

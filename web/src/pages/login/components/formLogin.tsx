@@ -1,22 +1,22 @@
 import { z } from "zod";
-
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useNavigate } from "react-router-dom";
 import axios from "axios";
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import { ProfileContext } from "../../../context/ProfileContextProvider";
+import { Spinner } from "@phosphor-icons/react";
+import { toast } from "react-toastify";
 
 const formLoginSchema = z.object({
-  email: z.string().email({ message: "E-mail inválido, tente novamente!" }),
+  email: z.string().email({ message: "Invalid email, please try again!" }),
   password: z
     .string()
-    .min(8, { message: "Senha deve ter no mínimo 8 caracteres!" }),
+    .min(8, { message: "Password must be at least 8 characters long!" }),
 });
 
 export function FormLogin() {
   const { setCookie } = useContext(ProfileContext);
-  const navigate = useNavigate();
+  const [loading, setLoading] = useState<boolean>(false);
 
   const {
     register,
@@ -25,8 +25,11 @@ export function FormLogin() {
   } = useForm<z.infer<typeof formLoginSchema>>({
     resolver: zodResolver(formLoginSchema),
   });
+
   async function onSubmitForm(data: z.infer<typeof formLoginSchema>) {
     try {
+      setLoading(true); // Start loading
+
       const response = await axios.post(
         `${import.meta.env.VITE_API_SERVER_BACKEND}/login`,
         data,
@@ -37,34 +40,46 @@ export function FormLogin() {
         },
       );
 
-      localStorage.setItem("authToken", response.data.auth);
+      if (response.status === 200) {
+        setTimeout(() => {
+          setLoading(false); // End loading
+        }, 2000);
 
-      if (response.status !== 200) {
-        console.log("An unexpected error occurred");
-      }
-
-      setCookie("token", response.data.auth.token, {
-        path: "/",
-        sameSite: "strict",
-        secure: true,
-      });
-
-      navigate("/dashboard");
-    } catch (error) {
-      if (axios.isAxiosError(error)) {
-        console.log(error.response?.data);
+        setCookie("token", response.data.auth.token, {
+          path: "/",
+          sameSite: "strict",
+          secure: true,
+        });
       } else {
         console.log("An unexpected error occurred");
       }
+    } catch (error) {
+      if (axios.isAxiosError(error)) {
+        if (error.response?.status === 401) {
+          toast.error("Email or password wrong!", {
+            position: "top-right",
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+          });
+        }
+      } else {
+        console.log("An unexpected error occurred");
+      }
+    } finally {
+      setLoading(false); // End loading
     }
   }
 
   return (
     <form onSubmit={handleSubmit(onSubmitForm)} className="flex flex-col gap-5">
       <div>
-        {/* rs-only: visible only to screen readers */}
+        {/* sr-only: visible only to screen readers */}
         <label htmlFor="email" className="sr-only">
-          Digite seu e-mail
+          Enter your email
         </label>
 
         <input
@@ -72,7 +87,7 @@ export function FormLogin() {
           className="::placeholder:text-gray-400 w-full rounded px-5 py-2"
           id="email"
           type="text"
-          placeholder="Seu e-mail"
+          placeholder="Your email"
         />
 
         {errors.email && (
@@ -81,9 +96,9 @@ export function FormLogin() {
       </div>
 
       <div className="block">
-        {/* rs-only: visible only to screen readers */}
+        {/* sr-only: visible only to screen readers */}
         <label htmlFor="password" className="sr-only">
-          Digite seu e-mail
+          Enter your password
         </label>
 
         <input
@@ -91,7 +106,7 @@ export function FormLogin() {
           className="::placeholder:text-gray-400 w-full rounded px-5 py-2"
           id="password"
           type="password"
-          placeholder="Sua senha"
+          placeholder="Your password"
         />
         {errors.password && (
           <span className="text-sm text-red-500">
@@ -100,12 +115,21 @@ export function FormLogin() {
         )}
       </div>
 
-      <button
-        type="submit"
-        className="w-full rounded bg-white p-2 text-primary"
-      >
-        Entrar
-      </button>
+      {loading ? (
+        <button
+          className="disable:bg-orange-200 flex w-full items-center justify-center rounded bg-white p-2 text-primary"
+          disabled
+        >
+          <Spinner className="animate-spin" size={24} />
+        </button>
+      ) : (
+        <button
+          type="submit"
+          className="w-full rounded bg-white p-2 text-primary"
+        >
+          Login
+        </button>
+      )}
     </form>
   );
 }

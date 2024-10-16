@@ -4,6 +4,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useContext } from "react";
 import { ProfileContext } from "../../../context/ProfileContextProvider";
 import axios from "axios";
+import { toast } from "react-toastify";
 
 const ChangeNameFormSchema = z.object({
   name: z
@@ -46,12 +47,31 @@ export function ChangeNameForm() {
         },
       );
       if (response.status === 201 || response.status === 200) {
-        console.log("Usuário alterado com sucesso!", response.data);
+        toast.success("Account name changed successfully!", {
+          position: "top-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+        });
+
         reset();
       }
     } catch (error) {
       if (axios.isAxiosError(error)) {
-        console.log(error.response?.data);
+        if (error.response?.status === 400) {
+          toast.error("Error changing account name!", {
+            position: "top-right",
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+          });
+        }
       } else {
         console.log("An unexpected error occurred");
       }
