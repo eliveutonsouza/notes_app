@@ -95,35 +95,35 @@ export function Settings() {
                 Deletar conta
               </button>
 
-              <Modal id="deleteAccount">
-                <div className="rounded-md bg-white p-6">
-                  <h2 className="text-xl font-medium">Deletar conta</h2>
-                  <p className="text-gray-600">
-                    Tem certeza que deseja deletar sua conta? Essa ação não pode
-                    ser desfeita.
-                  </p>
-                  <div className="mt-8 flex gap-4">
-                    <button
-                      onClick={deleteProfile}
-                      className="rounded bg-red-500 px-4 py-2 text-white"
-                    >
-                      Deletar conta
-                    </button>
-                    <button
-                      onClick={closeModalDeleteAccount}
-                      className="rounded bg-gray-200 px-4 py-2 text-gray-600"
-                    >
-                      Cancelar
-                    </button>
-                  </div>
-                </div>
-              </Modal>
-
               <p className="text-gray-600">
                 Ao deletar sua conta, você perderá todos os seus dados e não
                 poderá mais acessar o sistema.
               </p>
             </div>
+
+            <Modal id="deleteAccount">
+              <div className="rounded-md bg-white p-6">
+                <h2 className="mb-2 text-xl font-medium">Deletar conta</h2>
+                <p className="text-gray-600">
+                  Tem certeza que deseja deletar sua conta? Essa ação não pode
+                  ser desfeita.
+                </p>
+                <div className="mt-8 flex gap-4">
+                  <button
+                    onClick={deleteProfile}
+                    className="rounded bg-red-500 px-4 py-2 text-white"
+                  >
+                    Deletar conta
+                  </button>
+                  <button
+                    onClick={closeModalDeleteAccount}
+                    className="rounded bg-gray-200 px-4 py-2 text-gray-600"
+                  >
+                    Cancelar
+                  </button>
+                </div>
+              </div>
+            </Modal>
           </div>
         </section>
       </div>
