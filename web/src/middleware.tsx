@@ -29,13 +29,13 @@ export function Middleware({ children }: MiddlewareProps) {
     }
 
     // If authenticated and trying to access login or register, redirect to the dashboard
-    if (!isTokenExpired && (isLoginPage || isRegisterPage)) {
+    if (isAuthenticated && (isLoginPage || isRegisterPage)) {
       navigate("/dashboard");
       return;
     }
 
     // If authenticated and not on the home page or dashboard, redirect to the dashboard
-    if (!isTokenExpired && !isHomePage && !isDashboardPage) {
+    if (isAuthenticated && !isHomePage && !isDashboardPage) {
       navigate("/dashboard");
     }
   }, [
