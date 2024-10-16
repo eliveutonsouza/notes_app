@@ -165,9 +165,9 @@ describe('get Posts', () => {
     });
 });
 
-describe('error get Posts', () => {
-    test('should to throw error get all posts', async function () {
-        let err;
+describe('empty vector get Posts', () => {
+    test('should to return empty vector trying get all posts', async function () {
+        let response;
         const post1 = await postService.createPost(postData, userData.email);
 
         const post2 = await postService.createPost(postData, userData.email);
@@ -175,12 +175,10 @@ describe('error get Posts', () => {
         await postService.createPost(postData, userData.email);
 
         try {
-            await postService.getAllPosts(userData.email, 2);
-        } catch (e: any) {
-            err = e;
-        }
+            response = await postService.getAllPosts(userData.email, 2);
+        } catch (e: any) {}
 
-        expect(err.message).toStrictEqual('this page doesnt exist');
+        expect(response?.posts).toStrictEqual([]);
 
         await postService.deletePost(post1._id, userData.email);
         await postService.deletePost(post2._id, userData.email);
