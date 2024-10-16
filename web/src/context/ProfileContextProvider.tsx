@@ -11,7 +11,7 @@ import { useCookies } from "react-cookie";
 import { useJwt } from "react-jwt";
 import { WeatherResponseTypes } from "../@types/weatherResponseTypes";
 
-// Tipos para as props do contexto e dados do token decodificado
+// Types for context props and decoded token data
 interface ProfileContextProps {
   children: ReactNode;
 }
@@ -57,7 +57,7 @@ interface ProfileContextType {
   removeCookie: (name: "token", options?: CookieSetOptions) => void;
 }
 
-// Valores padrão para o contexto
+// Default values for the context
 const ProfileDefaultValues: ProfileContextType = {
   profileData: {
     sub: "",
@@ -75,7 +75,7 @@ const ProfileDefaultValues: ProfileContextType = {
   removeCookie: () => {},
 };
 
-// Criação do contexto
+// Creating the context
 export const ProfileContext =
   createContext<ProfileContextType>(ProfileDefaultValues);
 
@@ -93,7 +93,7 @@ export function ProfileContextProvider({ children }: ProfileContextProps) {
     cookies.token,
   );
 
-  // Função para obter a localização do usuário
+  // Function to get the user's location
   const getLocation = useCallback(() => {
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(
@@ -148,7 +148,7 @@ export function ProfileContextProvider({ children }: ProfileContextProps) {
     }
   }, [location]);
 
-  // Efeito para obter a localização e os dados meteorológicos quando o componente é montado
+  // Effect to get location and weather data when the component is mounted
   useEffect(() => {
     getLocation();
   }, [getLocation]);
@@ -157,7 +157,7 @@ export function ProfileContextProvider({ children }: ProfileContextProps) {
     getCodeCity();
   }, [getCodeCity]);
 
-  // Gera os dados do perfil com valores padrão caso o token seja indefinido
+  // Generate profile data with default values if the token is undefined
   const profileData: ProfileDataType = useMemo(
     () => ({
       sub: decodedToken?.sub ?? "",
@@ -173,7 +173,7 @@ export function ProfileContextProvider({ children }: ProfileContextProps) {
     [decodedToken, isExpired, cookies.token, location, geoError, weatherData],
   );
 
-  // Valor do contexto que será fornecido aos componentes
+  // Context value to be provided to components
   const valueContext = useMemo(
     () => ({
       profileData,
