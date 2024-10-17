@@ -26,13 +26,13 @@ export function Header() {
   const routerDashboard = () => navigate("/dashboard");
 
   return (
-    <header className="container m-auto flex items-center justify-between py-4">
+    <header className="container mx-auto flex items-center justify-between px-4 py-4 sm:mx-auto sm:flex-row">
       <Link to="/login">
         <img src={logoFull} alt="Logo do aplicativo Notes" />
       </Link>
 
-      <div className="flex items-center justify-center gap-4">
-        <div className="text-end">
+      <div className="flex flex-col items-center justify-center gap-4 sm:mt-0 sm:flex-row">
+        <div className="hidden text-center sm:block sm:text-end">
           <h2 className="font-medium">{profileData.userName || "Usuário"}</h2>
           <p className="text-sm font-light">{profileData.sub || ""}</p>
         </div>

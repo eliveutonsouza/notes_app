@@ -142,94 +142,84 @@ export function Dashboard() {
   }
 
   return (
-    <section className="container m-auto flex flex-col justify-between gap-6">
-      <div>
-        <div className="container m-auto flex items-center justify-between">
-          <div className="flex gap-2">
-            <MagnifyingGlass size={24} weight="bold" />
-            <form onSubmit={handleSubmit(onSubmitForm)}>
-              <Input
-                {...register("search")}
-                placeholder="Search..."
-                type="text"
-                id="search"
-              />
-            </form>
-          </div>
-
-          <div className="flex items-center gap-6">
-            {/* Initially hidden color buttons */}
-            <div
-              className={`flex gap-6 ${showColorButtons ? "block" : "hidden"}`}
-            >
-              {buttonColors.map((color) => (
-                <button
-                  key={color}
-                  className="h-6 w-6 rounded-full"
-                  style={{ backgroundColor: color }}
-                  onClick={() => {
-                    openModalNewNote(color); // Opens the modal with the chosen color
-                    setShowColorButtons(false); // Hides the color buttons after selection
-                  }}
+    <section className="flex h-screen flex-col">
+      <div className="container mx-auto flex-grow px-4">
+        <div className="flex flex-col gap-6">
+          <div className="flex items-center justify-between gap-4 sm:flex-row">
+            <div className="flex gap-2">
+              <MagnifyingGlass size={24} weight="bold" />
+              <form onSubmit={handleSubmit(onSubmitForm)}>
+                <Input
+                  {...register("search")}
+                  placeholder="Search..."
+                  type="text"
+                  id="search"
+                  className="w-36 sm:w-auto"
                 />
-              ))}
+              </form>
             </div>
 
-            {/* Add button that shows color buttons */}
-            <button
-              className="rounded-full bg-black p-3 text-white"
-              type="button"
-              onClick={() => setShowColorButtons(!showColorButtons)} // Toggles between showing and hiding color buttons
-            >
-              <Plus size={24} weight="bold" />
-            </button>
-          </div>
-        </div>
+            <div className="flex items-center gap-6">
+              <div
+                className={`${
+                  showColorButtons ? "flex" : "hidden"
+                } cursor-pointer flex-wrap gap-2`}
+              >
+                {buttonColors.map((color) => (
+                  <button
+                    key={color}
+                    className="h-6 w-6 cursor-pointer rounded-full"
+                    style={{ backgroundColor: color }}
+                    onClick={() => {
+                      openModalNewNote(color);
+                      setShowColorButtons(false);
+                    }}
+                  />
+                ))}
+              </div>
 
-        <Modal id="createNote">
-          <CreateFormModal onRefresh={refreshNotes} />
-        </Modal>
-      </div>
+              <button
+                className="rounded-full bg-black p-3 text-white"
+                type="button"
+                onClick={() => setShowColorButtons(!showColorButtons)}
+              >
+                <Plus size={24} weight="bold" />
+              </button>
+            </div>
+          </div>
 
-      <div className="flex min-h-[40rem] flex-col justify-between">
-        {isLoading ? (
-          <div className="flex h-full flex-col items-center justify-center gap-4">
-            <Spinner className="animate-spin" size={24} />
-            <p>Loading Notes</p>
-          </div>
-        ) : notes.length === 0 ? (
-          <div className="flex h-full flex-col items-center justify-center gap-4">
-            <SmileySad size={64} className="text-primary" />
-            <p className="text-xl">No notes to display...</p>
-          </div>
-        ) : (
-          <div className="flex h-full flex-col items-center justify-between">
-            <div className="grid grid-cols-4 gap-6">
+          {isLoading ? (
+            <div className="flex h-full flex-col items-center justify-center gap-4">
+              <Spinner className="animate-spin" size={24} />
+              <p>Loading Notes</p>
+            </div>
+          ) : notes.length === 0 ? (
+            <div className="flex h-full flex-col items-center justify-center gap-4">
+              <SmileySad size={64} className="text-primary" />
+              <p className="text-xl">No notes to display...</p>
+            </div>
+          ) : (
+            <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
               {notes.map((note) => (
                 <div
                   key={note._id}
                   style={{ backgroundColor: note.colorHex }}
-                  className="flex max-h-52 min-h-52 min-w-80 max-w-80 flex-col items-start justify-between gap-4 rounded-lg p-6"
+                  className="flex max-h-52 min-h-52 flex-col items-start justify-between gap-4 rounded-lg p-6"
                 >
                   <div
-                    className="flex cursor-pointer flex-col gap-2 text-start"
+                    className="cursor-pointer text-start"
                     onClick={() => openModalViewNote(note)}
                   >
-                    <h2 className="font-bold first-letter:uppercase">
-                      {note.title.slice(0, 30)}...
-                    </h2>
-                    <p className="tracking-wider">
-                      {note.description.slice(0, 80)}...
-                    </p>
+                    <h2 className="font-bold">{note.title.slice(0, 30)}...</h2>
+                    <p>{note.description.slice(0, 80)}...</p>
                   </div>
 
                   <div className="flex w-full items-center justify-between">
                     <time>
-                      {format(new Date(note.createdAt), "dd 'de' MMMM yyyy")}
+                      {format(new Date(note.createdAt), "dd MMM yyyy")}
                     </time>
-
                     <button
-                      className="z-10 rounded-full bg-black p-2"
+                      className="rounded-full bg-black p-2"
                       type="button"
                       onClick={(e) => {
                         e.stopPropagation();
@@ -245,47 +235,40 @@ export function Dashboard() {
                   </div>
                 </div>
               ))}
-
-              <Modal id="viewNote">
-                {viewNote && (
-                  <ViewNotesModal
-                    data={viewNote}
-                    openModalEditeNote={openModalEditeNote}
-                  />
-                )}
-              </Modal>
             </div>
-          </div>
-        )}
-        {/* Pagination buttons at the bottom of the page */}
-        <div className="my-6 flex items-center justify-center gap-8">
-          <button
-            className="rounded bg-black p-3"
-            onClick={handlePreviousPage}
-            disabled={currentPage === 1}
-          >
-            <ArrowLeft size={17} weight="bold" className="text-white" />
-          </button>
+          )}
 
-          {[...Array(totalPages)].map((_, index) => (
-            <button
-              key={index}
-              className={`${
-                currentPage === index + 1 ? "font-bold underline" : ""
-              }`}
-              onClick={() => setCurrentPage(index + 1)}
-            >
-              {index + 1}
-            </button>
-          ))}
+          {totalPages > 1 && (
+            <div className="my-6 flex items-center justify-center gap-8">
+              <button
+                className="rounded bg-black p-3"
+                onClick={handlePreviousPage}
+                disabled={currentPage === 1}
+              >
+                <ArrowLeft size={17} weight="bold" className="text-white" />
+              </button>
 
-          <button
-            className="rounded bg-black p-3"
-            onClick={handleNextPage}
-            disabled={currentPage === totalPages}
-          >
-            <ArrowRight size={17} weight="bold" className="text-white" />
-          </button>
+              {[...Array(totalPages)].map((_, index) => (
+                <button
+                  key={index}
+                  className={`${
+                    currentPage === index + 1 ? "font-bold underline" : ""
+                  }`}
+                  onClick={() => setCurrentPage(index + 1)}
+                >
+                  {index + 1}
+                </button>
+              ))}
+
+              <button
+                className="rounded bg-black p-3"
+                onClick={handleNextPage}
+                disabled={currentPage === totalPages}
+              >
+                <ArrowRight size={17} weight="bold" className="text-white" />
+              </button>
+            </div>
+          )}
         </div>
       </div>
 
@@ -294,6 +277,23 @@ export function Dashboard() {
           <EditeModalForm data={editingNote} onRefresh={refreshNotes} />
         )}
       </Modal>
+
+      <Modal id="createNote">
+        <CreateFormModal onRefresh={refreshNotes} />
+      </Modal>
+
+      <Modal id="viewNote">
+        {viewNote && (
+          <ViewNotesModal
+            data={viewNote}
+            openModalEditeNote={openModalEditeNote}
+          />
+        )}
+      </Modal>
+
+      <footer className="flex items-center justify-center bg-black py-7 text-white">
+        <p>© {new Date().getFullYear()} - Todos os direitos reservados</p>
+      </footer>
     </section>
   );
 }

@@ -40,12 +40,12 @@ const Modal = ({ id, children }: ModalProps) => {
   return (
     <div
       ref={modalRef}
-      className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-70"
+      className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-70 p-4"
       style={{ display: isOpen(id) ? "flex" : "none" }}
       onClick={handleClose} // Fechar modal ao clicar fora do conteúdo
     >
       <div
-        className="relative w-[40rem] rounded border-t-8 p-16"
+        className="relative w-full max-w-3xl rounded border-t-8 p-4 sm:p-8 md:p-12 lg:p-16"
         style={{ borderColor: getModalColor(id), backgroundColor: "white" }}
         onClick={handleContentClick} // Impedir propagação do clique no conteúdo
       >
