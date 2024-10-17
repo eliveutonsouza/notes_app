@@ -20,15 +20,14 @@ export function ViewNotesModal({ data, openModalEditeNote }: ViewModalProps) {
   const { close } = useContext(ModalContext);
 
   function onActionEdite() {
-    console.log("onActionEdite called");
     openModalEditeNote(data);
-    close("viewNote"); // Fechar o modal de visualização
+    close("viewNote"); // Close the view modal
   }
 
   return (
     <div
       className="flex min-h-52 flex-col justify-between gap-6 rounded-lg bg-white p-6"
-      onClick={(e) => e.stopPropagation()} // Impede a propagação do evento de clique
+      onClick={(e) => e.stopPropagation()} // Prevents click event propagation
     >
       <div className="space-y-2 overflow-hidden">
         <h2 className="break-words text-2xl font-bold first-letter:uppercase">
@@ -42,7 +41,7 @@ export function ViewNotesModal({ data, openModalEditeNote }: ViewModalProps) {
       <div className="flex items-center justify-between">
         <time className="text-gray-500">
           {data?.createdAt &&
-            format(new Date(data.createdAt), "dd 'de' MMMM yyyy")}
+            format(new Date(data.createdAt), "dd 'of' MMMM yyyy")}
         </time>
         <button
           className="rounded-full bg-black p-2"

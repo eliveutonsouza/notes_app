@@ -1,7 +1,18 @@
-export function Footer() {
+import { cn } from "../lib/utils";
+
+interface FooterProps {
+  className?: string;
+}
+
+export function Footer({ className }: FooterProps) {
   return (
-    <footer className="bg-black py-7 text-white flex items-center justify-center">
-      <p>© {new Date().getFullYear()} - Todos os direitos reservados</p>
+    <footer
+      className={cn(
+        "flex items-center justify-center bg-black py-7 text-white",
+        className,
+      )}
+    >
+      <p>© {new Date().getFullYear()} - All rights reserved</p>
     </footer>
   );
 }

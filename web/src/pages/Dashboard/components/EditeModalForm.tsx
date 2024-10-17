@@ -10,12 +10,12 @@ import { toast } from "react-toastify";
 const EditeModalFormSchema = z.object({
   title: z
     .string()
-    .min(3, { message: "Seu titulo está pequeno demais!" })
-    .max(50, { message: "Seu titulo está grande demais!" }),
+    .min(3, { message: "Your title is too short!" })
+    .max(50, { message: "Your title is too long!" }),
   description: z
     .string()
-    .min(10, { message: "Sua descrição está pequena demais!" })
-    .max(255, { message: "Sua descrição está grande demais!" }),
+    .min(10, { message: "Your description is too short!" })
+    .max(255, { message: "Your description is too long!" }),
   colorHex: z.string(),
   id: z.string(),
 });
@@ -32,7 +32,7 @@ interface Note {
 
 interface EditeModalProps {
   data: Note;
-  onRefresh: () => void; // Adiciona a prop para recarregar os dados
+  onRefresh: () => void; // Adds the prop to reload the data
 }
 
 export function EditeModalForm({ data, onRefresh }: EditeModalProps) {
@@ -61,11 +61,22 @@ export function EditeModalForm({ data, onRefresh }: EditeModalProps) {
         },
       });
 
+      toast.success("Note updated!", {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+      });
+
       onRefresh();
       close("editeModal");
     } catch (error) {
       if (axios.isAxiosError(error)) {
         console.error(error.response?.data);
+        // error.response?.data?.message
       } else {
         console.error("An unexpected error occurred");
       }
@@ -85,7 +96,7 @@ export function EditeModalForm({ data, onRefresh }: EditeModalProps) {
         },
       );
 
-      toast.success("Anotação deletada!", {
+      toast.success("Note deleted!", {
         position: "top-right",
         autoClose: 5000,
         hideProgressBar: false,
@@ -99,7 +110,15 @@ export function EditeModalForm({ data, onRefresh }: EditeModalProps) {
       close("editeModal");
     } catch (error) {
       if (axios.isAxiosError(error)) {
-        console.error(error.response?.data);
+        toast.error("Error deleting note!", {
+          position: "top-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+        });
       } else {
         console.error("An unexpected error occurred");
       }
@@ -113,14 +132,14 @@ export function EditeModalForm({ data, onRefresh }: EditeModalProps) {
       <div className="flex flex-col gap-4">
         <div className="flex flex-col gap-4">
           <label htmlFor="title" className="font-bold">
-            O que você fez hoje?
+            What did you do today?
           </label>
           <input
             {...register("title")}
             type="text"
             name="title"
             id="title"
-            placeholder="Ex: Apresentei um relatório para meu chefe..."
+            placeholder="E.g.: I presented a report to my boss..."
             className="rounded-lg border border-primary p-2 outline-primary"
           />
           {errors.title && (
@@ -132,13 +151,13 @@ export function EditeModalForm({ data, onRefresh }: EditeModalProps) {
 
         <div className="flex flex-col gap-4">
           <label htmlFor="description" className="font-bold">
-            Como foi?
+            How was it?
           </label>
           <textarea
             {...register("description")}
             name="description"
             id="description"
-            placeholder="Ex: Apresentei um relatório para meu chefe com os principais resultados do projeto, incluindo métricas e sugestões de melhoria. O foco foi otimizar processos e aumentar a eficiência nas próximas etapas."
+            placeholder="E.g.: I presented a report to my boss with the main project results, including metrics and improvement suggestions. The focus was on optimizing processes and increasing efficiency in the next steps."
             className="h-52 rounded-lg border border-primary p-2 outline-primary"
           ></textarea>
           {errors.description && (
@@ -155,14 +174,14 @@ export function EditeModalForm({ data, onRefresh }: EditeModalProps) {
               type="button"
               onClick={() => close("editeModal")}
             >
-              Cancelar
+              Cancel
             </button>
 
             <button
               className="w-full rounded-md bg-primary p-2 text-white"
               type="submit"
             >
-              Alterar
+              Update
             </button>
           </div>
 
@@ -177,7 +196,7 @@ export function EditeModalForm({ data, onRefresh }: EditeModalProps) {
               })
             }
           >
-            Deletar
+            Delete
           </button>
         </div>
       </div>

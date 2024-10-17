@@ -1,103 +1,101 @@
-# Notes App
+# Frontend Notes App
 
-O Notes App é uma aplicação web para gerenciar notas pessoais. Os usuários podem se registrar, fazer login, criar, editar, visualizar e deletar notas. A aplicação utiliza autenticação baseada em tokens para garantir a segurança dos dados.
+## Features
 
-## Funcionalidades
+### Main Features
 
-### Funcionalidades Principais
+1. **User Registration**
 
-1. **Registro de Usuário**
+- Users can register by providing their name, email, and password.
+- The password must be confirmed during registration.
 
-- Os usuários podem se registrar fornecendo nome, e-mail e senha.
-- A senha deve ser confirmada durante o registro.
+2. **User Login**
 
-2. **Login de Usuário**
+- Users can log in by providing their email and password.
+- After logging in, an authentication token is stored in the cookies.
 
-- Os usuários podem fazer login fornecendo e-mail e senha.
-- Após o login, um token de autenticação é armazenado nos cookies.
+3. **Notes Management**
 
-3. **Gerenciamento de Notas**
+- **Creating Notes**
+  - Users can create new notes by providing a title, description, and color.
+- **Editing Notes**
+  - Users can edit existing notes.
+- **Viewing Notes**
+  - Users can view details of a specific note.
+- **Deleting Notes**
+  - Users can delete existing notes.
 
-- **Criação de Notas**
-  - Os usuários podem criar novas notas fornecendo título, descrição e cor.
-- **Edição de Notas**
-  - Os usuários podem editar notas existentes.
-- **Visualização de Notas**
-  - Os usuários podem visualizar detalhes de uma nota específica.
-- **Deleção de Notas**
-  - Os usuários podem deletar notas existentes.
+### Additional Features
 
-### Funcionalidades Adicionais
+- **Profile Modal**
+  - Users can update profile information.
+- **Pagination**
+  - Notes are paginated for better viewing.
 
-- **Modal de Perfil**
-  - Os usuários podem atualizar informações do perfil.
-- **Paginação**
-  - As notas são paginadas para melhor visualização.
+## Functional Requirements
 
-## Requisitos Funcionais
+1. **User Registration**
 
-1. **Registro de Usuário**
+- The system must allow new users to register.
+- The system must validate the email and password during registration.
 
-- O sistema deve permitir que novos usuários se registrem.
-- O sistema deve validar o e-mail e a senha durante o registro.
+2. **User Login**
 
-2. **Login de Usuário**
+- The system must allow registered users to log in.
+- The system must validate user credentials.
 
-- O sistema deve permitir que usuários registrados façam login.
-- O sistema deve validar as credenciais do usuário.
+3. **Notes Management**
 
-3. **Gerenciamento de Notas**
+- The system must allow users to create, edit, view, and delete notes.
+- The system must validate the note fields (title, description, and color).
 
-- O sistema deve permitir que usuários criem, editem, visualizem e deletem notas.
-- O sistema deve validar os campos das notas (título, descrição e cor).
+4. **Authentication and Authorization**
 
-4. **Autenticação e Autorização**
+- The system must use authentication tokens to protect routes.
+- The system must store the authentication token in cookies.
 
-- O sistema deve utilizar tokens de autenticação para proteger as rotas.
-- O sistema deve armazenar o token de autenticação nos cookies.
+## Non-Functional Requirements
 
-## Requisitos Não Funcionais
+1. **Usability**
 
-1. **Usabilidade**
+- The interface should be intuitive and easy to use.
+- The design should be responsive and accessible.
 
-- A interface deve ser intuitiva e fácil de usar.
-- O design deve ser responsivo e acessível.
+2. **Performance**
 
-2. **Desempenho**
+- The system should handle multiple simultaneous requests.
+- The response time of operations should be acceptable for the user.
 
-- O sistema deve ser capaz de lidar com múltiplas requisições simultâneas.
-- O tempo de resposta das operações deve ser aceitável para o usuário.
+3. **Security**
 
-3. **Segurança**
+- The system must protect user data using HTTPS.
+- The system must securely store passwords.
 
-- O sistema deve proteger os dados dos usuários utilizando HTTPS.
-- O sistema deve armazenar senhas de forma segura.
+4. **Maintainability**
 
-4. **Manutenibilidade**
+- The code should be modular and follow best development practices.
+- The system should be easy to maintain and update.
 
-- O código deve ser modular e seguir boas práticas de desenvolvimento.
-- O sistema deve ser fácil de manter e atualizar.
+## Business Rules
 
-## Regras de Negócio
+1. **User Registration**
 
-1. **Registro de Usuário**
+- The email must be unique and valid.
+- The password must have at least 8 characters.
 
-- O e-mail deve ser único e válido.
-- A senha deve ter no mínimo 8 caracteres.
+2. **User Login**
 
-2. **Login de Usuário**
+- The email and password must match a registered user.
 
-- O e-mail e a senha devem corresponder a um usuário registrado.
+3. **Notes Management**
 
-3. **Gerenciamento de Notas**
+- The note title must be between 3 and 50 characters.
+- The note description must be between 10 and 255 characters.
+- The note color must be a valid hexadecimal code.
 
-- O título da nota deve ter entre 3 e 50 caracteres.
-- A descrição da nota deve ter entre 10 e 255 caracteres.
-- A cor da nota deve ser um código hexadecimal válido.
+## Project Structure
 
-## Estrutura do Projeto
-
-A estrutura do projeto é composta por pastas e arquivos organizados da seguinte forma:
+The project structure is composed of folders and files organized as follows:
 
 ```
 
@@ -128,35 +126,35 @@ notes-app/
 
 ```
 
-## Como Executar o Projeto
+## How to Run the Project
 
-1. Clone o repositório:
+1. Clone the repository:
 
 ```sh
-git clone https://github.com/seu-usuario/notes-app.git
+git clone https://github.com/your-username/notes-app.git
 ```
 
-2. Instale as dependências:
+2. Install dependencies:
 
 ```sh
 npm install
 ```
 
-3. Inicie o servidor de desenvolvimento:
+3. Start the development server:
 
 ```sh
 npm run dev
 ```
 
-4. Acesse a aplicação em seu navegador:
+4. Access the application in your browser:
 
 ```sh
 http://localhost:3000
 ```
 
-## Configuração das Variáveis de Ambiente
+## Environment Variables Configuration
 
-Crie um arquivo `.env` na raiz do projeto e adicione as seguintes variáveis de ambiente:
+Create a `.env` file in the project root and add the following environment variables:
 
 ```env
 ## Image display API for climate banner:
@@ -172,7 +170,7 @@ VITE_API_SERVER_BACKEND='http://localhost:3000'
 
 ```
 
-## Tecnologias Utilizadas
+## Technologies Used
 
 - React
 - TypeScript
@@ -184,16 +182,18 @@ VITE_API_SERVER_BACKEND='http://localhost:3000'
 - React Hook Form
 - React Cookies
 
-## Contribuição
+## Contribution
 
-1. Faça um fork do projeto.
-2. Crie uma branch para sua feature `(git checkout -b feature/nova-feature)`.
-3. Commit suas mudanças `(git commit -m 'Adiciona nova feature')`.
-4. Faça o push para a branch `(git push origin feature/nova-feature)`.
-5. Abra um Pull Request.
+use [conventional commits](https://www.conventionalcommits.org/en/v1.0.0/) for commit messages.
 
-## Licença
+1. Fork the project.
+2. Create a branch for your feature `(git checkout -b feature/new-feature)`.
+3. Commit your changes `(git commit -m 'feat: Add new feature')`.
+4. Push to the branch `(git push origin feature/new-feature)`.
+5. Open a Pull Request.
 
-Este projeto está licenciado sob a Licença MIT - consulte o arquivo [LICENSE](LICENSE) para obter detalhes.
+## License
 
-Este README fornece uma visão geral completa do projeto, incluindo suas funcionalidades, requisitos, regras de negócio, estrutura do projeto e instruções de execução. Ajuste conforme necessário para refletir com precisão os detalhes do seu projeto.
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+This README provides a comprehensive overview of the project, including its features, requirements, business rules, project structure, and execution instructions. Adjust it as necessary to accurately reflect your project's details.

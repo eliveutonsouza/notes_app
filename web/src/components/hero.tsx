@@ -1,4 +1,4 @@
-import { BannerMeteorological } from "./BannerMeteorological";
+import { BannerMeteorological } from "./banner-meteorological";
 
 export function Hero() {
   return (

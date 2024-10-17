@@ -9,17 +9,17 @@ const formRegisterSchema = z
   .object({
     name: z
       .string()
-      .min(3, { message: "Nome deve ter no mínimo 3 caracteres!" }),
-    email: z.string().email({ message: "E-mail inválido, tente novamente!" }),
+      .min(3, { message: "Name must be at least 3 characters long!" }),
+    email: z.string().email({ message: "Invalid email, please try again!" }),
     password: z
       .string()
-      .min(8, { message: "Senha deve ter no mínimo 8 caracteres!" }),
+      .min(8, { message: "Password must be at least 8 characters long!" }),
     passwordConfirm: z
       .string()
-      .min(8, { message: "Senha deve ter no mínimo 8 caracteres!" }),
+      .min(8, { message: "Password must be at least 8 characters long!" }),
   })
   .refine((data) => data.password === data.passwordConfirm, {
-    message: "A senha precisa ser igual!",
+    message: "Passwords must match!",
     path: ["passwordConfirm"],
   });
 
@@ -98,14 +98,14 @@ export function FormRegister() {
     <form onSubmit={handleSubmit(onSubmitForm)} className="flex flex-col gap-5">
       <div>
         <label htmlFor="name" className="sr-only">
-          Digite seu nome completo
+          Enter your full name
         </label>
         <input
           {...register("name")}
           className="::placeholder:text-gray-400 w-full rounded px-5 py-2"
           id="name"
           type="text"
-          placeholder="Seu nome completo"
+          placeholder="Your full name"
         />
         {errors.name && (
           <span className="text-sm text-red-500">{errors.name?.message}</span>
@@ -114,14 +114,14 @@ export function FormRegister() {
 
       <div>
         <label htmlFor="email" className="sr-only">
-          Digite seu e-mail
+          Enter your email
         </label>
         <input
           {...register("email")}
           className="::placeholder:text-gray-400 w-full rounded px-5 py-2"
           id="email"
           type="text"
-          placeholder="Seu e-mail"
+          placeholder="Your email"
         />
         {errors.email && (
           <span className="text-sm text-red-500">{errors.email?.message}</span>
@@ -130,14 +130,14 @@ export function FormRegister() {
 
       <div className="block">
         <label htmlFor="password" className="sr-only">
-          Digite sua senha
+          Enter your password
         </label>
         <input
           {...register("password")}
           className="::placeholder:text-gray-400 w-full rounded px-5 py-2"
           id="password"
           type="password"
-          placeholder="Sua senha"
+          placeholder="Your password"
         />
         {errors.password && (
           <span className="text-sm text-red-500">
@@ -148,14 +148,14 @@ export function FormRegister() {
 
       <div className="block">
         <label htmlFor="passwordConfirm" className="sr-only">
-          Digite sua senha
+          Confirm your password
         </label>
         <input
           {...register("passwordConfirm")}
           className="::placeholder:text-gray-400 w-full rounded px-5 py-2"
           id="passwordConfirm"
           type="password"
-          placeholder="Confirme sua senha"
+          placeholder="Confirm your password"
         />
         {errors.passwordConfirm && (
           <span className="text-sm text-red-500">
@@ -168,7 +168,7 @@ export function FormRegister() {
         type="submit"
         className="w-full rounded bg-white p-2 text-primary"
       >
-        Entrar
+        Register
       </button>
     </form>
   );
