@@ -10,16 +10,16 @@ const ChangePasswordFormSchema = z
   .object({
     password: z
       .string()
-      .min(8, { message: "Senha deve ter no mínimo 8 caracteres!" }),
+      .min(8, { message: "Password must be at least 8 characters long!" }),
     passwordConfirm: z
       .string()
-      .min(8, { message: "Senha deve ter no mínimo 8 caracteres!" }),
+      .min(8, { message: "Password must be at least 8 characters long!" }),
     newPassword: z.string().min(8, {
-      message: "Senha deve ter no mínimo 8 caracteres!",
+      message: "Password must be at least 8 characters long!",
     }),
   })
   .refine((data) => data.newPassword === data.passwordConfirm, {
-    message: "A senha precisa ser igual!",
+    message: "Passwords must match!",
     path: ["passwordConfirm"],
   });
 
@@ -48,7 +48,7 @@ export function ChangePasswordForm() {
       password,
       newPassword,
     };
-    console.log(dataFormValues);
+
     try {
       const response = await axios.put(
         `${import.meta.env.VITE_API_SERVER_BACKEND}/user`,
@@ -87,6 +87,16 @@ export function ChangePasswordForm() {
           });
         }
       } else {
+        toast.error("An unexpected error occurred", {
+          position: "top-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+        });
+
         console.log("An unexpected error occurred");
       }
     }
@@ -96,14 +106,14 @@ export function ChangePasswordForm() {
     <form onSubmit={handleSubmit(onSubmitForm)} className="flex flex-col gap-4">
       <div className="space-y-2">
         <label htmlFor="password" className="text-pr text-base font-medium">
-          Digite sua senha antiga
+          Enter your old password
         </label>
         <input
           {...register("password")}
           className="::placeholder:text-gray-400 w-full rounded border px-5 py-2"
           id="password"
           type="password"
-          placeholder="Sua senha antiga"
+          placeholder="Your old password"
         />
         {errors.password && (
           <span className="text-sm text-red-500">
@@ -114,14 +124,14 @@ export function ChangePasswordForm() {
 
       <div className="space-y-2">
         <label htmlFor="newPassword" className="text-pr text-base font-medium">
-          Digite sua senha nova
+          Enter your new password
         </label>
         <input
           {...register("newPassword")}
           className="::placeholder:text-gray-400 w-full rounded border px-5 py-2"
           id="newPassword"
           type="password"
-          placeholder="Sua senha nova"
+          placeholder="Your new password"
         />
         {errors.newPassword && (
           <span className="text-sm text-red-500">
@@ -135,14 +145,14 @@ export function ChangePasswordForm() {
           htmlFor="passwordConfirm"
           className="text-pr text-base font-medium"
         >
-          Confirme sua senha senha nova
+          Confirm your new password
         </label>
         <input
           {...register("passwordConfirm")}
           className="::placeholder:text-gray-400 w-full rounded border px-5 py-2"
           id="passwordConfirm"
           type="password"
-          placeholder="Confirme sua senha nova"
+          placeholder="Confirm your new password"
         />
         {errors.passwordConfirm && (
           <span className="text-sm text-red-500">
@@ -152,7 +162,7 @@ export function ChangePasswordForm() {
       </div>
 
       <button type="submit" className="rounded bg-primary p-2 text-white">
-        Alterar
+        Change
       </button>
     </form>
   );

@@ -55,7 +55,7 @@ export function Header() {
               className="flex items-center gap-2 border-b text-sm"
             >
               <GearSix size={16} aria-hidden="true" />
-              Configurações
+              Settings
             </DropdownMenuItem>
 
             <DropdownMenuItem
@@ -63,7 +63,7 @@ export function Header() {
               className="flex items-center gap-2 text-sm"
             >
               <SignOut size={16} aria-hidden="true" />
-              Sair
+              Sign Out
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>

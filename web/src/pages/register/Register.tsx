@@ -9,19 +9,19 @@ export function Register() {
           <img
             className="mx-auto h-10"
             src={LogoLight}
-            alt="Logotipo da Aplicação: um pequeno bloco de notas ao lado na palavra, Notes."
+            alt="Application Logo: a small notepad next to the word, Notes."
           />
           <h1 className="mx-auto max-w-xs text-center text-orange-50 sm:max-w-sm md:max-w-md">
-            Insira seu e-mail abaixo para acessar sua conta.
+            Enter your email below to access your account.
           </h1>
         </div>
 
         <FormRegister />
 
         <p className="text-center text-white">
-          Já tem uma conta?{" "}
+          Already have an account?{" "}
           <a href="/login" className="text-orange-50 underline">
-            Faça login
+            Log in
           </a>
         </p>
       </div>

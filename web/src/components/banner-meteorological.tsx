@@ -1,9 +1,8 @@
 import { useContext, useEffect, useState } from "react";
-import fewClouds from "../assets/poucas-nuvens.png";
+import fewClouds from "../assets/few-clouds.png";
 import { ProfileContext } from "../context/ProfileContextProvider";
 import { formatTemperature, kelvinToCelsius } from "../utils";
 import { format } from "date-fns";
-import { ptBR } from "date-fns/locale";
 
 export function BannerMeteorological() {
   const { profileData } = useContext(ProfileContext);
@@ -29,18 +28,15 @@ export function BannerMeteorological() {
         `https://api.unsplash.com/photos/random?query=nature&client_id=${import.meta.env.VITE_UNSPLASH_ACCESS_KEY}`,
       );
       const data = await response.json();
-      setImageUrl(data.urls.regular); // URL da imagem
+      setImageUrl(data.urls.regular); // Image URL
     };
 
     fetchImage();
-  }, []); // O array vazio significa que isso rodará apenas na montagem do componente.
+  }, []); // The empty array means this will run only on component mount.
 
   const formattedDate = format(
     currentDate,
-    "dd 'de' MMMM 'de' yyyy - HH:mm 'min'",
-    {
-      locale: ptBR,
-    },
+    "dd 'of' MMMM 'of' yyyy - HH:mm 'min'",
   );
 
   return (
@@ -50,15 +46,15 @@ export function BannerMeteorological() {
         src={
           imageUrl ||
           "https://images.unsplash.com/photo-1469474968028-56623f02e42e?q=80&w=1748&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
-        } // URL padrão enquanto aguarda a imagem da API
-        alt="Paisagem da natureza"
+        } // Default URL while waiting for the API image
+        alt="Nature landscape"
       />
 
       <div className="container relative mx-auto flex flex-col items-center justify-between gap-4 px-4 md:flex-row md:gap-6">
         <div className="flex items-center gap-4">
           <img
             src={fewClouds}
-            alt="Poucas Nuvens"
+            alt="Few Clouds"
             className="h-12 w-12 md:h-16 md:w-16"
           />
           <span className="text-2xl font-semibold text-white md:text-4xl">
@@ -76,14 +72,14 @@ export function BannerMeteorological() {
 
           <div className="block border-l-0 pl-0 text-base md:border-l-2 md:pl-3">
             <p>
-              Chuva:{" "}
+              Rain:{" "}
               {weatherData?.rain?.["1h"]
                 ? `${weatherData.rain["1h"]} mm`
                 : "N/A"}
             </p>
-            <p>Umidade: {weatherData?.main.humidity}%</p>
+            <p>Humidity: {weatherData?.main.humidity}%</p>
             <p>
-              Vento:{" "}
+              Wind:{" "}
               {weatherData?.wind?.speed
                 ? (weatherData.wind.speed * 3.6).toFixed(2)
                 : "N/A"}{" "}

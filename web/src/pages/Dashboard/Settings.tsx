@@ -63,25 +63,26 @@ export function Settings() {
           <section className="col-span-3 md:col-span-1 md:border-r">
             <nav className="flex flex-col gap-4 p-4">
               <button className="rounded bg-primary py-2 text-white">
-                Perfil
+                Profile
               </button>
             </nav>
           </section>
           <section className="col-span-3 flex max-w-full flex-col gap-6 p-6 md:max-w-3xl">
             <div className="space-y-1">
-              <h1 className="text-3xl font-semibold">Configurações</h1>
+              <h1 className="text-3xl font-semibold">Settings</h1>
               <p className="text-gray-600">
-                Configure suas preferências de conta, como nome, e-mail e senha.
+                Configure your account preferences, such as name, email, and
+                password.
               </p>
             </div>
 
             <div className="flex flex-col gap-12">
               <div className="space-y-6">
                 <div className="space-y-1 border-t pt-4">
-                  <h2 className="text-xl font-medium">Altere seu nome</h2>
+                  <h2 className="text-xl font-medium">Change your name</h2>
                   <p className="text-gray-600">
-                    Altere seu nome de usuário, para que possamos te chamar pelo
-                    nome que você preferir.
+                    Change your username so we can call you by your preferred
+                    name.
                   </p>
                 </div>
                 <ChangeNameForm />
@@ -89,9 +90,9 @@ export function Settings() {
 
               <div className="space-y-6">
                 <div className="space-y-1 border-t pt-4">
-                  <h2 className="text-xl font-medium">Altere sua senha</h2>
+                  <h2 className="text-xl font-medium">Change your password</h2>
                   <p className="text-gray-600">
-                    Altere sua senha para manter sua conta sempre segura.
+                    Change your password to keep your account always secure.
                   </p>
                 </div>
                 <ChangePasswordForm />
@@ -99,43 +100,43 @@ export function Settings() {
 
               <div className="space-y-6">
                 <div className="space-y-1 border-t pt-4">
-                  <h2 className="text-xl font-medium">Deletar conta</h2>
+                  <h2 className="text-xl font-medium">Delete account</h2>
                   <p className="text-gray-600">
-                    Se você deseja deletar sua conta, clique no botão abaixo.
+                    If you want to delete your account, click the button below.
                   </p>
                 </div>
                 <button
                   onClick={openModalDeleteAccount}
                   className="rounded bg-red-500 px-4 py-2 text-white"
                 >
-                  Deletar conta
+                  Delete account
                 </button>
 
                 <p className="text-gray-600">
-                  Ao deletar sua conta, você perderá todos os seus dados e não
-                  poderá mais acessar o sistema.
+                  By deleting your account, you will lose all your data and will
+                  no longer be able to access the system.
                 </p>
               </div>
 
               <Modal id="deleteAccount">
                 <div className="rounded-md bg-white p-6">
-                  <h2 className="mb-2 text-xl font-medium">Deletar conta</h2>
+                  <h2 className="mb-2 text-xl font-medium">Delete Account</h2>
                   <p className="text-gray-600">
-                    Tem certeza que deseja deletar sua conta? Essa ação não pode
-                    ser desfeita.
+                    Are you sure you want to delete your account? This action
+                    cannot be undone.
                   </p>
                   <div className="mt-8 flex gap-4">
                     <button
                       onClick={deleteProfile}
                       className="rounded bg-red-500 px-4 py-2 text-white"
                     >
-                      Deletar conta
+                      Delete Account
                     </button>
                     <button
                       onClick={closeModalDeleteAccount}
                       className="rounded bg-gray-200 px-4 py-2 text-gray-600"
                     >
-                      Cancelar
+                      Cancel
                     </button>
                   </div>
                 </div>
@@ -146,7 +147,7 @@ export function Settings() {
       </div>
 
       <footer className="flex items-center justify-center bg-black py-7 text-white">
-        <p>© {new Date().getFullYear()} - Todos os direitos reservados</p>
+        <p>© {new Date().getFullYear()} - All rights reserved</p>
       </footer>
     </main>
   );

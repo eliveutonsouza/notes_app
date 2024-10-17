@@ -292,7 +292,7 @@ export function Dashboard() {
       </Modal>
 
       <footer className="flex items-center justify-center bg-black py-7 text-white">
-        <p>© {new Date().getFullYear()} - Todos os direitos reservados</p>
+        <p>© {new Date().getFullYear()} - All rights reserved</p>
       </footer>
     </section>
   );

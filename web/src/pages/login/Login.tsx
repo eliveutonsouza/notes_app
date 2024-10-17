@@ -9,19 +9,19 @@ export function Login() {
           <img
             className="mx-auto h-10 w-auto"
             src={LogoLight}
-            alt="Logotipo da Aplicação: um pequeno bloco de notas ao lado na palavra, Notes."
+            alt="Application Logo: a small notepad next to the word, Notes."
           />
           <h1 className="mx-auto max-w-xs text-center text-orange-50 sm:max-w-sm md:max-w-md">
-            Insira seu e-mail abaixo para acessar sua conta.
+            Enter your email below to access your account.
           </h1>
         </div>
 
         <FormLogin />
 
         <p className="text-center text-white">
-          Não possui uma conta?{" "}
+          Don't have an account?{" "}
           <a href="/register" className="text-orange-50 underline">
-            Crie uma conta
+            Create an account
           </a>
         </p>
       </div>

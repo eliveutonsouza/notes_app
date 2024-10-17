@@ -12,7 +12,7 @@ export function Footer({ className }: FooterProps) {
         className,
       )}
     >
-      <p>© {new Date().getFullYear()} - Todos os direitos reservados</p>
+      <p>© {new Date().getFullYear()} - All rights reserved</p>
     </footer>
   );
 }

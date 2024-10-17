@@ -4,7 +4,6 @@ import { Hero } from "../components/hero";
 
 export function DashboardLayouts() {
   return (
-    // Outro componente pode ser renderizado aqui
     <div className="bg-white">
       <Header />
       <Hero />

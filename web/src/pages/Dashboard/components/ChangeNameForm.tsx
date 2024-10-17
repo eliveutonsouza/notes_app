@@ -9,8 +9,8 @@ import { toast } from "react-toastify";
 const ChangeNameFormSchema = z.object({
   name: z
     .string()
-    .min(3, { message: "Nome deve ter no mínimo 3 caracteres!" })
-    .max(20, { message: "Nome deve ter no máximo 20 caracteres!" }),
+    .min(3, { message: "Name must be at least 3 characters long!" })
+    .max(20, { message: "Name must be at most 20 characters long!" }),
 });
 
 type ChangeNameFormType = z.infer<typeof ChangeNameFormSchema>;
@@ -73,6 +73,15 @@ export function ChangeNameForm() {
           });
         }
       } else {
+        toast.error("An unexpected error occurred", {
+          position: "top-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+        });
         console.log("An unexpected error occurred");
       }
     }
@@ -82,14 +91,14 @@ export function ChangeNameForm() {
     <form onSubmit={handleSubmit(onSubmitForm)} className="flex gap-4">
       <div className="space-y-2">
         <label htmlFor="name" className="text-pr text-base font-medium">
-          Digite um novo usuário
+          Enter a new username
         </label>
         <input
           {...register("name")}
           className="::placeholder:text-gray-400 w-full rounded border px-5 py-2"
           id="name"
           type="text"
-          placeholder="Escolha um novo usuário"
+          placeholder="Choose a new username"
         />
         {errors.name && (
           <span className="text-sm text-red-500">{errors.name?.message}</span>
@@ -100,7 +109,7 @@ export function ChangeNameForm() {
         type="submit"
         className="self-end rounded bg-primary px-4 py-2 text-white"
       >
-        Alterar
+        Change
       </button>
     </form>
   );
