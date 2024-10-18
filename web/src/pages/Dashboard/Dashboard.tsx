@@ -131,6 +131,10 @@ export function Dashboard() {
       if (searchValue.length >= 3) {
         getNotes(1, searchValue); // Filters notes while typing
       }
+
+      if (searchValue.length === 0) {
+        getNotes(1); // Gets all notes when the search field is empty
+      }
     }, 300); // 300ms debounce
 
     return () => clearTimeout(delayDebounceFn); // Clears debounce
