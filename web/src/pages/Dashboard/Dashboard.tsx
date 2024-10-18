@@ -199,7 +199,7 @@ export function Dashboard() {
               <p className="text-xl">No notes to display...</p>
             </div>
           ) : (
-            <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
+            <div className="mb-6 grid grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
               {notes.map((note) => (
                 <div
                   key={note._id}
@@ -210,7 +210,7 @@ export function Dashboard() {
                     className="cursor-pointer text-start"
                     onClick={() => openModalViewNote(note)}
                   >
-                    <h2 className="font-bold">{note.title.slice(0, 30)}...</h2>
+                    <h2 className="font-bold">{note.title.slice(0, 30)}</h2>
                     <p>{note.description.slice(0, 80)}...</p>
                   </div>
 

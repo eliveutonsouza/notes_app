@@ -88,7 +88,10 @@ export function ChangeNameForm() {
   }
 
   return (
-    <form onSubmit={handleSubmit(onSubmitForm)} className="flex gap-4">
+    <form
+      onSubmit={handleSubmit(onSubmitForm)}
+      className="flex flex-col gap-4 md:flex-row"
+    >
       <div className="space-y-2">
         <label htmlFor="name" className="text-pr text-base font-medium">
           Enter a new username
@@ -107,7 +110,7 @@ export function ChangeNameForm() {
 
       <button
         type="submit"
-        className="self-end rounded bg-primary px-4 py-2 text-white"
+        className="w-full self-end rounded bg-primary px-4 py-2 text-white md:w-auto"
       >
         Change
       </button>
