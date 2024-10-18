@@ -85,11 +85,11 @@
    ```
 6. after those steps you can access localhost on your machine localhost:{PORT_APP}/welcome and localhost:8081
 
-# Frontend Notes App
+## Frontend Notes App
 
-## Features
+### Features
 
-### Main Features
+#### Main Features
 
 1. **User Registration**
 
@@ -112,14 +112,14 @@
 - **Deleting Notes**
   - Users can delete existing notes.
 
-### Additional Features
+#### Additional Features
 
 - **Profile Modal**
   - Users can update profile information.
 - **Pagination**
   - Notes are paginated for better viewing.
 
-## Functional Requirements
+### Functional Requirements
 
 1. **User Registration**
 
@@ -141,7 +141,7 @@
 - The system must use authentication tokens to protect routes.
 - The system must store the authentication token in cookies.
 
-## Non-Functional Requirements
+### Non-Functional Requirements
 
 1. **Usability**
 
@@ -163,7 +163,7 @@
 - The code should be modular and follow best development practices.
 - The system should be easy to maintain and update.
 
-## Business Rules
+### Business Rules
 
 1. **User Registration**
 
@@ -180,7 +180,7 @@
 - The note description must be between 10 and 2500 characters.
 - The note color must be a valid hexadecimal code.
 
-## Project Structure
+### Project Structure
 
 The project structure is composed of folders and files organized as follows:
 
@@ -213,7 +213,7 @@ notes-app/web
 
 ```
 
-## How to Run the Project
+### How to Run the Project
 
 1. Clone the repository:
 
@@ -239,7 +239,7 @@ npm run dev
 http://localhost:3000
 ```
 
-## Environment Variables Configuration
+### Environment Variables Configuration
 
 Create a `.env` file in the project root and add the following environment variables:
 
@@ -257,7 +257,7 @@ VITE_API_SERVER_BACKEND='http://localhost:3000'
 
 ```
 
-## Technologies Used
+### Technologies Used
 
 - React
 - TypeScript
