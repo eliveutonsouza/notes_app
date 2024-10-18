@@ -204,14 +204,22 @@ export function Dashboard() {
                 <div
                   key={note._id}
                   style={{ backgroundColor: note.colorHex }}
-                  className="flex max-h-52 min-h-52 flex-col items-start justify-between gap-4 rounded-lg p-6"
+                  className="flex max-h-60 min-h-52 flex-col items-start justify-between gap-4 rounded-lg p-6"
                 >
                   <div
-                    className="cursor-pointer text-start"
+                    className="cursor-pointer space-y-2 text-start"
                     onClick={() => openModalViewNote(note)}
                   >
-                    <h2 className="font-bold">{note.title.slice(0, 30)}</h2>
-                    <p>{note.description.slice(0, 80)}...</p>
+                    <h2 className="text-lg font-bold xl:text-base">
+                      {note.title.length < 30
+                        ? note.title
+                        : note.title.slice(0, 30) + "..."}
+                    </h2>
+                    <p>
+                      {note.description.length < 90
+                        ? note.description
+                        : note.description.slice(0, 90) + "..."}
+                    </p>
                   </div>
 
                   <div className="flex w-full items-center justify-between">
