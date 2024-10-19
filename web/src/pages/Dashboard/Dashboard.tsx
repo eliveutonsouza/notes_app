@@ -20,6 +20,7 @@ import { ViewNotesModal } from "./components/ViewNotesModal";
 import { z } from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { toast } from "react-toastify";
 
 interface Note {
   colorHex: string;
@@ -90,7 +91,15 @@ export function Dashboard() {
         setTotalPages(response.data.maxPage);
       } catch (error) {
         if (axios.isAxiosError(error)) {
-          setNotes([]);
+          toast.error("Error getting notes!", {
+            position: "top-right",
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+          });
         }
       } finally {
         setTimeout(() => {

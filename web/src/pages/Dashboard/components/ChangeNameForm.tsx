@@ -5,6 +5,7 @@ import { useContext } from "react";
 import { ProfileContext } from "../../../context/ProfileContextProvider";
 import axios from "axios";
 import { toast } from "react-toastify";
+import { useNavigate } from "react-router-dom";
 
 const ChangeNameFormSchema = z.object({
   name: z
@@ -16,7 +17,8 @@ const ChangeNameFormSchema = z.object({
 type ChangeNameFormType = z.infer<typeof ChangeNameFormSchema>;
 
 export function ChangeNameForm() {
-  const { profileData } = useContext(ProfileContext);
+  const { profileData, updateProfileData } = useContext(ProfileContext);
+  const navigate = useNavigate();
 
   const {
     register,
@@ -31,8 +33,6 @@ export function ChangeNameForm() {
   });
 
   async function onSubmitForm(dataForm: ChangeNameFormType) {
-    console.log(dataForm);
-
     try {
       const response = await axios.put(
         `${import.meta.env.VITE_API_SERVER_BACKEND}/user`,
@@ -46,7 +46,15 @@ export function ChangeNameForm() {
           },
         },
       );
+
       if (response.status === 201 || response.status === 200) {
+        updateProfileData({
+          userName: response.data.body.name,
+          email: response.data.body.email,
+        });
+
+        navigate("/dashboard/settings"); // Reload the page to update the username in the header
+
         toast.success("Account name changed successfully!", {
           position: "top-right",
           autoClose: 5000,
@@ -61,6 +69,7 @@ export function ChangeNameForm() {
       }
     } catch (error) {
       if (axios.isAxiosError(error)) {
+        console.log(error.response?.data);
         if (error.response?.status === 400) {
           toast.error("Error changing account name!", {
             position: "top-right",

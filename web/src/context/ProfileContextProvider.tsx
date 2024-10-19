@@ -38,6 +38,7 @@ interface ProfileDataType {
   geoError?: string | null;
   weatherData: WeatherResponseTypes | null;
   userName: string;
+  getProfileData: () => ProfileLocalStorageType | null;
 }
 
 interface CookieSetOptions {
@@ -55,6 +56,9 @@ interface ProfileContextType {
   reEvaluateToken: (token: string) => void;
   setCookie: (name: "token", value: string, options?: CookieSetOptions) => void;
   removeCookie: (name: "token", options?: CookieSetOptions) => void;
+  removeProfileData: () => void;
+  updateProfileData: (value: ProfileLocalStorageType) => void;
+  saveProfileData: (value: ProfileLocalStorageType) => void;
 }
 
 // Default values for the context
@@ -69,10 +73,19 @@ const ProfileDefaultValues: ProfileContextType = {
     geoError: null,
     weatherData: null,
     userName: "",
+    getProfileData: () => null,
   },
   reEvaluateToken: () => {},
   setCookie: () => {},
   removeCookie: () => {},
+  updateProfileData: () => {},
+  removeProfileData: () => {},
+  saveProfileData: () => {},
+};
+
+type ProfileLocalStorageType = {
+  userName?: string;
+  email?: string;
 };
 
 // Creating the context
@@ -92,6 +105,27 @@ export function ProfileContextProvider({ children }: ProfileContextProps) {
   const { decodedToken, isExpired, reEvaluateToken } = useJwt<DecodedTokenType>(
     cookies.token,
   );
+
+  // Function to save data in the local storage
+  const saveProfileData = useCallback((value: ProfileLocalStorageType) => {
+    return localStorage.setItem("ProfileData", JSON.stringify(value));
+  }, []);
+
+  // Function to remove data from the local storage
+  const removeProfileData = useCallback(() => {
+    return localStorage.removeItem("ProfileData");
+  }, []);
+
+  // Function to update the key in the local storage
+  const updateProfileData = useCallback((value: ProfileLocalStorageType) => {
+    localStorage.setItem("ProfileData", JSON.stringify(value));
+  }, []);
+
+  // Function to get the user's data from the local storage
+  const getProfileData = useCallback((): ProfileLocalStorageType | null => {
+    const data = localStorage.getItem("ProfileData");
+    return data ? JSON.parse(data) : null;
+  }, []);
 
   // Function to get the user's location
   const getLocation = useCallback(() => {
@@ -169,8 +203,17 @@ export function ProfileContextProvider({ children }: ProfileContextProps) {
       location,
       geoError,
       weatherData,
+      getProfileData,
     }),
-    [decodedToken, isExpired, cookies.token, location, geoError, weatherData],
+    [
+      decodedToken,
+      isExpired,
+      cookies.token,
+      location,
+      geoError,
+      weatherData,
+      getProfileData,
+    ],
   );
 
   // Context value to be provided to components
@@ -180,8 +223,19 @@ export function ProfileContextProvider({ children }: ProfileContextProps) {
       reEvaluateToken,
       setCookie,
       removeCookie,
+      updateProfileData,
+      removeProfileData,
+      saveProfileData,
     }),
-    [profileData, reEvaluateToken, setCookie, removeCookie],
+    [
+      profileData,
+      reEvaluateToken,
+      setCookie,
+      removeCookie,
+      updateProfileData,
+      removeProfileData,
+      saveProfileData,
+    ],
   );
 
   return (

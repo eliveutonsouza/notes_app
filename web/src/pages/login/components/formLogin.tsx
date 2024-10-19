@@ -16,6 +16,7 @@ const formLoginSchema = z.object({
 
 export function FormLogin() {
   const { setCookie } = useContext(ProfileContext);
+  const { saveProfileData } = useContext(ProfileContext);
   const [loading, setLoading] = useState<boolean>(false);
 
   const {
@@ -41,17 +42,40 @@ export function FormLogin() {
       );
 
       if (response.status === 200) {
-        setTimeout(() => {
-          setLoading(false); // End loading
-        }, 2000);
-
         setCookie("token", response.data.auth.token, {
           path: "/",
           sameSite: "strict",
           secure: true,
         });
+
+        saveProfileData({
+          userName: response.data.auth.userName,
+          email: response.data.auth.userEmail,
+        });
+
+        setTimeout(() => {
+          setLoading(false); // End loading
+        }, 2000);
+
+        toast.success("Login successful!", {
+          position: "top-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+        });
       } else {
-        console.log("An unexpected error occurred");
+        toast.error("An unexpected error occurred", {
+          position: "top-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+        });
       }
     } catch (error) {
       if (axios.isAxiosError(error)) {
