@@ -71,8 +71,7 @@ export function Settings() {
             <div className="space-y-1">
               <h1 className="text-3xl font-semibold">Settings</h1>
               <p className="text-gray-600">
-                Configure your account preferences, such as name, email, and
-                password.
+                Configure your account preferences, such as name and password.
               </p>
             </div>
 

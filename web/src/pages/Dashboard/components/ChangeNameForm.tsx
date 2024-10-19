@@ -10,8 +10,8 @@ import { useNavigate } from "react-router-dom";
 const ChangeNameFormSchema = z.object({
   name: z
     .string()
-    .min(3, { message: "Name must be at least 3 characters long!" })
-    .max(20, { message: "Name must be at most 20 characters long!" }),
+    .min(1, { message: "Name is required!" })
+    .max(50, { message: "Name must be at most 20 characters long!" }),
 });
 
 type ChangeNameFormType = z.infer<typeof ChangeNameFormSchema>;
