@@ -19,6 +19,7 @@ type DropdownMenuContextType = {
   openDropdown: () => void;
   closeDropdown: () => void;
   toggleDropdown: () => void;
+  triggerRef: React.RefObject<HTMLButtonElement>;
 };
 
 const DropdownMenuContext = createContext<DropdownMenuContextType>({
@@ -26,11 +27,14 @@ const DropdownMenuContext = createContext<DropdownMenuContextType>({
   openDropdown: () => {},
   closeDropdown: () => {},
   toggleDropdown: () => {},
+  triggerRef: { current: null },
 });
 
 // Componente principal DropdownMenu
 export function DropdownMenu({ children, className }: DropdownMenuProps) {
   const [isOpen, setIsOpen] = useState(false);
+  const triggerRef = useRef<HTMLButtonElement>(null);
+
   const openDropdown = useCallback(() => setIsOpen(true), []);
   const closeDropdown = useCallback(() => setIsOpen(false), []);
   const toggleDropdown = useCallback(() => setIsOpen((prev) => !prev), []);
@@ -41,8 +45,9 @@ export function DropdownMenu({ children, className }: DropdownMenuProps) {
       openDropdown,
       closeDropdown,
       toggleDropdown,
+      triggerRef,
     }),
-    [isOpen, openDropdown, closeDropdown, toggleDropdown],
+    [isOpen, openDropdown, closeDropdown, toggleDropdown, triggerRef],
   );
 
   return (
@@ -62,8 +67,7 @@ export function DropdownMenuTrigger({
   children,
   className,
 }: DropdownMenuTriggerProps) {
-  const { toggleDropdown } = useContext(DropdownMenuContext);
-  const triggerRef = useRef<HTMLButtonElement>(null);
+  const { toggleDropdown, triggerRef } = useContext(DropdownMenuContext);
 
   return (
     <button
@@ -75,18 +79,19 @@ export function DropdownMenuTrigger({
     </button>
   );
 }
+
 // Componente DropdownMenuContent
 interface DropdownMenuContentProps {
   children: React.ReactNode;
   className?: string;
 }
+
 export function DropdownMenuContent({
   children,
   className,
 }: DropdownMenuContentProps) {
-  const { isOpen, closeDropdown } = useContext(DropdownMenuContext);
+  const { isOpen, closeDropdown, triggerRef } = useContext(DropdownMenuContext);
   const contentRef = useRef<HTMLDivElement>(null);
-  const triggerRef = useRef<HTMLButtonElement | null>(null);
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -107,7 +112,7 @@ export function DropdownMenuContent({
     return () => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
-  }, [isOpen, closeDropdown]);
+  }, [isOpen, closeDropdown, triggerRef]);
 
   return isOpen ? (
     <div
