@@ -174,14 +174,16 @@ export function Dashboard() {
 
             <div className="flex items-center gap-6">
               <div
-                className={`${
-                  showColorButtons ? "flex" : "hidden"
-                } cursor-pointer flex-wrap gap-2`}
+                className={`flex flex-wrap gap-2 transition-transform duration-300 ease-in-out ${
+                  showColorButtons
+                    ? "translate-x-0 opacity-100"
+                    : "translate-x-4 opacity-0"
+                }`}
               >
                 {buttonColors.map((color) => (
                   <button
                     key={color}
-                    className="h-6 w-6 cursor-pointer rounded-full"
+                    className="h-6 w-6 cursor-pointer rounded-full transition-transform duration-200 ease-in-out hover:scale-125"
                     style={{ backgroundColor: color }}
                     onClick={() => {
                       openModalNewNote(color);
@@ -194,7 +196,7 @@ export function Dashboard() {
               <button
                 className="rounded-full bg-black p-3 text-white"
                 type="button"
-                onClick={() => setShowColorButtons(!showColorButtons)}
+                onClick={() => setShowColorButtons((prev) => !prev)}
               >
                 <Plus size={24} weight="bold" />
               </button>
