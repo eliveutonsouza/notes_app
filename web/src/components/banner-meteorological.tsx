@@ -27,10 +27,28 @@ export function BannerMeteorological() {
         `https://api.unsplash.com/photos/random?query=nature&client_id=${import.meta.env.VITE_UNSPLASH_ACCESS_KEY}`,
       );
       const data = await response.json();
-      setImageUrl(data.urls.regular); // Image URL
+      setImageUrl(data.urls.regular);
+      localStorage.setItem("lastFetchTime", Date.now().toString());
     };
 
-    fetchImage();
+    const lastFetchTime = localStorage.getItem("lastFetchTime");
+    const currentTime = Date.now();
+
+    if (!lastFetchTime || currentTime - parseInt(lastFetchTime) >= 3600000) {
+      // Fetch the image initially if it hasn't been fetched in the last hour
+      fetchImage();
+    } else {
+      // Set a timeout to fetch the image when the hour has passed
+      const timeRemaining = 3600000 - (currentTime - parseInt(lastFetchTime));
+      const timeoutId = setTimeout(fetchImage, timeRemaining);
+
+      return () => clearTimeout(timeoutId);
+    }
+
+    // Set interval to fetch the image every hour
+    const intervalId = setInterval(fetchImage, 3600000); // 3600000 ms = 1 hour
+
+    return () => clearInterval(intervalId);
   }, []); // The empty array means this will run only on component mount.
 
   const formattedDate = format(
