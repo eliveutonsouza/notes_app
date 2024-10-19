@@ -1,4 +1,4 @@
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { ModalContext } from "../../../context/ModalContextProvider";
@@ -43,15 +43,19 @@ export function EditeModalForm({ data, onRefresh }: EditeModalProps) {
     register,
     handleSubmit,
     formState: { errors },
+    reset,
   } = useForm<EditeModalForm>({
     resolver: zodResolver(EditeModalFormSchema),
-    defaultValues: {
+  });
+
+  useEffect(() => {
+    reset({
       title: data.title,
       description: data.description,
       colorHex: data.colorHex,
       id: data._id,
-    },
-  });
+    });
+  }, [data, reset]);
 
   async function onChangeNote(dataForm: EditeModalForm) {
     try {

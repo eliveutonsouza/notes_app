@@ -138,16 +138,16 @@ export function Dashboard() {
   useEffect(() => {
     const delayDebounceFn = setTimeout(() => {
       if (searchValue.length >= 3) {
-        getNotes(1, searchValue); // Filters notes while typing
+        getNotes(1, searchValue);
       }
 
       if (searchValue.length === 0) {
-        getNotes(1); // Gets all notes when the search field is empty
+        getNotes(1);
       }
     }, 300); // 300ms debounce
 
-    return () => clearTimeout(delayDebounceFn); // Clears debounce
-  }, [searchValue, getNotes]); // Runs whenever the input value changes
+    return () => clearTimeout(delayDebounceFn);
+  }, [searchValue, getNotes]);
 
   async function onSubmitForm(data: SearchFormType) {
     await getNotes(1, data.search);
