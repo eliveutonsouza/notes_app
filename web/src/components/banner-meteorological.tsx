@@ -1,5 +1,4 @@
 import { useContext, useEffect, useState } from "react";
-import fewClouds from "../assets/few-clouds.png";
 import { ProfileContext } from "../context/ProfileContextProvider";
 import { formatTemperature, kelvinToCelsius } from "../utils";
 import { format } from "date-fns";
@@ -53,7 +52,7 @@ export function BannerMeteorological() {
       <div className="container relative mx-auto flex flex-col items-center justify-between gap-4 px-4 md:flex-row md:gap-6">
         <div className="flex items-center gap-4">
           <img
-            src={fewClouds}
+            src={`https://openweathermap.org/img/wn/${weatherData?.weather[0].icon}@2x.png`}
             alt="Few Clouds"
             className="h-12 w-12 md:h-16 md:w-16"
           />
@@ -71,12 +70,12 @@ export function BannerMeteorological() {
           </div>
 
           <div className="block border-l-0 pl-0 text-base md:border-l-2 md:pl-3">
-            <p>
-              Rain:{" "}
-              {weatherData?.rain?.["1h"]
-                ? `${weatherData.rain["1h"]} mm`
-                : "N/A"}
-            </p>
+            {weatherData?.rain?.["1h"] ? (
+              <p>Rain: {weatherData.rain["1h"]} mm</p>
+            ) : (
+              <p></p>
+            )}
+            <p>Cloudiness: {weatherData?.clouds.all}%</p>
             <p>Humidity: {weatherData?.main.humidity}%</p>
             <p>
               Wind:{" "}

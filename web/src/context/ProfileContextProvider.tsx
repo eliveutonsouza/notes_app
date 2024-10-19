@@ -170,8 +170,9 @@ export function ProfileContextProvider({ children }: ProfileContextProps) {
         },
       );
 
-      const dataCode = responseCode.data;
+      console.log(responseCode.data);
 
+      const dataCode = responseCode.data;
       setWeatherData(dataCode);
     } catch (error) {
       if (axios.isAxiosError(error)) {
