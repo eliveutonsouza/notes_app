@@ -45,11 +45,12 @@ export default class PostService {
             ).populate('posts');
 
             const posts = (await user).posts.filter((post) =>
-                post.title.includes(title)
+                post.title
+                    .toLowerCase()
+                    .trim()
+                    .includes(title.toLowerCase().trim())
             );
-            if (posts.length < 1) {
-                throw new Error('cannot find your post');
-            }
+
             return posts;
         } catch (err) {
             throw err;
