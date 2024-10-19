@@ -133,6 +133,7 @@ export function ProfileContextProvider({ children }: ProfileContextProps) {
       navigator.geolocation.getCurrentPosition(
         (position) => {
           const { latitude, longitude } = position.coords;
+
           setLocation({ latitude, longitude });
         },
         (error) => {
@@ -170,13 +171,11 @@ export function ProfileContextProvider({ children }: ProfileContextProps) {
         },
       );
 
-      console.log(responseCode.data);
-
       const dataCode = responseCode.data;
       setWeatherData(dataCode);
     } catch (error) {
       if (axios.isAxiosError(error)) {
-        // console.log(error.response?.data);
+        console.log(error.response?.data);
       } else {
         console.log("An unexpected error occurred");
       }
