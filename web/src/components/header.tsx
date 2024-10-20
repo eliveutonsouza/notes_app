@@ -46,7 +46,7 @@ export function Header() {
 
         <DropdownMenu>
           <DropdownMenuTrigger>
-            <Profile name={profileData.userName || "Usuário"} />
+            <Profile name={dataLocalStorage?.userName || "Usuário"} />
           </DropdownMenuTrigger>
           <DropdownMenuContent>
             <DropdownMenuItem
