@@ -6,7 +6,7 @@ services:
         ports:
             - '${PORT_APP}:3000'
         environment:
-            CONNECTION_URL_LOCAL: ${CONNECTION_URL_DOCKER}
+            CONNECTION_URL_LOCAL: ${CONNECTION_URL_PROD}
             DATABASE_NAME: ${DB_NAME}
             USERNAME_DB: ${DB_USERNAME}
             PASSWORD_DB: ${DB_PASSWORD}
