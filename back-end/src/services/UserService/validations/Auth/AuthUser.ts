@@ -1,6 +1,7 @@
 import { compare } from 'bcryptjs';
 import { GenerateTokenProvider } from '../../../../providers/GenerateTokenProvider';
 import UserService from '../../UserService';
+import { ResponseToken } from '../../../../contracts/ResponseToken';
 interface IRequest {
     email: string;
     password: string;
@@ -8,7 +9,7 @@ interface IRequest {
 
 class AuthenticateUserUseCase {
     userService: UserService = new UserService();
-    async execute({ email, password }: IRequest) {
+    async execute({ email, password }: IRequest): Promise<ResponseToken> {
         try {
             const user = await this.userService.findUserByEmail(email);
 

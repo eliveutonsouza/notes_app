@@ -58,63 +58,63 @@ describe('create User', () => {
 describe('Fail cannot be null create User', () => {
     test('should to throw error create a user', async function () {
         const errMessage = 'cannot be Null';
-        let err: any;
+        let err: Error | null = null;
         dataFail.email = '';
         try {
             await userService.createUser(dataFail);
-        } catch (e: any) {
-            err = e;
+        } catch (e) {
+            err = e as Error;
         }
         dataFail.email = data.email;
 
-        expect(err.message).toStrictEqual(errMessage);
+        expect(err?.message).toStrictEqual(errMessage);
     });
 });
 
 describe('Fail Email format create User', () => {
     test('should to throw error create a user', async function () {
         const errMessage = 'Email invalid';
-        let err: any;
+        let err: Error | null = null;
         dataFail.email = 'testemail';
         try {
             await userService.createUser(dataFail);
-        } catch (e: any) {
-            err = e;
+        } catch (e) {
+            err = e as Error;
         }
         dataFail.email = data.email;
-        expect(err.message).toStrictEqual(errMessage);
+        expect(err?.message).toStrictEqual(errMessage);
     });
 });
 
 describe('Fail password create User', () => {
     test('should to throw error create a user', async function () {
         const errMessage = 'password should be more than 7 characters';
-        let err: any;
+        let err: Error | null = null;
         dataFail.password = '1234';
         try {
             await userService.createUser(dataFail);
-        } catch (e: any) {
-            err = e;
+        } catch (e) {
+            err = e as Error;
         }
         dataFail.password = data.password;
-        expect(err.message).toStrictEqual(errMessage);
+        expect(err?.message).toStrictEqual(errMessage);
     });
 });
 
 describe('Fail name create User', () => {
     test('should to throw error create a user', async function () {
         const errMessage = 'username should be more than 3 characters';
-        let err: any;
+        let err: Error | null = null;
         dataFail.name = 'a';
         try {
             await userService.createUser(dataFail);
-        } catch (e: any) {
-            err = e;
+        } catch (e) {
+            err = e as Error;
         }
 
         dataFail.name = data.name;
 
-        expect(err.message).toStrictEqual(errMessage);
+        expect(err?.message).toStrictEqual(errMessage);
     });
 });
 
@@ -133,32 +133,32 @@ describe('find a User', () => {
 
 describe('delete a User', () => {
     test('should to delete a user', async function () {
-        let error;
+        let err: Error | null = null;
         try {
             const user: IUser = await userService.createUser(data);
 
             const result: IUser = await userService.deleteUser(user.email);
 
             await userService.findUserByEmail(result.email);
-        } catch (err: any) {
-            error = err.message;
+        } catch (e) {
+            err = e as Error;
         }
 
-        expect(error).toBe('user doesnt exist');
+        expect(err?.message).toBe('user doesnt exist');
     });
 });
 
 describe('fail to delete a User', () => {
     test('should to throw Error delete a user', async function () {
         dataFail.email = '12312737';
-        let error;
+        let err: Error | null = null;
         try {
             await userService.deleteUser(dataFail.email);
-        } catch (err: any) {
-            error = err.message;
+        } catch (e) {
+            err = e as Error;
         }
         dataFail.email = data.email;
-        expect(error).toBe('user doesnt exist');
+        expect(err?.message).toBe('user doesnt exist');
     });
 });
 
@@ -186,7 +186,7 @@ describe('update userName User', () => {
 describe('Fail update userName User', () => {
     test('should to update a user', async function () {
         const msgErr = 'username should be more than 3 characters';
-        let err;
+        let err: Error | null = null;
         const user = await userService.createUser(data);
         try {
             const ObjectUserUpdate: IUpdateUser = {
@@ -195,37 +195,37 @@ describe('Fail update userName User', () => {
                 },
             };
             await userService.updateUser(user.email, ObjectUserUpdate);
-        } catch (e: any) {
-            err = e;
+        } catch (e) {
+            err = e as Error;
         }
 
         await userService.deleteUser(user.email);
-        expect(err.message).toStrictEqual(msgErr);
+        expect(err?.message).toStrictEqual(msgErr);
     });
 });
 
 describe('Fail update Object Void', () => {
     test('should to update a user', async function () {
         const msgErr = 'nothing to update';
-        let err;
+        let err: Error | null = null;
         const user = await userService.createUser(data);
         try {
             const ObjectUserUpdate: IUpdateUser = {
                 body: {},
             };
             await userService.updateUser(user.email, ObjectUserUpdate);
-        } catch (e: any) {
-            err = e;
+        } catch (e) {
+            err = e as Error;
             await userService.deleteUser(user.email);
         }
-        expect(err.message).toStrictEqual(msgErr);
+        expect(err?.message).toStrictEqual(msgErr);
     });
 });
 
 describe('Fail update Username length empty', () => {
     test('should to update a user', async function () {
         const msgErr = 'username should be more than 3 characters';
-        let err;
+        let err: Error | null = null;
         const user = await userService.createUser(data);
         try {
             const ObjectUserUpdate: IUpdateUser = {
@@ -236,11 +236,11 @@ describe('Fail update Username length empty', () => {
                 },
             };
             await userService.updateUser(user.email, ObjectUserUpdate);
-        } catch (e: any) {
-            err = e;
+        } catch (e) {
+            err = e as Error;
         }
         await userService.deleteUser(user.email);
-        expect(err.message).toStrictEqual(msgErr);
+        expect(err?.message).toStrictEqual(msgErr);
     });
 });
 
@@ -269,7 +269,7 @@ describe('update password User', () => {
 describe('Fail update Password miss new Password', () => {
     test('should to update a user', async function () {
         const msgErr = 'missing new password or act password';
-        let err;
+        let err: Error | null = null;
         const user = await userService.createUser(data);
         try {
             const ObjectUserUpdate: IUpdateUser = {
@@ -280,17 +280,18 @@ describe('Fail update Password miss new Password', () => {
                 },
             };
             await userService.updateUser(user.email, ObjectUserUpdate);
-        } catch (e: any) {
-            err = e;
+        } catch (e) {
+            err = e as Error;
         }
         await userService.deleteUser(user.email);
-        expect(err.message).toStrictEqual(msgErr);
+        expect(err).not.toBeNull();
+        expect(err?.message).toStrictEqual(msgErr);
     });
 });
 describe('Fail update Password miss password ', () => {
     test('should to update a user', async function () {
         const msgErr = 'missing new password or act password';
-        let err;
+        let err: Error | null = null;
         const user = await userService.createUser(data);
         try {
             const ObjectUserUpdate: IUpdateUser = {
@@ -301,10 +302,11 @@ describe('Fail update Password miss password ', () => {
                 },
             };
             await userService.updateUser(user.email, ObjectUserUpdate);
-        } catch (e: any) {
-            err = e;
+        } catch (e) {
+            err = e as Error;
         }
         await userService.deleteUser(user.email);
-        expect(err.message).toStrictEqual(msgErr);
+        expect(err).not.toBeNull();
+        expect(err?.message).toStrictEqual(msgErr);
     });
 });

@@ -1,5 +1,6 @@
 import { sign } from 'jsonwebtoken';
 import dotenv from 'dotenv';
+import { ResponseToken } from '../contracts/ResponseToken';
 dotenv.config();
 
 class GenerateTokenProvider {
