@@ -3,7 +3,7 @@ import dotenv from 'dotenv';
 dotenv.config();
 
 async function connect(): Promise<void> {
-    const connectionUrl = process.env.CONNECTION_URL_LOCAL;
+    const connectionUrl = process.env.CONNECTION_URL_PROD;
 
     if (!connectionUrl) {
         process.exit(-1);
