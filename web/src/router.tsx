@@ -8,14 +8,15 @@ import { Settings } from "./pages/Dashboard/Settings";
 export function Router() {
   return (
     <Routes>
-      {/* <Route path="/" element={<Home />} /> */}
+      {/* Rotas públicas */}
       <Route path="/" element={<Login />} />
       <Route path="/login" element={<Login />} />
       <Route path="/register" element={<Register />} />
 
-      <Route path="/" element={<DashboardLayouts />}>
-        <Route path="/dashboard" element={<Dashboard />} />
-        <Route path="/dashboard/settings" element={<Settings />} />
+      {/* Rotas protegidas */}
+      <Route path="/dashboard" element={<DashboardLayouts />}>
+        <Route index element={<Dashboard />} />
+        <Route path="settings" element={<Settings />} />
       </Route>
     </Routes>
   );
