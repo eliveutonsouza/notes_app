@@ -81,30 +81,30 @@ describe('create a Post', () => {
 
 describe('fail Title create a Post', () => {
     test('should to throw a error create a post', async function () {
-        let err;
+        let err: Error | null = null;
         try {
             postFailData.title = '';
             await postService.createPost(postFailData, userData.email);
-        } catch (e: any) {
-            err = e;
+        } catch (e) {
+            err = e as Error;
         }
         postFailData.title = postData.title;
-        expect(err.message).toStrictEqual('title cannot be null');
+        expect(err?.message).toStrictEqual('title cannot be null');
     });
 });
 
 describe('fail Title create a Post Characters more than 100', () => {
     test('should to throw a error create a post', async function () {
-        let err;
+        let err: Error | null = null;
         try {
             postFailData.title =
                 'Exploring the Intricacies of Human Emotion: A Comprehensive Analysis of Love, Fear, Joy, and Their Impact on Our Lives';
             await postService.createPost(postFailData, userData.email);
-        } catch (e: any) {
-            err = e;
+        } catch (e) {
+            err = e as Error;
         }
         postFailData.title = postData.title;
-        expect(err.message).toStrictEqual(
+        expect(err?.message).toStrictEqual(
             'title cannot be more than 100 characters'
         );
     });
@@ -112,30 +112,31 @@ describe('fail Title create a Post Characters more than 100', () => {
 
 describe('fail description create a Post', () => {
     test('should to throw a error create a post', async function () {
-        let err;
+        let err: Error | null = null;
         try {
             postFailData.description = '';
             await postService.createPost(postFailData, userData.email);
-        } catch (e: any) {
-            err = e;
+        } catch (e) {
+            err = e as Error;
         }
         postFailData.description = postData.description;
-        expect(err.message).toStrictEqual('desc cannot be null');
+        expect(err).not.toBeNull();
+        expect(err?.message).toStrictEqual('desc cannot be null');
     });
 });
 
 describe('fail description create a Post more than 2500 characters', () => {
     test('should to throw a error create a post', async function () {
-        let err;
+        let err: Error | null = null;
         try {
             postFailData.description =
                 'In a world characterized by rapid change and constant stimuli understanding human emotions has never been more critical This comprehensive analysis delves into the complexities of our emotional landscape examining the core feelings that shape our experiences love fear and joy Each emotion while distinct interweaves to create the rich tapestry of human existence By exploring these emotions in depth we gain insight into not only our personal experiences but also the broader social dynamics that influence our interactions and well beingLove is often hailed as the most profound human emotion serving as the cornerstone of relationships families and communities This analysis begins by dissecting the various forms of love romantic platonic familial and self love highlighting how each type contributes uniquely to our lives We investigate the psychological and biological mechanisms that underpin love from the release of oxytocin during bonding moments to the neural pathways that ignite feelings of attachment and desire Additionally we explore how love can lead to vulnerability and the potential for heartbreak illustrating the duality of love as both a source of immense joy and deep painTransitioning to fear we confront one of humanitys most primal emotions Fear plays a crucial role  survival acting  an early warning system that protects us from danger However in modern society fear can manifest in more complex ways often leading to anxiety and phobias that can hinder our daily lives This section examines the evolutionary basis of fear including the fight or flight response and how it shapes our behavior in the face of perceived threats We also analyze the societal factors that contribute to collective fears such political instability and global crises and how these fears influence group behavior and decision making Understanding fears role in our lives allows us to confront it more effectively transforming it from a paralyzing force into a catalyst for growth and resilienceFinally we delve into joy exploring how this uplifting emotion enhances our lives and fosters connection Joy is not just a fleeting feeling it is a state of being that can be cultivated through mindfulness gratitude and meaningful experiences This section investigates the science of happiness including the role of positive psychology in understanding how joy can be sustained over time We consider the social aspects of joy such as how shared experiences and community engagement amplify feelings of happiness Furthermore we explore the potential for joy to act as a counterbalance to fear and sorrow providing a sense of hope and motivation during challenging timesThroughout this analysis we emphasize the interplay between these emotions Love can mitigate fear providing a sense of safety and belonging while joy often flourishes in environments rich with love and supportive relationships Conversely fear can obstruct our ability to love fully and experience joy creating a cycle that can be difficult to break By understanding these emotional dynamics we can develop strategies to cultivate a more balanced emotional lifeThis exploration is not merely theoretical it includes practical applications for individuals seeking to navigate their emotional landscapes more effectively Through exercises and reflections readers will be encouraged to engage with their emotions fostering a deeper understanding of how love fear and joy manifest in their lives By acknowledging and validating these emotions individuals can enhance their emotional intelligence leading to healthier relationships and greater overall well beingIn summary this comprehensive analysis of love fear and joy offers a nuanced understanding of the emotions that define our human experience By illuminating the complexities of these feelings we empower ourselves to live more authentically and compassionately ultimately leading to a richer more fulfilling life As we journey through the intricacies of human emotion we find that embracing the full spectrum of our feelings is not only a path to personal growth but also a way to foster connection and understanding in an ever evolving world';
             await postService.createPost(postFailData, userData.email);
-        } catch (e: any) {
-            err = e;
+        } catch (e) {
+            err = e as Error;
         }
         postFailData.description = postData.description;
-        expect(err.message).toStrictEqual(
+        expect(err?.message).toStrictEqual(
             'description cannot be more than 2500 characters'
         );
     });
@@ -170,7 +171,9 @@ describe('Error get Posts by Title', () => {
                 userData.email,
                 postFailData.title
             );
-        } catch (e: any) {}
+        } catch (e) {
+            e;
+        }
         expect(resp).toStrictEqual([]);
 
         await postService.deletePost(post1._id, userData.email);
@@ -209,7 +212,9 @@ describe('empty vector get Posts', () => {
 
         try {
             response = await postService.getAllPosts(userData.email, 2);
-        } catch (e: any) {}
+        } catch (e) {
+            e;
+        }
 
         expect(response?.posts).toStrictEqual([]);
 
@@ -237,16 +242,16 @@ describe('delete a post', () => {
 
 describe('Error delete a post', () => {
     test('should to throw error delete a post', async function () {
-        let err;
+        let err: Error | null = null;
         const id = new Types.ObjectId('66ed6b81112c180eec72ef00');
 
         try {
             await postService.deletePost(id, userData.email);
-        } catch (e: any) {
-            err = e;
+        } catch (e) {
+            err = e as Error;
         }
-
-        expect(err.message).toStrictEqual('post doesnt exist');
+        expect(err).not.toBeNull();
+        expect(err?.message).toStrictEqual('post doesnt exist');
     });
 });
 
@@ -281,7 +286,7 @@ describe('update a post', () => {
 });
 describe('Error title update a post', () => {
     test('should to throw error update a post', async function () {
-        let err;
+        let err: Error | null = null;
         const responseCreate = await postService.createPost(
             postData,
             userData.email
@@ -301,11 +306,11 @@ describe('Error title update a post', () => {
                 responseCreate._id,
                 userData.email
             );
-        } catch (e: any) {
-            err = e;
+        } catch (e) {
+            err = e as Error;
         }
-
-        expect(err.message).toStrictEqual('title cannot be null');
+        expect(err).not.toBeNull();
+        expect(err?.message).toStrictEqual('title cannot be null');
 
         await postService.deletePost(responseCreate._id, userData.email);
     });
@@ -313,7 +318,7 @@ describe('Error title update a post', () => {
 
 describe('Error description update a post', () => {
     test('should to throw error update a post', async function () {
-        let err;
+        let err: Error | null = null;
         const responseCreate = await postService.createPost(
             postData,
             userData.email
@@ -333,11 +338,11 @@ describe('Error description update a post', () => {
                 responseCreate._id,
                 userData.email
             );
-        } catch (e: any) {
-            err = e;
+        } catch (e) {
+            err = e as Error;
         }
-
-        expect(err.message).toStrictEqual('desc cannot be null');
+        expect(err).not.toBeNull();
+        expect(err?.message).toStrictEqual('desc cannot be null');
 
         await postService.deletePost(responseCreate._id, userData.email);
     });
@@ -345,7 +350,7 @@ describe('Error description update a post', () => {
 
 describe('Error colorHex cannot be null update a post', () => {
     test('should to throw error update a post', async function () {
-        let err;
+        let err: Error | null = null;
         const responseCreate = await postService.createPost(
             postData,
             userData.email
@@ -365,11 +370,11 @@ describe('Error colorHex cannot be null update a post', () => {
                 responseCreate._id,
                 userData.email
             );
-        } catch (e: any) {
-            err = e;
+        } catch (e) {
+            err = e as Error;
         }
-
-        expect(err.message).toStrictEqual('ColorHex cannot be null');
+        expect(err).not.toBeNull();
+        expect(err?.message).toStrictEqual('ColorHex cannot be null');
 
         await postService.deletePost(responseCreate._id, userData.email);
     });
@@ -377,7 +382,7 @@ describe('Error colorHex cannot be null update a post', () => {
 
 describe('Error colorHex invalid color update a post', () => {
     test('should to throw error update a post', async function () {
-        let err;
+        let err: Error | null = null;
         const responseCreate = await postService.createPost(
             postData,
             userData.email
@@ -397,11 +402,11 @@ describe('Error colorHex invalid color update a post', () => {
                 responseCreate._id,
                 userData.email
             );
-        } catch (e: any) {
-            err = e;
+        } catch (e) {
+            err = e as Error;
         }
-
-        expect(err.message).toStrictEqual('color invalid');
+        expect(err).not.toBeNull();
+        expect(err?.message).toStrictEqual('color invalid');
 
         await postService.deletePost(responseCreate._id, userData.email);
     });
