@@ -7,7 +7,7 @@ import rateLimit from 'express-rate-limit';
 const allowedOrigins: string[] = [
     'http://127.0.0.1',
     'http://localhost:5173',
-    'https://notes-app-vert-one.vercel.app/',
+    'https://notes-app-vert-one.vercel.app',
 ];
 
 const corsOptions: cors.CorsOptions = {
