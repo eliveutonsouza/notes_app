@@ -41,57 +41,51 @@ export function FormLogin() {
         },
       );
 
-      if (response.status === 200) {
-        setCookie("token", response.data.auth.token, {
-          path: "/",
-          sameSite: "strict",
-          secure: true,
-        });
+      setCookie("token", response.data.auth.token, {
+        path: "/",
+        sameSite: "strict",
+        secure: true,
+      });
 
-        saveProfileData({
-          userName: response.data.auth.userName,
-          email: response.data.auth.userEmail,
-        });
+      saveProfileData({
+        userName: response.data.auth.userName,
+        email: response.data.auth.userEmail,
+      });
 
-        setTimeout(() => {
-          setLoading(false); // End loading
-        }, 2000);
+      setTimeout(() => {
+        setLoading(false); // End loading
+      }, 2000);
 
-        toast.success("Login successful!", {
-          position: "top-right",
-          autoClose: 5000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-        });
-      } else {
-        toast.error("An unexpected error occurred", {
-          position: "top-right",
-          autoClose: 5000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-        });
-      }
+      toast.success("Login successful!", {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+      });
     } catch (error) {
       if (axios.isAxiosError(error)) {
-        if (error.response?.status === 401) {
-          toast.error("Email or password wrong!", {
-            position: "top-right",
-            autoClose: 5000,
-            hideProgressBar: false,
-            closeOnClick: true,
-            pauseOnHover: true,
-            draggable: true,
-            progress: undefined,
-          });
-        }
+        toast.error("Email or password wrong!", {
+          position: "top-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+        });
       } else {
-        console.log("An unexpected error occurred");
+        toast.error("An unexpected error occurred!", {
+          position: "top-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+        });
       }
     } finally {
       setLoading(false); // End loading
