@@ -10,12 +10,12 @@ import { toast } from "react-toastify";
 const NewNoteModalForm = z.object({
   title: z
     .string()
-    .min(3, { message: "Your title is too short!" })
-    .max(50, { message: "Your title is too long!" }),
+    .min(1, { message: "Your title is too short!" })
+    .max(100, { message: "Your title is too long!" }),
   description: z
     .string()
-    .min(10, { message: "Your description is too short!" })
-    .max(255, { message: "Your description is too long!" }),
+    .min(1, { message: "Your description is too short!" })
+    .max(2500, { message: "Your description is too long!" }),
   colorHex: z
     .string()
     .min(7, { message: "Invalid color" })

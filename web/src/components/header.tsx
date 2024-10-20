@@ -12,12 +12,17 @@ import { useContext } from "react";
 import { ProfileContext } from "../context/ProfileContextProvider";
 
 export function Header() {
-  const { removeCookie, profileData } = useContext(ProfileContext);
+  const { removeCookie, profileData, removeProfileData } =
+    useContext(ProfileContext);
+
+  const dataLocalStorage = profileData.getProfileData();
+
   const navigate = useNavigate();
 
   const signOut = () => {
     if (profileData.token) {
       removeCookie("token");
+      removeProfileData();
       navigate("/login");
     }
   };
@@ -33,13 +38,15 @@ export function Header() {
 
       <div className="flex flex-col items-center justify-center gap-4 sm:mt-0 sm:flex-row">
         <div className="hidden text-center sm:block sm:text-end">
-          <h2 className="font-medium">{profileData.userName || "Usuário"}</h2>
-          <p className="text-sm font-light">{profileData.sub || ""}</p>
+          <h2 className="font-medium">
+            {dataLocalStorage?.userName || "Usuário"}
+          </h2>
+          <p className="text-sm font-light">{dataLocalStorage?.email || ""}</p>
         </div>
 
         <DropdownMenu>
           <DropdownMenuTrigger>
-            <Profile name={profileData.userName || "Usuário"} />
+            <Profile name={dataLocalStorage?.userName || "Usuário"} />
           </DropdownMenuTrigger>
           <DropdownMenuContent>
             <DropdownMenuItem

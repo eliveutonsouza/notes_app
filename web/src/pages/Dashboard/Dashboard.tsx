@@ -20,6 +20,7 @@ import { ViewNotesModal } from "./components/ViewNotesModal";
 import { z } from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { toast } from "react-toastify";
 
 interface Note {
   colorHex: string;
@@ -90,7 +91,15 @@ export function Dashboard() {
         setTotalPages(response.data.maxPage);
       } catch (error) {
         if (axios.isAxiosError(error)) {
-          setNotes([]);
+          toast.error("Error getting notes!", {
+            position: "top-right",
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+          });
         }
       } finally {
         setTimeout(() => {
@@ -129,12 +138,16 @@ export function Dashboard() {
   useEffect(() => {
     const delayDebounceFn = setTimeout(() => {
       if (searchValue.length >= 3) {
-        getNotes(1, searchValue); // Filters notes while typing
+        getNotes(1, searchValue);
+      }
+
+      if (searchValue.length === 0) {
+        getNotes(1);
       }
     }, 300); // 300ms debounce
 
-    return () => clearTimeout(delayDebounceFn); // Clears debounce
-  }, [searchValue, getNotes]); // Runs whenever the input value changes
+    return () => clearTimeout(delayDebounceFn);
+  }, [searchValue, getNotes]);
 
   async function onSubmitForm(data: SearchFormType) {
     await getNotes(1, data.search);
@@ -161,14 +174,16 @@ export function Dashboard() {
 
             <div className="flex items-center gap-6">
               <div
-                className={`${
-                  showColorButtons ? "flex" : "hidden"
-                } cursor-pointer flex-wrap gap-2`}
+                className={`flex flex-wrap gap-2 transition-transform duration-300 ease-in-out ${
+                  showColorButtons
+                    ? "translate-x-0 opacity-100"
+                    : "translate-x-4 opacity-0"
+                }`}
               >
                 {buttonColors.map((color) => (
                   <button
                     key={color}
-                    className="h-6 w-6 cursor-pointer rounded-full"
+                    className="h-6 w-6 cursor-pointer rounded-full transition-transform duration-200 ease-in-out hover:scale-125"
                     style={{ backgroundColor: color }}
                     onClick={() => {
                       openModalNewNote(color);
@@ -181,7 +196,7 @@ export function Dashboard() {
               <button
                 className="rounded-full bg-black p-3 text-white"
                 type="button"
-                onClick={() => setShowColorButtons(!showColorButtons)}
+                onClick={() => setShowColorButtons((prev) => !prev)}
               >
                 <Plus size={24} weight="bold" />
               </button>
@@ -199,19 +214,27 @@ export function Dashboard() {
               <p className="text-xl">No notes to display...</p>
             </div>
           ) : (
-            <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
+            <div className="mb-6 grid grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
               {notes.map((note) => (
                 <div
                   key={note._id}
                   style={{ backgroundColor: note.colorHex }}
-                  className="flex max-h-52 min-h-52 flex-col items-start justify-between gap-4 rounded-lg p-6"
+                  className="flex max-h-60 min-h-52 flex-col items-start justify-between gap-4 rounded-lg p-6"
                 >
                   <div
-                    className="cursor-pointer text-start"
+                    className="cursor-pointer space-y-2 text-start"
                     onClick={() => openModalViewNote(note)}
                   >
-                    <h2 className="font-bold">{note.title.slice(0, 30)}...</h2>
-                    <p>{note.description.slice(0, 80)}...</p>
+                    <h2 className="text-lg font-bold xl:text-base">
+                      {note.title.length < 30
+                        ? note.title
+                        : note.title.slice(0, 30) + "..."}
+                    </h2>
+                    <p>
+                      {note.description.length < 90
+                        ? note.description
+                        : note.description.slice(0, 90) + "..."}
+                    </p>
                   </div>
 
                   <div className="flex w-full items-center justify-between">

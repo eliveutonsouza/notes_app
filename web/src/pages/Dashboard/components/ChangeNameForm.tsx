@@ -5,18 +5,20 @@ import { useContext } from "react";
 import { ProfileContext } from "../../../context/ProfileContextProvider";
 import axios from "axios";
 import { toast } from "react-toastify";
+import { useNavigate } from "react-router-dom";
 
 const ChangeNameFormSchema = z.object({
   name: z
     .string()
-    .min(3, { message: "Name must be at least 3 characters long!" })
-    .max(20, { message: "Name must be at most 20 characters long!" }),
+    .min(1, { message: "Name is required!" })
+    .max(50, { message: "Name must be at most 20 characters long!" }),
 });
 
 type ChangeNameFormType = z.infer<typeof ChangeNameFormSchema>;
 
 export function ChangeNameForm() {
-  const { profileData } = useContext(ProfileContext);
+  const { profileData, updateProfileData } = useContext(ProfileContext);
+  const navigate = useNavigate();
 
   const {
     register,
@@ -31,8 +33,6 @@ export function ChangeNameForm() {
   });
 
   async function onSubmitForm(dataForm: ChangeNameFormType) {
-    console.log(dataForm);
-
     try {
       const response = await axios.put(
         `${import.meta.env.VITE_API_SERVER_BACKEND}/user`,
@@ -46,7 +46,15 @@ export function ChangeNameForm() {
           },
         },
       );
+
       if (response.status === 201 || response.status === 200) {
+        updateProfileData({
+          userName: response.data.body.name,
+          email: response.data.body.email,
+        });
+
+        navigate("/dashboard/settings"); // Reload the page to update the username in the header
+
         toast.success("Account name changed successfully!", {
           position: "top-right",
           autoClose: 5000,
@@ -61,6 +69,7 @@ export function ChangeNameForm() {
       }
     } catch (error) {
       if (axios.isAxiosError(error)) {
+        console.log(error.response?.data);
         if (error.response?.status === 400) {
           toast.error("Error changing account name!", {
             position: "top-right",
@@ -88,7 +97,10 @@ export function ChangeNameForm() {
   }
 
   return (
-    <form onSubmit={handleSubmit(onSubmitForm)} className="flex gap-4">
+    <form
+      onSubmit={handleSubmit(onSubmitForm)}
+      className="flex flex-col gap-4 md:flex-row"
+    >
       <div className="space-y-2">
         <label htmlFor="name" className="text-pr text-base font-medium">
           Enter a new username
@@ -107,7 +119,7 @@ export function ChangeNameForm() {
 
       <button
         type="submit"
-        className="self-end rounded bg-primary px-4 py-2 text-white"
+        className="w-full self-end rounded bg-primary px-4 py-2 text-white md:w-auto"
       >
         Change
       </button>
