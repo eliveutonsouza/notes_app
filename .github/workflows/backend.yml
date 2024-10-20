@@ -61,9 +61,10 @@ jobs:
           DB_USERNAME: ${{ secrets.DB_USERNAME }}
           DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
           CONNECTION_URL_PROD: ${{ secrets.CONNECTION_URL_PROD }}
-
-      - run: npm ci --prefix back-end
+      - run: sudo docker logs notes_app
       - run: sudo docker stop notes_app
+      - run: npm ci --prefix back-end
+
       - run: npm test --prefix back-end
         env:
           CONNECTION_URL_LOCAL: ${{ secrets.CONNECTION_URL_LOCAL }}
