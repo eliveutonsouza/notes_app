@@ -52,7 +52,7 @@ export function FormRegister() {
     };
 
     try {
-      const response = await axios.post(
+      await axios.post(
         `${import.meta.env.VITE_API_SERVER_BACKEND}/register`,
         dataFormValues,
         {
@@ -62,8 +62,20 @@ export function FormRegister() {
         },
       );
 
-      if (response.status === 201 || response.status === 200) {
-        toast.success("Account created successfully!", {
+      toast.success("Account created successfully!", {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+      });
+
+      navigate("/login");
+    } catch (error) {
+      if (axios.isAxiosError(error)) {
+        toast.error("Error creating account!", {
           position: "top-right",
           autoClose: 5000,
           hideProgressBar: false,
@@ -72,24 +84,6 @@ export function FormRegister() {
           draggable: true,
           progress: undefined,
         });
-
-        navigate("/login");
-      }
-    } catch (error) {
-      if (axios.isAxiosError(error)) {
-        if (error.response?.status === 400) {
-          toast.error("Error creating account!", {
-            position: "top-right",
-            autoClose: 5000,
-            hideProgressBar: false,
-            closeOnClick: true,
-            pauseOnHover: true,
-            draggable: true,
-            progress: undefined,
-          });
-        } else {
-          console.log("An unexpected error occurred");
-        }
       }
     }
   }
