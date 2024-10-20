@@ -1,4 +1,4 @@
-type ResponseToken = {
+export type ResponseToken = {
     userEmail: string;
     expiresIn: number;
     token: string;
