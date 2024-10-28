@@ -1,11 +1,11 @@
-import { Profile } from "../components/profile";
+import { Profile } from "./ui/profile";
 import logoFull from "../assets/logo-full.png";
 import {
   DropdownMenu,
   DropdownMenuTrigger,
   DropdownMenuContent,
   DropdownMenuItem,
-} from "./dropdown-menu";
+} from "./ui/dropdown-menu";
 import { Cards, GearSix, SignOut } from "@phosphor-icons/react";
 import { Link, useNavigate } from "react-router-dom";
 import { useContext } from "react";

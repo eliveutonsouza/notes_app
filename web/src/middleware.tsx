@@ -1,5 +1,5 @@
 import { useLocation, useNavigate } from "react-router-dom";
-import { useEffect } from "react";
+import { useCallback, useEffect } from "react";
 import { useJwt } from "react-jwt";
 import { useCookies } from "react-cookie";
 
@@ -21,7 +21,7 @@ export function Middleware({ children }: MiddlewareProps) {
   const isHomePage = location.pathname === "/";
   const isDashboardPage = location.pathname.startsWith("/dashboard");
 
-  useEffect(() => {
+  const routingApp = useCallback(() => {
     // If the token is expired and trying to access the dashboard, redirect to login
     if (isTokenExpired && isDashboardPage) {
       navigate("/login");
@@ -47,6 +47,10 @@ export function Middleware({ children }: MiddlewareProps) {
     isDashboardPage,
     navigate,
   ]);
+
+  useEffect(() => {
+    routingApp();
+  }, [routingApp]);
 
   return children; // Returns the children if none of the redirection conditions are met
 }

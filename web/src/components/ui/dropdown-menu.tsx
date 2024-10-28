@@ -7,7 +7,7 @@ import {
   useMemo,
   useCallback,
 } from "react";
-import { cn } from "../lib/utils";
+import { cn } from "../../lib/utils";
 
 interface DropdownMenuProps {
   children: React.ReactNode;

@@ -7,7 +7,7 @@ import {
   SmileySad,
   Spinner,
 } from "@phosphor-icons/react";
-import { Input } from "../../components/input";
+import { Input } from "../../components/ui/input";
 import { useCallback, useContext, useEffect, useState } from "react";
 import { ModalContext } from "../../context/ModalContextProvider";
 import { EditeModalForm } from "./components/EditeModalForm";
